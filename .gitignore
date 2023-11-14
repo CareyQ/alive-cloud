@@ -24,3 +24,8 @@ hs_err_pid*
 
 # IntelliJ
 .idea
+*.iws
+*.iml
+*.ipr
+target/
+target/*

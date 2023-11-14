@@ -23,7 +23,7 @@
         <spring.boot.version>3.1.5</spring.boot.version>
         <spring.cloud.alibaba.version>2022.0.0.0</spring.cloud.alibaba.version>
         <knife4j.version>4.3.0</knife4j.version>
-        <druid.version>1.2.21</druid.version>
+        <druid.version>1.2.20</druid.version>
         <mybatis-plus.version>3.5.4.1</mybatis-plus.version>
         <sa-token.version>1.37.0</sa-token.version>
         <springdoc.version>2.2.0</springdoc.version>
@@ -103,14 +103,14 @@
             </dependency>
 
             <dependency>
-                <groupId>org.springdoc</groupId>
-                <artifactId>springdoc-openapi-starter-webmvc-api</artifactId>
-                <version>${springdoc.version}</version>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-openapi3-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.github.xiaoymin</groupId>
-                <artifactId>knife4j-openapi3-spring-boot-starter</artifactId>
+                <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
                 <version>${knife4j.version}</version>
             </dependency>
 
@@ -130,7 +130,19 @@
 
             <dependency>
                 <groupId>com.careyq</groupId>
+                <artifactId>alive-core</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.careyq</groupId>
                 <artifactId>alive-web</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.careyq</groupId>
+                <artifactId>alive-mybatis</artifactId>
                 <version>${revision}</version>
             </dependency>
         </dependencies>

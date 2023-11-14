@@ -23,7 +23,8 @@ create table if not exists system_user
     create_time datetime     not null default current_timestamp comment '创建时间',
     updater     bigint       null     default null comment '更新者',
     update_time datetime     not null default current_timestamp on update current_timestamp comment '更新时间',
-    unique index idx_username (username) using btree
+    unique index idx_username (username) using btree,
+    unique index idx_mobile (mobile) using btree
 ) comment '系统用户';
 
 create table if not exists system_dept

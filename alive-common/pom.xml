@@ -14,6 +14,7 @@
     <modules>
         <module>alive-web</module>
         <module>alive-core</module>
+        <module>alive-mybatis</module>
     </modules>
 
     <properties>
