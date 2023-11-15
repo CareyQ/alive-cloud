@@ -11,6 +11,7 @@
     <modules>
         <module>alive-common</module>
         <module>alive-system</module>
+        <module>alive-gateway</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -23,10 +24,13 @@
 
         <revision>1.0.0-snapshot</revision>
         <flatten-maven-plugin.version>1.5.0</flatten-maven-plugin.version>
+        <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
+
         <spring.boot.version>3.1.5</spring.boot.version>
         <spring.cloud.version>2022.0.4</spring.cloud.version>
         <spring.cloud.alibaba.version>2022.0.0.0</spring.cloud.alibaba.version>
         <snakeyaml.version>2.2</snakeyaml.version>
+        <logback.adapter.version>1.0.0</logback.adapter.version>
         <knife4j.version>4.3.0</knife4j.version>
         <druid.version>1.2.20</druid.version>
         <mybatis-plus.version>3.5.4.1</mybatis-plus.version>
@@ -75,10 +79,6 @@
                         <groupId>org.yaml</groupId>
                         <artifactId>snakeyaml</artifactId>
                     </exclusion>
-                    <exclusion>
-                        <groupId>ch.qos.logback</groupId>
-                        <artifactId>logback-classic</artifactId>
-                    </exclusion>
                 </exclusions>
             </dependency>
 
@@ -87,6 +87,13 @@
                 <groupId>org.yaml</groupId>
                 <artifactId>snakeyaml</artifactId>
                 <version>${snakeyaml.version}</version>
+            </dependency>
+
+            <!-- nacos logback 适配器 -->
+            <dependency>
+                <groupId>com.alibaba.nacos</groupId>
+                <artifactId>logback-adapter</artifactId>
+                <version>${logback.adapter.version}</version>
             </dependency>
 
             <!-- web undertow 容器 -->
@@ -108,12 +115,6 @@
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>${mybatis-plus.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>ch.qos.logback</groupId>
-                        <artifactId>logback-classic</artifactId>
-                    </exclusion>
-                </exclusions>
             </dependency>
 
             <!-- Sa-Token 权限认证，在线文档：https://sa-token.cc -->
@@ -145,6 +146,13 @@
             <dependency>
                 <groupId>com.github.xiaoymin</groupId>
                 <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
+            </dependency>
+
+            <!-- 接口文档 UI：knife4j【网关专属】 -->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-gateway-spring-boot-starter</artifactId>
                 <version>${knife4j.version}</version>
             </dependency>
 

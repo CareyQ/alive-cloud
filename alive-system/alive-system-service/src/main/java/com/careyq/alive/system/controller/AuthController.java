@@ -4,7 +4,7 @@ import com.careyq.alive.core.domain.R;
 import com.careyq.alive.system.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Tag(name = "管理后台 - 认证")
 @RestController
-@RequiredArgsConstructor
+@AllArgsConstructor
 @RequestMapping("/system/auth")
 public class AuthController {
 
