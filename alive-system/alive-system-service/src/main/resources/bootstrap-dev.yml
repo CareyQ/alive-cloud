@@ -1,0 +1,13 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 175.178.4.53:8848
+        namespace: dev
+
+      config:
+        server-addr: 175.178.4.53:8848
+        namespace: dev
+        name: ${spring.application.name}
+        file-extension: yaml
+        group: DEFAULT_GROUP
