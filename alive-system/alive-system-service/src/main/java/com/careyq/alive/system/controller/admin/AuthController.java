@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "管理后台 - 认证")
 @RestController
 @AllArgsConstructor
-@RequestMapping("/system/auth")
+@RequestMapping("/auth")
 public class AuthController {
 
     private final UserService userService;
