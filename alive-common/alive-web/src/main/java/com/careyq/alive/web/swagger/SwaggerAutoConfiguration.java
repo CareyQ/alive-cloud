@@ -4,6 +4,7 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -38,5 +39,17 @@ public class SwaggerAutoConfiguration {
                 .version(properties.getVersion())
                 .contact(new Contact().name(properties.getAuthor()).url(properties.getUrl()).email(properties.getEmail()))
                 .license(new License().name(properties.getLicense()).url(properties.getLicenseUrl()));
+    }
+
+    @Bean
+    public GroupedOpenApi allGroupOpenApi() {
+        return buildGroupedOpenApi("all", "");
+    }
+
+    public static GroupedOpenApi buildGroupedOpenApi(String group, String path) {
+        return GroupedOpenApi.builder()
+                .group(group)
+                .pathsToMatch("/admin-api/" + path + "/**", "/app-api/" + path + "/**")
+                .build();
     }
 }

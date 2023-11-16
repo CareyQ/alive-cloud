@@ -4,22 +4,22 @@ server:
 spring:
   profiles:
     active: dev
+
   cloud:
     gateway:
       routes:
         - id: system-admin-api
           uri: lb://system-server
           predicates:
-            - Path=/admin-api/system/**
+            - Path=/api-admin/system/**
           filters:
-            - RewritePath=/admin-api/system/v3/api-docs, /v3/api-docs
+            - RewritePath=/api-admin/system/v3/api-docs, /v3/api-docs
       x-forwarded:
         prefix-enabled: false
 
 knife4j:
   gateway:
     enabled: true
-    routes:
-      - name: system-server
-        service-name: system-server
-        url: /admin-api/system/v3/api-docs
+    strategy: discover
+    discover:
+      enabled: true

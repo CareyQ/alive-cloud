@@ -1,2 +1,3 @@
 com.careyq.alive.web.undertow.UndertowAutoConfiguration
 com.careyq.alive.web.swagger.SwaggerAutoConfiguration
+com.careyq.alive.web.config.WebAutoConfiguration

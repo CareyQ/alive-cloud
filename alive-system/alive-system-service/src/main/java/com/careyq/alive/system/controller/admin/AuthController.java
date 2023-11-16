@@ -1,4 +1,4 @@
-package com.careyq.alive.system.controller;
+package com.careyq.alive.system.controller.admin;
 
 import com.careyq.alive.core.domain.R;
 import com.careyq.alive.system.service.UserService;
