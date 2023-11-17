@@ -5,6 +5,17 @@ spring:
   profiles:
     active: dev
 
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+    banner: false
+  type-aliases-package: ${alive.info.base-package}.entity
+
 springdoc:
   api-docs:
     enabled: true # 1. 是否开启 Swagger 接文档的元数据

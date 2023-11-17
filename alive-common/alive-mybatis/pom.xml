@@ -13,6 +13,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.careyq</groupId>
+            <artifactId>alive-core</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
         </dependency>
