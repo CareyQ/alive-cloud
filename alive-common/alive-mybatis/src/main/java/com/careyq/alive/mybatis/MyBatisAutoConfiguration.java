@@ -3,8 +3,6 @@ package com.careyq.alive.mybatis;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
-import org.apache.ibatis.annotations.Mapper;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
 
@@ -15,7 +13,6 @@ import org.springframework.context.annotation.Bean;
  * @since 2023-11-17
  */
 @AutoConfiguration
-@MapperScan(value = "${alive.info.base-package}", annotationClass = Mapper.class)
 public class MyBatisAutoConfiguration {
 
     @Bean

@@ -1,0 +1,2 @@
+com.careyq.alive.redis.RedisAutoConfiguration
+com.careyq.alive.redis.CacheAutoConfiguration

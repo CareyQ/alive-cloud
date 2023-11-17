@@ -25,6 +25,11 @@
 
         <dependency>
             <groupId>com.careyq</groupId>
+            <artifactId>alive-redis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.careyq</groupId>
             <artifactId>alive-web</artifactId>
         </dependency>
 

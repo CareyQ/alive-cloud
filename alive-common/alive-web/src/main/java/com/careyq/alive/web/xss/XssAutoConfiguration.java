@@ -1,6 +1,5 @@
 package com.careyq.alive.web.xss;
 
-import com.careyq.alive.web.xss.filter.XssFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;

@@ -15,12 +15,7 @@
         <module>alive-web</module>
         <module>alive-core</module>
         <module>alive-mybatis</module>
+        <module>alive-redis</module>
     </modules>
-
-    <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
 
 </project>
