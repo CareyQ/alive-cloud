@@ -38,6 +38,8 @@
         <springdoc.version>2.2.0</springdoc.version>
         <hutool.version>5.8.22</hutool.version>
         <lombok.version>1.18.30</lombok.version>
+        <jsoup.version>1.16.2</jsoup.version>
+        <caffeine.version>3.1.8</caffeine.version>
     </properties>
 
     <dependencyManagement>
@@ -171,6 +173,12 @@
             </dependency>
 
             <dependency>
+                <groupId>org.jsoup</groupId>
+                <artifactId>jsoup</artifactId>
+                <version>${jsoup.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>com.careyq</groupId>
                 <artifactId>alive-core</artifactId>
                 <version>${revision}</version>
@@ -186,6 +194,13 @@
                 <groupId>com.careyq</groupId>
                 <artifactId>alive-mybatis</artifactId>
                 <version>${revision}</version>
+            </dependency>
+
+            <!-- LoadBalancer 使用该缓存 -->
+            <dependency>
+                <groupId>com.github.ben-manes.caffeine</groupId>
+                <artifactId>caffeine</artifactId>
+                <version>${caffeine.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

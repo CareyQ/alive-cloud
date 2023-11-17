@@ -44,6 +44,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.careyq</groupId>
             <artifactId>alive-core</artifactId>
         </dependency>
