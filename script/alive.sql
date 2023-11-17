@@ -57,3 +57,24 @@ create table if not exists system_post
     updater     bigint       null     default null comment '更新者',
     update_time datetime     not null default current_timestamp on update current_timestamp comment '更新时间'
 ) comment '岗位信息';
+
+create table if not exists system_menu
+(
+    id             bigint       not null auto_increment primary key comment '主键',
+    name           varchar(20)  not null default '' comment '菜单名称',
+    permission     varchar(100) not null default '' comment '权限标识',
+    type           int          not null comment '菜单类型',
+    parent_id      bigint       not null default 0 comment '父级部门 ID',
+    sort           int          not null default 0 comment '排序',
+    path           varchar(200) not null default '' comment '路由地址',
+    icon           varchar(100) not null default '#' comment '菜单图标',
+    component      varchar(255) null     default null comment '组件路径',
+    component_name varchar(255) null     default null comment '组件名',
+    status         tinyint      not null default 0 comment '菜单状态',
+    keep_alive     tinyint      not null default 1 comment '是否缓存',
+    is_del         tinyint      not null default 0 comment '是否删除',
+    creator        bigint       null     default null comment '创建者',
+    create_time    datetime     not null default current_timestamp comment '创建时间',
+    updater        bigint       null     default null comment '更新者',
+    update_time    datetime     not null default current_timestamp on update current_timestamp comment '更新时间'
+) comment '菜单权限';
