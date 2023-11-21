@@ -40,6 +40,10 @@ knife4j:
   setting:
     language: zh_cn
 
+sa-token:
+  token-style: random-64
+  token-name: Authorization
+
 alive:
   info:
     version: 1.0.0

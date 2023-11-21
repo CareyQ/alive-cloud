@@ -215,6 +215,12 @@
                 <version>${revision}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.careyq</groupId>
+                <artifactId>alive-satoken</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
             <!-- LoadBalancer 使用该缓存 -->
             <dependency>
                 <groupId>com.github.ben-manes.caffeine</groupId>

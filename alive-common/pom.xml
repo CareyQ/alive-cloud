@@ -16,6 +16,7 @@
         <module>alive-core</module>
         <module>alive-mybatis</module>
         <module>alive-redis</module>
+        <module>alive-satoken</module>
     </modules>
 
 </project>

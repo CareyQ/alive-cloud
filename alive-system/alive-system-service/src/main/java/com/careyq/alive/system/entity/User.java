@@ -84,5 +84,5 @@ public class User extends BaseEntity {
     /**
      * 最后登录时间
      */
-    private LocalDateTime loginDate;
+    private LocalDateTime loginTime;
 }

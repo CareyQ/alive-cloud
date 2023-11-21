@@ -19,4 +19,28 @@ public interface UserService extends IService<User> {
      */
     boolean mobileIsExist(String mobile);
 
+    /**
+     * 根据用户名获取
+     *
+     * @param username 用户名
+     * @return 用户
+     */
+    User getByUsername(String username);
+
+    /**
+     * 密码加密
+     *
+     * @param password 密码
+     * @return 解密后的密码
+     */
+    String encodePassword(String password);
+
+    /**
+     * 判断密码是否匹配
+     *
+     * @param password        未加密密码
+     * @param encodedPassword 加密后的密码
+     * @return 结果
+     */
+    boolean isPasswordMatch(String password, String encodedPassword);
 }

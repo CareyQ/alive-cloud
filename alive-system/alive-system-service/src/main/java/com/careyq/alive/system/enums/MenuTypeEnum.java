@@ -18,13 +18,17 @@ public enum MenuTypeEnum {
      */
     DIR(1),
     /**
+     * 分组
+     */
+    GROUP(2),
+    /**
      * 菜单
      */
-    MENU(2),
+    MENU(3),
     /**
      * 按钮
      */
-    BUTTON(3),
+    BUTTON(4),
     ;
 
     private final Integer type;
