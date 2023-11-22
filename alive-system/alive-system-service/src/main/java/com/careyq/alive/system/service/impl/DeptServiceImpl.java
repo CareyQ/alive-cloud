@@ -1,10 +1,12 @@
 package com.careyq.alive.system.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.lang.tree.TreeUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.careyq.alive.core.enums.CommonStatusEnum;
 import com.careyq.alive.core.exception.CustomException;
+import com.careyq.alive.core.util.TreeUtils;
 import com.careyq.alive.system.dto.DeptDTO;
 import com.careyq.alive.system.entity.Dept;
 import com.careyq.alive.system.mapper.DeptMapper;
@@ -12,6 +14,7 @@ import com.careyq.alive.system.service.DeptService;
 import com.careyq.alive.system.vo.DeptVO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -27,12 +30,15 @@ import static com.careyq.alive.system.constants.SystemResultCode.*;
 public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements DeptService {
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Long saveDept(DeptDTO dto) {
         if (dto.getId() != null) {
             this.checkDeptExists(dto.getId());
         }
-
-        return null;
+        this.checkDeptParent(dto.getId(), dto.getParentId());
+        Dept dept = BeanUtil.copyProperties(dto, Dept.class);
+        this.saveOrUpdate(dept);
+        return dept.getId();
     }
 
     @Override
@@ -64,23 +70,25 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements De
     /**
      * 校验父级部门
      *
-     * @param dept 部门
-     * @return 部门
+     * @param id       部门 ID
+     * @param parentId 父级部门 ID
      */
-    private void checkDeptParent(Dept dept) {
-        if (dept.getParentId() == null) {
+    private void checkDeptParent(Long id, Long parentId) {
+        if (parentId == null || id == null) {
             return;
         }
-        if (dept.getParentId().equals(dept.getId())) {
+        if (parentId.equals(id)) {
             throw new CustomException(DEPT_PARENT_ERROR);
         }
-        Dept parent = this.getById(dept.getParentId());
+        Dept parent = this.getById(parentId);
         if (parent == null) {
             throw new CustomException(DEPT_PARENT_NOT_EXISTS);
         }
         List<Tree<Long>> allDept = this.getDeptSimpleList();
-        TreeUtil.getParentsId()
-        return dept;
+        List<Tree<Long>> childList = TreeUtils.treeToList(allDept, id);
+        if (childList.stream().anyMatch(e -> e.getId().equals(parentId))) {
+            throw new CustomException(DEPT_PARENT_IS_CHILD);
+        }
     }
 
     /**

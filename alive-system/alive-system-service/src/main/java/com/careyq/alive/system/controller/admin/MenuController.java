@@ -46,7 +46,7 @@ public class MenuController {
 
     @PostMapping("/save")
     @Operation(summary = "保存菜单")
-    public R<Long> getMenuDetail(@Validated @RequestBody MenuVO menu) {
+    public R<Long> saveMenu(@Validated @RequestBody MenuVO menu) {
         return R.ok(menuService.saveMenu(menu));
     }
 

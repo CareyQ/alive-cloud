@@ -31,4 +31,5 @@ public interface SystemResultCode {
     ResultCode DEPT_NOT_EXISTS = new ResultCode(1_40001, "部门不存在");
     ResultCode DEPT_PARENT_NOT_EXISTS = new ResultCode(1_40002, "父级部门不存在");
     ResultCode DEPT_PARENT_ERROR = new ResultCode(1_40003, "父级部门不可选择自己");
+    ResultCode DEPT_PARENT_IS_CHILD = new ResultCode(1_40003, "不能设置自己的子部门为父部门");
 }
