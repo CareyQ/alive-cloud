@@ -7,7 +7,6 @@ import com.careyq.alive.system.entity.User;
  * 系统用户服务
  *
  * @author CareyQ
- * @since 2023-11-14
  */
 public interface UserService extends IService<User> {
 

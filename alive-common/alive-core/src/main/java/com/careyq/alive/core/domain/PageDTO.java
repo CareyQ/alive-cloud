@@ -9,7 +9,6 @@ import lombok.Data;
  * 分页请求基类
  *
  * @author CareyQ
- * @since 2023-11-11
  */
 @Data
 @Schema(description = "分页参数")

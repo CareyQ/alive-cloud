@@ -18,7 +18,6 @@ import java.util.List;
  * 系统认证
  *
  * @author CareyQ
- * @since 2023-11-14
  */
 @Tag(name = "管理后台 - 认证")
 @RestController

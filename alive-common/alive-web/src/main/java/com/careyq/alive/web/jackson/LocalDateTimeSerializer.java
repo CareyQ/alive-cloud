@@ -12,7 +12,6 @@ import java.time.ZoneId;
  * LocalDateTime 序列化规则
  *
  * @author CareyQ
- * @since 2023-11-17
  */
 public class LocalDateTimeSerializer extends JsonSerializer<LocalDateTime> {
 

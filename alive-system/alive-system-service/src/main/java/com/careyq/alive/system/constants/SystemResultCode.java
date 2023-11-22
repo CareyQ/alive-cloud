@@ -6,7 +6,6 @@ import com.careyq.alive.core.domain.ResultCode;
  * 错误码常量
  *
  * @author CareyQ
- * @since 2023-11-19
  */
 public interface SystemResultCode {
 

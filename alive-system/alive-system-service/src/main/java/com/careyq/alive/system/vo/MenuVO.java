@@ -9,7 +9,6 @@ import org.hibernate.validator.constraints.Length;
 
 /**
  * @author CareyQ
- * @since 2023-11-17
  */
 @Data
 @Accessors(chain = true)

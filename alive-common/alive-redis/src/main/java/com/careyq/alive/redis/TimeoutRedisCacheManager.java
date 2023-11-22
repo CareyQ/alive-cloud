@@ -17,7 +17,6 @@ import java.time.Duration;
  * 单位为最后一个字母（支持的单位有：d 天，h 小时，m 分钟，s 秒），默认单位为 s 秒
  *
  * @author CareyQ
- * @since 2023-11-17
  */
 public class TimeoutRedisCacheManager extends RedisCacheManager {
 

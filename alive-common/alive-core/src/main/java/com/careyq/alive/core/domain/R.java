@@ -10,7 +10,6 @@ import java.io.Serializable;
  * 通用返回体
  *
  * @author CareyQ
- * @since 2023-11-12
  */
 @Data
 @Builder

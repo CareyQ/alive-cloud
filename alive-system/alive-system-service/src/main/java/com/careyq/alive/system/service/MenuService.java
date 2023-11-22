@@ -13,7 +13,6 @@ import java.util.Set;
  * 菜单权限服务
  *
  * @author CareyQ
- * @since 2023-11-17
  */
 public interface MenuService extends IService<Menu> {
 

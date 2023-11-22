@@ -21,7 +21,6 @@ import static com.careyq.alive.core.constants.ResultCodeConstants.*;
  * 全局异常处理器
  *
  * @author CareyQ
- * @since 2023-11-17
  */
 @Slf4j
 @RestControllerAdvice

@@ -14,7 +14,6 @@ import java.io.IOException;
  * Xss 过滤器
  *
  * @author CareyQ
- * @since 2023-11-17
  */
 @AllArgsConstructor
 public class XssFilter extends OncePerRequestFilter {

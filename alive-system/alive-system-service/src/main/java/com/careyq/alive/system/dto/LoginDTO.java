@@ -10,7 +10,6 @@ import org.hibernate.validator.constraints.Length;
  * 登录
  *
  * @author CareyQ
- * @since 2023-11-19
  */
 @Data
 @Schema(description = "管理后台 - 账号密码登录 DTO")

@@ -8,7 +8,6 @@ import org.jsoup.safety.Safelist;
  * 基于 JSONP 实现 XSS 过滤字符串
  *
  * @author CareyQ
- * @since 2023-11-17
  */
 public class JsoupXssCleaner {
 

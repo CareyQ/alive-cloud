@@ -17,7 +17,6 @@ import java.util.List;
  * 菜单管理
  *
  * @author CareyQ
- * @since 2023-11-19
  */
 @Tag(name = "管理后台 - 菜单管理")
 @RestController

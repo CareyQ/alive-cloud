@@ -8,7 +8,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * Swagger 配置属性
  *
  * @author CareyQ
- * @since 2023-11-15
  */
 @Data
 @ConfigurationProperties("alive.swagger")

@@ -22,7 +22,6 @@ import static com.careyq.alive.redis.RedisAutoConfiguration.buildRedisSerializer
  * Cache 配置
  *
  * @author CareyQ
- * @since 2023-11-17
  */
 @EnableCaching
 @AutoConfiguration

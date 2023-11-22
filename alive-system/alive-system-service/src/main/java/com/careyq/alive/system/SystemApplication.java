@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * 系统服务
  *
  * @author CareyQ
- * @since 2023-11-14
  */
 @SpringBootApplication
 public class SystemApplication {

@@ -13,7 +13,6 @@ import java.util.Set;
  * 系统用户
  *
  * @author CareyQ
- * @since 2023-11-14
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

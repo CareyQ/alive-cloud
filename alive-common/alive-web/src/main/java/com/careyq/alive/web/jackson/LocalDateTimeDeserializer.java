@@ -13,7 +13,6 @@ import java.time.ZoneId;
  * LocalDateTime 反序列化规则
  *
  * @author CareyQ
- * @since 2023-11-17
  */
 public class LocalDateTimeDeserializer extends JsonDeserializer<LocalDateTime> {
 

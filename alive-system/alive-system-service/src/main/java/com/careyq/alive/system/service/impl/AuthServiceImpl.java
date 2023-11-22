@@ -19,7 +19,6 @@ import static com.careyq.alive.system.constants.SystemResultCode.AUTH_LOGIN_FAIL
  * 认证服务实现
  *
  * @author CareyQ
- * @since 2023-11-19
  */
 @Service
 @AllArgsConstructor

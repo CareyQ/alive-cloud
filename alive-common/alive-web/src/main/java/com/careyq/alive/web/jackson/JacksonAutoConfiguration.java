@@ -15,7 +15,6 @@ import java.util.List;
  * jackson 序列化配置
  *
  * @author CareyQ
- * @since 2023-11-17
  */
 @Slf4j
 @AutoConfiguration

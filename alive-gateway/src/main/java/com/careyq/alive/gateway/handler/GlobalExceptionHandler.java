@@ -21,7 +21,6 @@ import static com.careyq.alive.core.constants.ResultCodeConstants.SERVER_ERROR;
  * 网关全局异常处理
  *
  * @author CareyQ
- * @since 2023-11-17
  */
 @Slf4j
 @Order(-1)

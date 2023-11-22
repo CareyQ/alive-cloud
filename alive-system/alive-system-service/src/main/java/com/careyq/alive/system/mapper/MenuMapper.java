@@ -8,7 +8,6 @@ import org.apache.ibatis.annotations.Mapper;
  * 菜单权限 mapper
  *
  * @author CareyQ
- * @since 2023-11-17
  */
 @Mapper
 public interface MenuMapper extends BaseMapper<Menu> {

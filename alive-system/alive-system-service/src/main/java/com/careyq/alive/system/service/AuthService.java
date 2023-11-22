@@ -8,7 +8,6 @@ import com.careyq.alive.system.vo.LoginVO;
  * 认证服务
  *
  * @author CareyQ
- * @since 2023-11-19
  */
 public interface AuthService {
 

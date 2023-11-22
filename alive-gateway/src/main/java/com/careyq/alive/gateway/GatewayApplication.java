@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * 网关服务
  *
  * @author CareyQ
- * @since 2023-11-15
  */
 @SpringBootApplication
 public class GatewayApplication {

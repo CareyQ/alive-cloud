@@ -7,7 +7,6 @@ import lombok.Getter;
  * 通用状态枚举
  *
  * @author CareyQ
- * @since 2023-11-17
  */
 @Getter
 @AllArgsConstructor

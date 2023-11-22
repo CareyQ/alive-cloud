@@ -16,7 +16,6 @@ import reactor.core.publisher.Mono;
  * 跨域
  *
  * @author CareyQ
- * @since 2023-11-15
  */
 @Component
 public class CorsFilter implements WebFilter {

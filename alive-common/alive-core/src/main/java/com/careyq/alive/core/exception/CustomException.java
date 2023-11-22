@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
  * 自定义异常
  *
  * @author CareyQ
- * @since 2023-11-12
  */
 @Data
 @NoArgsConstructor

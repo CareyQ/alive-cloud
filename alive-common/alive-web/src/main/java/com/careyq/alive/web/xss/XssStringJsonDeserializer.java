@@ -13,7 +13,6 @@ import java.io.IOException;
  * XSS 过滤 jackson 反序列化器
  *
  * @author CareyQ
- * @since 2023-11-17
  */
 @Slf4j
 @AllArgsConstructor

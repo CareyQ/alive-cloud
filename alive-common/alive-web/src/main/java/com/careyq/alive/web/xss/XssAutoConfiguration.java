@@ -13,7 +13,6 @@ import static com.careyq.alive.web.WebAutoConfiguration.createFilterBean;
 
 /**
  * @author CareyQ
- * @since 2023-11-17
  */
 @AutoConfiguration
 public class XssAutoConfiguration implements WebMvcConfigurer {

@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
  * 登录返回 VO
  *
  * @author CareyQ
- * @since 2023-11-19
  */
 @Data
 @Builder

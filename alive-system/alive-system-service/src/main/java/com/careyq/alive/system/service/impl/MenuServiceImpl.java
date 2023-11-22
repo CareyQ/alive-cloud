@@ -27,7 +27,6 @@ import static com.careyq.alive.system.constants.SystemResultCode.*;
  * 菜单权限服务实现
  *
  * @author CareyQ
- * @since 2023-11-17
  */
 @Service
 public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements MenuService {

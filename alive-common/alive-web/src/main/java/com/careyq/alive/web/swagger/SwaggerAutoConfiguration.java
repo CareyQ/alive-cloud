@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Bean;
  * Swagger 自动配置
  *
  * @author CareyQ
- * @since 2023-11-15
  */
 @AutoConfiguration
 @ConditionalOnClass({OpenAPI.class})
