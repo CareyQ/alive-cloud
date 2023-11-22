@@ -48,4 +48,11 @@ public interface MenuService extends IService<Menu> {
      * @return 菜单 ID
      */
     Long saveMenu(MenuVO menuVo);
+
+    /**
+     * 删除菜单
+     *
+     * @param id 菜单 ID
+     */
+    void delMenu(Long id);
 }

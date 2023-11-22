@@ -6,27 +6,38 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 字典类型
+ * 字典数据
  *
  * @author CareyQ
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("system_dict_type")
-public class DictType extends BaseEntity {
+@TableName("system_dict_data")
+public class DictData extends BaseEntity {
 
     /**
-     * 字典名称
+     * 字典标签
      */
-    private String name;
+    private String label;
+
+    /**
+     * 字典键值
+     */
+    private String value;
 
     /**
      * 字典类型
      */
-    private String type;
+    private String dictType;
+
+    /**
+     * 备注
+     */
+    private String remark;
 
     /**
      * 状态
      */
     private Integer status;
+
 }

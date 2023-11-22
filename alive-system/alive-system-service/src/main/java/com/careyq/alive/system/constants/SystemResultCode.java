@@ -17,5 +17,18 @@ public interface SystemResultCode {
     ResultCode MENU_NAME_DUPLICATE = new ResultCode(1_20001, "该菜单名称已存在");
     ResultCode MENU_PARENT_NOT_EXISTS = new ResultCode(1_20002, "父菜单不存在");
     ResultCode MENU_NOT_EXISTS = new ResultCode(1_20003, "该菜单不存在");
+    ResultCode MENU_EXISTS_CHILDREN = new ResultCode(1_20004, "还存在子菜单，无法删除");
 
+    // DICT
+    ResultCode DICT_TYPE_NAME_DUPLICATE = new ResultCode(1_30001, "已存在相同名称的字典类型");
+    ResultCode DICT_TYPE_TYPE_DUPLICATE = new ResultCode(1_30001, "已存在相同类型的字典类型");
+    ResultCode DICT_TYPE_NOT_EXISTS = new ResultCode(1_30003, "字典类型不存在");
+    ResultCode DICT_TYPE_EXISTS_CHILDREN = new ResultCode(1_30004, "该字典类型还存在字典数据，无法删除");
+    ResultCode DICT_DATA_NOT_EXISTS = new ResultCode(1_30005, "该字典数据不存在");
+    ResultCode DICT_DATA_LABEL_DUPLICATE = new ResultCode(1_30006, "已存在相同名称的字典数据");
+
+    // DEPT
+    ResultCode DEPT_NOT_EXISTS = new ResultCode(1_40001, "部门不存在");
+    ResultCode DEPT_PARENT_NOT_EXISTS = new ResultCode(1_40002, "父级部门不存在");
+    ResultCode DEPT_PARENT_ERROR = new ResultCode(1_40003, "父级部门不可选择自己");
 }

@@ -116,4 +116,15 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
             throw new CustomException(MENU_NAME_DUPLICATE);
         }
     }
+
+    @Override
+    public void delMenu(Long id) {
+        boolean existsChild = this.lambdaQuery()
+                .eq(Menu::getParentId, id)
+                .exists();
+        if (existsChild) {
+            throw new CustomException(MENU_EXISTS_CHILDREN);
+        }
+        this.removeById(id);
+    }
 }

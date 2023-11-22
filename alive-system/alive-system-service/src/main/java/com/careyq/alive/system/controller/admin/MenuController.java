@@ -49,4 +49,11 @@ public class MenuController {
     public R<Long> getMenuDetail(@Validated @RequestBody MenuVO menu) {
         return R.ok(menuService.saveMenu(menu));
     }
+
+    @DeleteMapping("/del")
+    @Operation(summary = "删除菜单")
+    public R<Boolean> delMenu(@RequestParam Long id) {
+        menuService.delMenu(id);
+        return R.ok(true);
+    }
 }
