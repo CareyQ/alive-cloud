@@ -84,8 +84,18 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void changeDefault(Long id, Boolean isDefault) {
         this.checkRoleExists(id);
+        if (Boolean.TRUE.equals(isDefault)) {
+            // 将其他默认角色进行移除
+            this.lambdaUpdate().set(Role::getIsDefault, false).eq(Role::getIsDefault, true).update();
+        } else {
+            // 必须保留一个默认角色
+            if (!this.lambdaQuery().eq(Role::getIsDefault, true).ne(Role::getId, id).exists()) {
+                throw new CustomException(ROLE_DEFAULT_NOT_EXISTS);
+            }
+        }
         this.lambdaUpdate().set(Role::getIsDefault, isDefault).eq(Role::getId, id).update();
     }
 
