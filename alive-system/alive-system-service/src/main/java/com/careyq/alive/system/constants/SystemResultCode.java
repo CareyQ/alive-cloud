@@ -40,4 +40,9 @@ public interface SystemResultCode {
     ResultCode POST_NOT_EXISTS = new ResultCode(1_50001, "岗位不存在");
     ResultCode POST_NAME_DUPLICATE = new ResultCode(1_50002, "已存在相同名称的岗位");
     ResultCode POST_HAS_USER = new ResultCode(1_50003, "还有人员绑定该岗位，无法删除");
+
+    // POST
+    ResultCode ROLE_NOT_EXISTS = new ResultCode(1_50001, "角色不存在");
+    ResultCode ROLE_NAME_DUPLICATE = new ResultCode(1_50002, "已存在相同名称的角色");
+
 }

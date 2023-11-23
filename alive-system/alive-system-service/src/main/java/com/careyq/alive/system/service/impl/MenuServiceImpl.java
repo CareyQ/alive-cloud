@@ -13,8 +13,10 @@ import com.careyq.alive.core.exception.CustomException;
 import com.careyq.alive.system.entity.Menu;
 import com.careyq.alive.system.enums.MenuTypeEnum;
 import com.careyq.alive.system.mapper.MenuMapper;
+import com.careyq.alive.system.mapper.RoleMenuMapper;
 import com.careyq.alive.system.service.MenuService;
 import com.careyq.alive.system.vo.MenuVO;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +31,10 @@ import static com.careyq.alive.system.constants.SystemResultCode.*;
  * @author CareyQ
  */
 @Service
+@AllArgsConstructor
 public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements MenuService {
+
+    private final RoleMenuMapper roleMenuMapper;
 
     @Override
     public List<Tree<Long>> getMenuTree(Set<Long> roleIds, boolean isRouter) {
@@ -126,5 +131,6 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
             throw new CustomException(MENU_EXISTS_CHILDREN);
         }
         this.removeById(id);
+        roleMenuMapper.delByMenu(id);
     }
 }

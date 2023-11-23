@@ -106,3 +106,40 @@ create table if not exists system_dict_data
     updater     bigint       null     default null comment '更新者',
     update_time datetime     not null default current_timestamp on update current_timestamp comment '更新时间'
 ) comment '字典数据';
+
+create table if not exists system_role
+(
+    id          bigint       not null auto_increment primary key comment '主键',
+    name        varchar(20)  not null default '' comment '角色名称',
+    remark      varchar(500) not null default '' comment '字典类型',
+    is_default  tinyint      not null default 0 comment '是否是默认',
+    is_del      tinyint      not null default 0 comment '是否删除',
+    creator     bigint       null     default null comment '创建者',
+    create_time datetime     not null default current_timestamp comment '创建时间',
+    updater     bigint       null     default null comment '更新者',
+    update_time datetime     not null default current_timestamp on update current_timestamp comment '更新时间'
+) comment '角色信息';
+
+create table if not exists system_role_menu
+(
+    id          bigint   not null auto_increment primary key comment '主键',
+    role_id     bigint   not null comment '角色 ID',
+    menu_id     bigint   not null comment '菜单 ID',
+    is_del      tinyint  not null default 0 comment '是否删除',
+    creator     bigint   null     default null comment '创建者',
+    create_time datetime not null default current_timestamp comment '创建时间',
+    updater     bigint   null     default null comment '更新者',
+    update_time datetime not null default current_timestamp on update current_timestamp comment '更新时间'
+) comment '角色菜单关联';
+
+create table if not exists system_role_user
+(
+    id          bigint   not null auto_increment primary key comment '主键',
+    role_id     bigint   not null comment '角色 ID',
+    user_id     bigint   not null comment '用户 ID',
+    is_del      tinyint  not null default 0 comment '是否删除',
+    creator     bigint   null     default null comment '创建者',
+    create_time datetime not null default current_timestamp comment '创建时间',
+    updater     bigint   null     default null comment '更新者',
+    update_time datetime not null default current_timestamp on update current_timestamp comment '更新时间'
+) comment '角色用户关联';
