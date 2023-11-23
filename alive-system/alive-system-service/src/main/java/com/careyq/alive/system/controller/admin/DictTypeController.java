@@ -43,7 +43,6 @@ public class DictTypeController {
         return R.ok(dictTypeService.getDictTypeDetail(id));
     }
 
-
     @DeleteMapping("/del")
     @Operation(summary = "删除字典类型")
     public R<Boolean> delDictType(@RequestParam Long id) {

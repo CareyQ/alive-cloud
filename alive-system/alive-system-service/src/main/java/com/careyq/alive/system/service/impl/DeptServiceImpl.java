@@ -3,13 +3,19 @@ package com.careyq.alive.system.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.lang.tree.TreeUtil;
+import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.careyq.alive.core.enums.CommonStatusEnum;
 import com.careyq.alive.core.exception.CustomException;
 import com.careyq.alive.core.util.TreeUtils;
 import com.careyq.alive.system.dto.DeptDTO;
+import com.careyq.alive.system.dto.DeptSearchDTO;
 import com.careyq.alive.system.entity.Dept;
+import com.careyq.alive.system.entity.User;
 import com.careyq.alive.system.mapper.DeptMapper;
+import com.careyq.alive.system.mapper.UserMapper;
 import com.careyq.alive.system.service.DeptService;
 import com.careyq.alive.system.vo.DeptVO;
 import lombok.AllArgsConstructor;
@@ -17,6 +23,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.careyq.alive.system.constants.SystemResultCode.*;
 
@@ -28,6 +37,8 @@ import static com.careyq.alive.system.constants.SystemResultCode.*;
 @Service
 @AllArgsConstructor
 public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements DeptService {
+
+    private final UserMapper userMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -42,18 +53,55 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements De
     }
 
     @Override
-    public List<Tree<Long>> getDeptList() {
-        return null;
+    public List<Tree<Long>> getDeptList(DeptSearchDTO dto) {
+        List<Dept> deptList = this.lambdaQuery()
+                .like(StrUtil.isNotBlank(dto.getName()), Dept::getName, dto.getName())
+                .eq(dto.getStatus() != null, Dept::getStatus, dto.getStatus())
+                .orderByAsc(Dept::getSort)
+                .list();
+        Set<Long> managerIds = deptList.stream().map(Dept::getManagerId).collect(Collectors.toSet());
+        Map<Long, String> userMap = MapUtil.newHashMap();
+        if (!managerIds.isEmpty()) {
+            userMap = userMapper.selectList(new LambdaQueryWrapper<User>()
+                            .in(User::getId, managerIds)).stream()
+                    .collect(Collectors.toMap(User::getId, User::getNickname));
+        }
+        final Map<Long, String> finalUserMap = userMap;
+        return TreeUtil.build(deptList, Dept.ROOT_ID, (node, tree) -> {
+            tree.setId(node.getId())
+                    .setParentId(node.getParentId())
+                    .setName(node.getName());
+            tree.put("sort", node.getSort());
+            tree.put("managerName", finalUserMap.get(node.getManagerId()));
+            tree.put("mobile", node.getMobile());
+            tree.put("remark", node.getRemark());
+            tree.put("status", node.getStatus());
+        });
     }
 
     @Override
     public DeptVO getDeptDetail(Long id) {
-        return null;
+        Dept dept = this.checkDeptExists(id);
+        DeptVO res = BeanUtil.copyProperties(dept, DeptVO.class);
+        if (dept.getManagerId() != null) {
+            User user = userMapper.selectById(dept.getManagerId());
+            res.setManagerName(user.getNickname());
+        }
+        return res;
     }
 
     @Override
     public void delDept(Long id) {
-
+        this.checkDeptExists(id);
+        // 是否存在子部门
+        if (this.lambdaQuery().eq(Dept::getParentId, id).exists()) {
+            throw new CustomException(DEPT_EXISTS_CHILDREN);
+        }
+        // 部门下是否还有人员
+        if (userMapper.exists(new LambdaQueryWrapper<User>().eq(User::getDeptId, id))) {
+            throw new CustomException(DEPT_HAS_USER);
+        }
+        this.removeById(id);
     }
 
     @Override
@@ -107,4 +155,5 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements De
         }
         return dept;
     }
+
 }

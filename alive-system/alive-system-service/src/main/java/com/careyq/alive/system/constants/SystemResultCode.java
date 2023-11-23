@@ -32,4 +32,6 @@ public interface SystemResultCode {
     ResultCode DEPT_PARENT_NOT_EXISTS = new ResultCode(1_40002, "父级部门不存在");
     ResultCode DEPT_PARENT_ERROR = new ResultCode(1_40003, "父级部门不可选择自己");
     ResultCode DEPT_PARENT_IS_CHILD = new ResultCode(1_40003, "不能设置自己的子部门为父部门");
+    ResultCode DEPT_EXISTS_CHILDREN = new ResultCode(1_20004, "还存在子部门，无法删除");
+    ResultCode DEPT_HAS_USER = new ResultCode(1_20004, "部门下还存在人员，无法删除");
 }

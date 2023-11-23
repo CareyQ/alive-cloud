@@ -3,6 +3,7 @@ package com.careyq.alive.system.service;
 import cn.hutool.core.lang.tree.Tree;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.careyq.alive.system.dto.DeptDTO;
+import com.careyq.alive.system.dto.DeptSearchDTO;
 import com.careyq.alive.system.entity.Dept;
 import com.careyq.alive.system.vo.DeptVO;
 
@@ -26,9 +27,10 @@ public interface DeptService extends IService<Dept> {
     /**
      * 获取部门列表
      *
+     * @param dto 部门筛选项
      * @return 部门列表
      */
-    List<Tree<Long>> getDeptList();
+    List<Tree<Long>> getDeptList(DeptSearchDTO dto);
 
     /**
      * 获取部门详情
