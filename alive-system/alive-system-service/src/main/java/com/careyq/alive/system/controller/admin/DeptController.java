@@ -33,7 +33,7 @@ public class DeptController {
         return R.ok(deptService.saveDept(dto));
     }
 
-    @PostMapping("/page")
+    @PostMapping("/list")
     @Operation(summary = "获取部门列表")
     public R<List<Tree<Long>>> getDeptList(@Validated @RequestBody DeptSearchDTO dto) {
         return R.ok(deptService.getDeptList(dto));

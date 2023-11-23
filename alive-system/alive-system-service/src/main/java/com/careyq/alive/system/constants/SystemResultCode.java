@@ -29,9 +29,15 @@ public interface SystemResultCode {
 
     // DEPT
     ResultCode DEPT_NOT_EXISTS = new ResultCode(1_40001, "部门不存在");
-    ResultCode DEPT_PARENT_NOT_EXISTS = new ResultCode(1_40002, "父级部门不存在");
-    ResultCode DEPT_PARENT_ERROR = new ResultCode(1_40003, "父级部门不可选择自己");
-    ResultCode DEPT_PARENT_IS_CHILD = new ResultCode(1_40003, "不能设置自己的子部门为父部门");
-    ResultCode DEPT_EXISTS_CHILDREN = new ResultCode(1_20004, "还存在子部门，无法删除");
-    ResultCode DEPT_HAS_USER = new ResultCode(1_20004, "部门下还存在人员，无法删除");
+    ResultCode DEPT_NAME_DUPLICATE = new ResultCode(1_40002, "已存在相同名称的部门");
+    ResultCode DEPT_PARENT_NOT_EXISTS = new ResultCode(1_40003, "父级部门不存在");
+    ResultCode DEPT_PARENT_ERROR = new ResultCode(1_40004, "父级部门不可选择自己");
+    ResultCode DEPT_PARENT_IS_CHILD = new ResultCode(1_40005, "不能设置自己的子部门为父部门");
+    ResultCode DEPT_EXISTS_CHILDREN = new ResultCode(1_40006, "还存在子部门，无法删除");
+    ResultCode DEPT_HAS_USER = new ResultCode(1_40007, "部门下还存在人员，无法删除");
+
+    // POST
+    ResultCode POST_NOT_EXISTS = new ResultCode(1_50001, "岗位不存在");
+    ResultCode POST_NAME_DUPLICATE = new ResultCode(1_50002, "已存在相同名称的岗位");
+    ResultCode POST_HAS_USER = new ResultCode(1_50003, "还有人员绑定该岗位，无法删除");
 }

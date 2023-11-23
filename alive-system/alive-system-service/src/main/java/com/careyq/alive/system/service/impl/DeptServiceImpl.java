@@ -43,6 +43,14 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements De
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long saveDept(DeptDTO dto) {
+        // 检查部门名称是否已存在
+        boolean exists = this.lambdaQuery()
+                .ne(dto.getId() != null, Dept::getId, dto.getId())
+                .eq(Dept::getName, dto.getName())
+                .exists();
+        if (exists) {
+            throw new CustomException(DEPT_NAME_DUPLICATE);
+        }
         if (dto.getId() != null) {
             this.checkDeptExists(dto.getId());
         }

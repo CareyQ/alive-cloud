@@ -1,18 +1,21 @@
 package com.careyq.alive.system.dto;
 
+import com.careyq.alive.core.domain.PageDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
- * 部门筛选 DTO
+ * 岗位分页 DTO
  *
  * @author CareyQ
  */
 @Data
 @Accessors(chain = true)
-@Schema(description = "管理后台 - 部门筛选 DTO")
-public class DeptSearchDTO {
+@EqualsAndHashCode(callSuper = true)
+@Schema(description = "管理后台 - 岗位分页 DTO")
+public class PostPageDTO extends PageDTO {
 
     @Schema(description = "名称")
     private String name;

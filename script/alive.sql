@@ -48,7 +48,6 @@ create table if not exists system_post
 (
     id          bigint       not null auto_increment primary key comment '主键',
     name        varchar(20)  not null comment '岗位名称',
-    sort        int          not null default 0 comment '排序',
     remark      varchar(500) null     default null comment '备注',
     status      tinyint      not null default 1 comment '状态，0停用 1正常',
     is_del      tinyint      not null default 0 comment '是否删除',
