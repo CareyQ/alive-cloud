@@ -1,6 +1,5 @@
 package com.careyq.alive.system.controller.admin;
 
-import com.careyq.alive.core.domain.EntryVO;
 import com.careyq.alive.core.domain.R;
 import com.careyq.alive.system.service.DictTypeService;
 import com.careyq.alive.system.vo.DictTypeVO;
@@ -33,7 +32,7 @@ public class DictTypeController {
 
     @GetMapping("/list")
     @Operation(summary = "获取字典类型列表")
-    public R<List<EntryVO>> getDictTypeList() {
+    public R<List<DictTypeVO>> getDictTypeList() {
         return R.ok(dictTypeService.getDictTypeList());
     }
 

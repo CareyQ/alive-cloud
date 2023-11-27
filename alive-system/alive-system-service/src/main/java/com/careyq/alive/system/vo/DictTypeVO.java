@@ -2,6 +2,7 @@ package com.careyq.alive.system.vo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.Length;
@@ -12,6 +13,7 @@ import org.hibernate.validator.constraints.Length;
  * @author CareyQ
  */
 @Data
+@Builder
 @Accessors(chain = true)
 @Schema(description = "管理后台 - 字典类型 VO")
 public class DictTypeVO {

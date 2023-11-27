@@ -1,7 +1,6 @@
 package com.careyq.alive.system.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.careyq.alive.core.domain.EntryVO;
 import com.careyq.alive.system.entity.DictType;
 import com.careyq.alive.system.vo.DictTypeVO;
 
@@ -27,7 +26,7 @@ public interface DictTypeService extends IService<DictType> {
      *
      * @return 字典类型列表
      */
-    List<EntryVO> getDictTypeList();
+    List<DictTypeVO> getDictTypeList();
 
     /**
      * 获取字典类型详情

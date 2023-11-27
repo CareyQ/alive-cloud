@@ -3,7 +3,6 @@ package com.careyq.alive.system.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.careyq.alive.core.domain.EntryVO;
 import com.careyq.alive.core.exception.CustomException;
 import com.careyq.alive.system.entity.DictData;
 import com.careyq.alive.system.entity.DictType;
@@ -55,9 +54,16 @@ public class DictTypeServiceImpl extends ServiceImpl<DictTypeMapper, DictType> i
     }
 
     @Override
-    public List<EntryVO> getDictTypeList() {
-        return this.list().stream()
-                .map(dictType -> new EntryVO(dictType.getId(), dictType.getName()))
+    public List<DictTypeVO> getDictTypeList() {
+        return this.lambdaQuery()
+                .orderByDesc(DictType::getStatus)
+                .list().stream()
+                .map(dictType -> DictTypeVO.builder()
+                        .id(dictType.getId())
+                        .name(dictType.getName())
+                        .type(dictType.getType())
+                        .status(dictType.getStatus())
+                        .build())
                 .toList();
     }
 
