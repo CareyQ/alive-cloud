@@ -88,8 +88,7 @@ create table if not exists system_dict_type
     creator     bigint       null     default null comment '创建者',
     create_time datetime     not null default current_timestamp comment '创建时间',
     updater     bigint       null     default null comment '更新者',
-    update_time datetime     not null default current_timestamp on update current_timestamp comment '更新时间',
-    unique index idx_type (type) using btree
+    update_time datetime     not null default current_timestamp on update current_timestamp comment '更新时间'
 ) comment '字典类型';
 
 create table if not exists system_dict_data
