@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.Length;
 
+import java.time.LocalDateTime;
+
 /**
  * 角色 VO
  *
@@ -33,5 +35,8 @@ public class RoleVO {
 
     @Schema(description = "是否是默认")
     private Boolean isDefault;
+
+    @Schema(description = "创建时间")
+    private LocalDateTime createTime;
 
 }
