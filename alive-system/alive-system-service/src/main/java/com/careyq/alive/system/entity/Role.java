@@ -16,7 +16,7 @@ import lombok.EqualsAndHashCode;
 public class Role extends BaseEntity {
 
     /**
-     * 部门名称
+     * 角色名称
      */
     private String name;
 
