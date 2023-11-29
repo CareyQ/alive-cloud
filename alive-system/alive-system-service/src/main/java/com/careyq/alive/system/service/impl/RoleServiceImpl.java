@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.careyq.alive.core.domain.EntryVO;
 import com.careyq.alive.core.exception.CustomException;
+import com.careyq.alive.system.dto.RoleDTO;
 import com.careyq.alive.system.dto.RolePageDTO;
 import com.careyq.alive.system.entity.Role;
 import com.careyq.alive.system.mapper.RoleMapper;
@@ -36,19 +37,19 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Long saveRole(RoleVO req) {
+    public Long saveRole(RoleDTO dto) {
         // 检查角色名称是否已存在
         boolean exists = this.lambdaQuery()
-                .ne(req.getId() != null, Role::getId, req.getId())
-                .eq(Role::getName, req.getName())
+                .ne(dto.getId() != null, Role::getId, dto.getId())
+                .eq(Role::getName, dto.getName())
                 .exists();
         if (exists) {
             throw new CustomException(ROLE_NAME_DUPLICATE);
         }
-        if (req.getId() != null) {
-            this.checkRoleExists(req.getId());
+        if (dto.getId() != null) {
+            this.checkRoleExists(dto.getId());
         }
-        Role role = BeanUtil.copyProperties(req, Role.class);
+        Role role = BeanUtil.copyProperties(dto, Role.class);
         this.saveOrUpdate(role);
         return role.getId();
     }
@@ -59,13 +60,13 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
                 .like(StrUtil.isNotBlank(dto.getName()), Role::getName, dto.getName())
                 .orderByDesc(Role::getId)
                 .page(new Page<>(dto.getCurrent(), dto.getSize()));
-        return page.convert(e -> RoleVO.of(e.getId(), e.getName(), e.getRemark(), e.getIsDefault(), e.getCreateTime()));
+        return page.convert(e -> new RoleVO(e.getId(), e.getName(), e.getRemark(), e.getIsDefault(), e.getCreateTime()));
     }
 
     @Override
     public RoleVO getRoleDetail(Long id) {
         Role role = this.checkRoleExists(id);
-        return RoleVO.of(role.getId(), role.getName(), role.getRemark(), role.getIsDefault(), role.getCreateTime());
+        return new RoleVO(role.getId(), role.getName(), role.getRemark(), role.getIsDefault(), role.getCreateTime());
     }
 
     @Override

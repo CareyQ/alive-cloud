@@ -56,4 +56,10 @@ public class MenuController {
         menuService.delMenu(id);
         return R.ok(true);
     }
+
+    @GetMapping("/simple-tree")
+    @Operation(summary = "获取简单菜单树，只包含启用")
+    public R<List<Tree<Long>>> getMenuSimpleTree() {
+        return R.ok(menuService.getMenuSimpleTree());
+    }
 }

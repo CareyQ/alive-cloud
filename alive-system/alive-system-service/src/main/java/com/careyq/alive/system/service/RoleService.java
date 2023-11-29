@@ -3,6 +3,7 @@ package com.careyq.alive.system.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.careyq.alive.core.domain.EntryVO;
+import com.careyq.alive.system.dto.RoleDTO;
 import com.careyq.alive.system.dto.RolePageDTO;
 import com.careyq.alive.system.entity.Role;
 import com.careyq.alive.system.vo.RoleVO;
@@ -19,10 +20,10 @@ public interface RoleService extends IService<Role> {
     /**
      * 保存角色
      *
-     * @param req 角色
+     * @param dto 角色
      * @return 角色 ID
      */
-    Long saveRole(RoleVO req);
+    Long saveRole(RoleDTO dto);
 
     /**
      * 获取角色分页

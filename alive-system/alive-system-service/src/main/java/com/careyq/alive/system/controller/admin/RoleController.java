@@ -3,6 +3,7 @@ package com.careyq.alive.system.controller.admin;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.careyq.alive.core.domain.EntryVO;
 import com.careyq.alive.core.domain.R;
+import com.careyq.alive.system.dto.RoleDTO;
 import com.careyq.alive.system.dto.RolePageDTO;
 import com.careyq.alive.system.service.RoleService;
 import com.careyq.alive.system.vo.RoleVO;
@@ -29,8 +30,8 @@ public class RoleController {
 
     @PostMapping("/save")
     @Operation(summary = "保存角色")
-    public R<Long> saveRole(@Validated @RequestBody RoleVO req) {
-        return R.ok(roleService.saveRole(req));
+    public R<Long> saveRole(@Validated @RequestBody RoleDTO dto) {
+        return R.ok(roleService.saveRole(dto));
     }
 
     @PostMapping("/page")

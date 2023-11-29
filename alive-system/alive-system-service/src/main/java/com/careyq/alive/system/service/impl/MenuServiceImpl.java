@@ -133,4 +133,17 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
         this.removeById(id);
         roleMenuMapper.delByMenu(id);
     }
+
+    @Override
+    public List<Tree<Long>> getMenuSimpleTree() {
+        List<Menu> menus = this.lambdaQuery()
+                .eq(Menu::getStatus, CommonStatusEnum.ENABLE.getStatus())
+                .orderByAsc(Menu::getSort)
+                .list();
+        return TreeUtil.build(menus, Menu.ROOT_ID, (node, tree) -> {
+            tree.setId(node.getId())
+                    .setParentId(node.getParentId())
+                    .setName(node.getName());
+        });
+    }
 }

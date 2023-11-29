@@ -55,4 +55,11 @@ public interface MenuService extends IService<Menu> {
      * @param id 菜单 ID
      */
     void delMenu(Long id);
+
+    /**
+     * 获取菜单简单树，只有启用
+     *
+     * @return 菜单树
+     */
+    List<Tree<Long>> getMenuSimpleTree();
 }
