@@ -39,7 +39,8 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     @Override
     public List<Tree<Long>> getMenuTree(Set<Long> roleIds, boolean isRouter) {
         LambdaQueryChainWrapper<Menu> wrapper = this.lambdaQuery()
-                .ne(isRouter, Menu::getType, MenuTypeEnum.BUTTON.getType());
+                .ne(isRouter, Menu::getType, MenuTypeEnum.BUTTON.getType())
+                .orderByAsc(Menu::getSort);
         if (CollUtil.isNotEmpty(roleIds)) {
             // todo
         }
