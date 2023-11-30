@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.Length;
 
+import java.time.LocalDateTime;
+
 /**
  * 岗位 VO
  *
@@ -33,4 +35,7 @@ public class PostVO {
 
     @Schema(description = "状态")
     private Integer status;
+
+    @Schema(description = "创建时间")
+    private LocalDateTime createTime;
 }

@@ -61,13 +61,13 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
                 .eq(dto.getStatus() != null, Post::getStatus, dto.getStatus())
                 .orderByDesc(Post::getId)
                 .page(new Page<>(dto.getCurrent(), dto.getSize()));
-        return page.convert(e -> PostVO.of(e.getId(), e.getName(), e.getRemark(), e.getStatus()));
+        return page.convert(e -> PostVO.of(e.getId(), e.getName(), e.getRemark(), e.getStatus(), e.getCreateTime()));
     }
 
     @Override
     public PostVO getPostDetail(Long id) {
         Post post = this.checkPostExists(id);
-        return PostVO.of(post.getId(), post.getName(), post.getRemark(), post.getStatus());
+        return PostVO.of(post.getId(), post.getName(), post.getRemark(), post.getStatus(), post.getCreateTime());
     }
 
     @Override
