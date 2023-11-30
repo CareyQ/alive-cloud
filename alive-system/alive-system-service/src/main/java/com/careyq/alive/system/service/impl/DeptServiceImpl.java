@@ -91,6 +91,9 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements De
     public DeptVO getDeptDetail(Long id) {
         Dept dept = this.checkDeptExists(id);
         DeptVO res = BeanUtil.copyProperties(dept, DeptVO.class);
+        if (res.getParentId() == 0) {
+            res.setParentId(null);
+        }
         if (dept.getManagerId() != null) {
             User user = userMapper.selectById(dept.getManagerId());
             res.setManagerName(user.getNickname());
