@@ -7,7 +7,6 @@ import cn.hutool.core.lang.tree.TreeUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.careyq.alive.core.domain.EntryVO;
 import com.careyq.alive.core.enums.CommonStatusEnum;
 import com.careyq.alive.core.exception.CustomException;
 import com.careyq.alive.system.entity.Menu;
@@ -63,7 +62,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
             tree.setId(node.getId())
                     .setParentId(node.getParentId())
                     .setName(node.getName());
-            tree.putExtra("path", StrUtil.prependIfMissing(node.getPath(), StrUtil.SLASH));
+            tree.putExtra("path", node.getPath());
             tree.putExtra("permission", node.getPermission());
             tree.putExtra("sort", node.getSort());
             tree.putExtra("type", node.getType());
@@ -73,18 +72,11 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     }
 
     @Override
-    public List<EntryVO> getListByType(Integer type) {
-        return this.lambdaQuery()
-                .eq(Menu::getType, type)
-                .eq(Menu::getStatus, CommonStatusEnum.ENABLE.getStatus())
-                .list().stream()
-                .map(menu -> new EntryVO(menu.getId(), menu.getName()))
-                .toList();
-    }
-
-    @Override
     public MenuVO getMenuDetail(Long id) {
         Menu menu = this.getById(id);
+        if (menu.getParentId() == 0) {
+            menu.setParentId(null);
+        }
         return BeanUtil.copyProperties(menu, MenuVO.class);
     }
 
@@ -93,6 +85,16 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     public Long saveMenu(MenuVO menuVo) {
         this.validMenu(menuVo);
         Menu menu = BeanUtil.copyProperties(menuVo, Menu.class);
+        // 目录路由地址开头携带斜杠 "/"，菜单地址不携带
+        if (MenuTypeEnum.DIR.getType().equals(menu.getType()) && !menu.getPath().startsWith("http")) {
+            if (!menu.getPath().startsWith(StrUtil.SLASH)) {
+                menu.setPath(StrUtil.SLASH + menu.getPath());
+            }
+        } else if (MenuTypeEnum.MENU.getType().equals(menu.getType())) {
+            if (menu.getPath().startsWith(StrUtil.SLASH)) {
+                menu.setPath(menu.getPath().replaceFirst(StrUtil.SLASH, StrUtil.EMPTY));
+            }
+        }
         this.saveOrUpdate(menu);
         return menu.getId();
     }
@@ -105,6 +107,9 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     private void validMenu(MenuVO menu) {
         if (menu.getId() != null && this.getById(menu.getId()) == null) {
             throw new CustomException(MENU_NOT_EXISTS);
+        }
+        if (menu.getParentId() != null && menu.getParentId().equals(menu.getId())) {
+            throw new CustomException(MENU_PARENT_SELF);
         }
         // 不是目录校验父级菜单
         if (!MenuTypeEnum.DIR.getType().equals(menu.getType())) {

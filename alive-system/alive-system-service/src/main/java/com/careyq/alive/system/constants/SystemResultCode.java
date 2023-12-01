@@ -18,6 +18,7 @@ public interface SystemResultCode {
     ResultCode MENU_PARENT_NOT_EXISTS = new ResultCode(1_20002, "父菜单不存在");
     ResultCode MENU_NOT_EXISTS = new ResultCode(1_20003, "该菜单不存在");
     ResultCode MENU_EXISTS_CHILDREN = new ResultCode(1_20004, "还存在子菜单，无法删除");
+    ResultCode MENU_PARENT_SELF = new ResultCode(1_20004, "不可以指定自身为父级菜单");
 
     // DICT
     ResultCode DICT_TYPE_NAME_DUPLICATE = new ResultCode(1_30001, "已存在相同名称的字典类型");

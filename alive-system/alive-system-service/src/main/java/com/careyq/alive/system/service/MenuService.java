@@ -2,7 +2,6 @@ package com.careyq.alive.system.service;
 
 import cn.hutool.core.lang.tree.Tree;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.careyq.alive.core.domain.EntryVO;
 import com.careyq.alive.system.entity.Menu;
 import com.careyq.alive.system.vo.MenuVO;
 
@@ -24,14 +23,6 @@ public interface MenuService extends IService<Menu> {
      * @return 菜单树
      */
     List<Tree<Long>> getMenuTree(Set<Long> roleIds, boolean isRouter);
-
-    /**
-     * 获取指定类型的菜单列表
-     *
-     * @param type 类型
-     * @return 菜单列表
-     */
-    List<EntryVO> getListByType(Integer type);
 
     /**
      * 获取菜单详情

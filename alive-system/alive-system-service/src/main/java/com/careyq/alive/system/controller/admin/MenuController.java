@@ -1,7 +1,6 @@
 package com.careyq.alive.system.controller.admin;
 
 import cn.hutool.core.lang.tree.Tree;
-import com.careyq.alive.core.domain.EntryVO;
 import com.careyq.alive.core.domain.R;
 import com.careyq.alive.system.service.MenuService;
 import com.careyq.alive.system.vo.MenuVO;
@@ -30,12 +29,6 @@ public class MenuController {
     @Operation(summary = "获取菜单树")
     public R<List<Tree<Long>>> getMenuTree() {
         return R.ok(menuService.getMenuTree(null, false));
-    }
-
-    @GetMapping("/simple-list")
-    @Operation(summary = "获取指定类型的简单菜单列表")
-    public R<List<EntryVO>> getMenuTree(@RequestParam Integer type) {
-        return R.ok(menuService.getListByType(type));
     }
 
     @GetMapping("/detail")
