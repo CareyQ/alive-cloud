@@ -2,12 +2,15 @@ package com.careyq.alive.system.service;
 
 import cn.hutool.core.lang.tree.Tree;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.careyq.alive.core.util.CollUtils;
 import com.careyq.alive.system.dto.DeptDTO;
 import com.careyq.alive.system.dto.DeptSearchDTO;
 import com.careyq.alive.system.entity.Dept;
 import com.careyq.alive.system.vo.DeptVO;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 部门服务
@@ -53,4 +56,23 @@ public interface DeptService extends IService<Dept> {
      * @return 部门列表
      */
     List<Tree<Long>> getDeptSimpleList();
+
+    /**
+     * 根据 ID 获取部门列表
+     *
+     * @param ids 部门 ID
+     * @return 列表
+     */
+    List<Dept> getDeptList(Collection<Long> ids);
+
+    /**
+     * 根据 ID 获取部门 map
+     *
+     * @param ids 部门 ID
+     * @return 部门 map
+     */
+    default Map<Long, Dept> getDeptMap(Collection<Long> ids) {
+        List<Dept> deptList = this.getDeptList(ids);
+        return CollUtils.convertMap(deptList, Dept::getId);
+    }
 }

@@ -38,6 +38,9 @@ public class DictDataVO {
     @Schema(description = "字典类型")
     private String dictType;
 
+    @Schema(description = "颜色类型")
+    private String colorType;
+
     @Schema(description = "备注")
     private String remark;
 

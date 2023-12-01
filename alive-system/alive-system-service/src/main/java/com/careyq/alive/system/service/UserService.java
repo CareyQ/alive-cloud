@@ -1,7 +1,11 @@
 package com.careyq.alive.system.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.careyq.alive.system.dto.UserDTO;
+import com.careyq.alive.system.dto.UserPageDTO;
 import com.careyq.alive.system.entity.User;
+import com.careyq.alive.system.vo.UserPageVO;
 
 /**
  * 系统用户服务
@@ -14,9 +18,28 @@ public interface UserService extends IService<User> {
      * 手机号是否已存在
      *
      * @param mobile 手机号
+     * @param id     用户 ID
      * @return 是否已存在
      */
-    boolean mobileIsExist(String mobile);
+    boolean mobileIsExist(String mobile, Long id);
+
+    /**
+     * 用户名是否已存在
+     *
+     * @param username 用户名
+     * @param id       用户 ID
+     * @return 是否已存在
+     */
+    boolean usernameIsExist(String username, Long id);
+
+    /**
+     * 邮箱是否已存在
+     *
+     * @param email 邮箱
+     * @param id    用户 ID
+     * @return 是否已存在
+     */
+    boolean emailIsExist(String email, Long id);
 
     /**
      * 根据用户名获取
@@ -42,4 +65,44 @@ public interface UserService extends IService<User> {
      * @return 结果
      */
     boolean isPasswordMatch(String password, String encodedPassword);
+
+    /**
+     * 保存用户
+     *
+     * @param dto 用户信息
+     * @return 用户 ID
+     */
+    Long saveUser(UserDTO dto);
+
+    /**
+     * 获取用户分页
+     *
+     * @param dto 分页请求筛选项
+     * @return 用户分页
+     */
+    IPage<UserPageVO> getUserPage(UserPageDTO dto);
+
+    /**
+     * 改变用户状态
+     *
+     * @param id     用户 ID
+     * @param status 状态
+     */
+    void changeStatus(Long id, Integer status);
+
+    /**
+     * 获取用户信息
+     *
+     * @param id 用户 ID
+     * @return 用户
+     */
+    UserDTO getUserDetail(Long id);
+
+    /**
+     * 重置密码
+     *
+     * @param id       用户 ID
+     * @param password 新密码
+     */
+    void resetPassword(Long id, String password);
 }

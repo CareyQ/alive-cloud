@@ -70,7 +70,7 @@ public class DictDataServiceImpl extends ServiceImpl<DictDataMapper, DictData> i
         if (page.getRecords().isEmpty()) {
             return new Page<>();
         }
-        return page.convert(e -> DictDataVO.of(e.getId(), e.getLabel(), e.getValue(), e.getDictType(), e.getRemark(), e.getStatus()));
+        return page.convert(e -> DictDataVO.of(e.getId(), e.getLabel(), e.getValue(), e.getDictType(), e.getColorType(), e.getRemark(), e.getStatus()));
     }
 
     @Override
@@ -107,7 +107,7 @@ public class DictDataServiceImpl extends ServiceImpl<DictDataMapper, DictData> i
         return this.lambdaQuery()
                 .eq(DictData::getStatus, CommonStatusEnum.ENABLE.getStatus())
                 .list().stream()
-                .map(e -> DictDataVO.of(e.getId(), e.getLabel(), e.getValue(), e.getDictType(), e.getRemark(), e.getStatus()))
+                .map(e -> DictDataVO.of(e.getId(), e.getLabel(), e.getValue(), e.getDictType(), e.getColorType(), e.getRemark(), e.getStatus()))
                 .collect(Collectors.groupingBy(DictDataVO::getDictType));
     }
 }

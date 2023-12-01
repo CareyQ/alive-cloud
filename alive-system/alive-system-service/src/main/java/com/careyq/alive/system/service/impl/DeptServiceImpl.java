@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.careyq.alive.core.enums.CommonStatusEnum;
 import com.careyq.alive.core.exception.CustomException;
+import com.careyq.alive.core.util.CollUtils;
 import com.careyq.alive.core.util.TreeUtils;
 import com.careyq.alive.system.dto.DeptDTO;
 import com.careyq.alive.system.dto.DeptSearchDTO;
@@ -22,9 +23,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.careyq.alive.system.constants.SystemResultCode.*;
@@ -167,4 +166,11 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements De
         return dept;
     }
 
+    @Override
+    public List<Dept> getDeptList(Collection<Long> ids) {
+        if (CollUtils.isEmpty(ids)) {
+            return new ArrayList<>();
+        }
+        return this.listByIds(ids);
+    }
 }

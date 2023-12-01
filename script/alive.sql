@@ -97,6 +97,7 @@ create table if not exists system_dict_data
     label       varchar(50)  not null default '' comment '字典标签',
     value       varchar(50)  not null default '' comment '字典键值',
     dict_type   varchar(100) not null default '' comment '字典类型',
+    color_type  varchar(20)  not null default '' comment '颜色类型',
     remark      varchar(500) not null default '' comment '字典类型',
     status      tinyint      not null default 1 comment '状态',
     is_del      tinyint      not null default 0 comment '是否删除',

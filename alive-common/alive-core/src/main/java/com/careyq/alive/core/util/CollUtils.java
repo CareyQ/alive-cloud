@@ -1,6 +1,7 @@
 package com.careyq.alive.core.util;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.map.MapUtil;
 
 import java.util.*;
 import java.util.function.Function;
@@ -39,5 +40,19 @@ public class CollUtils extends CollUtil {
             return new ArrayList<>();
         }
         return coll.stream().map(func).filter(Objects::nonNull).collect(Collectors.toList());
+    }
+
+    /**
+     * 获取列表为 MAP
+     *
+     * @param coll 列表
+     * @param func 获取字段
+     * @return List
+     */
+    public static <T, K> Map<K, T> convertMap(Collection<T> coll, Function<T, K> func) {
+        if (isEmpty(coll)) {
+            return MapUtil.newHashMap();
+        }
+        return coll.stream().collect(Collectors.toMap(func, Function.identity(), (k1, k2) -> k1));
     }
 }

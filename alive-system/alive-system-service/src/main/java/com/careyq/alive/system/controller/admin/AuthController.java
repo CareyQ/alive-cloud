@@ -32,7 +32,7 @@ public class AuthController {
     @GetMapping("/check-mobile")
     @Operation(summary = "检查手机号是否已存在")
     public R<Boolean> checkMobile(@RequestParam String mobile) {
-        return R.ok(userService.mobileIsExist(mobile));
+        return R.ok(userService.mobileIsExist(mobile, null));
     }
 
     @PostMapping("/login")

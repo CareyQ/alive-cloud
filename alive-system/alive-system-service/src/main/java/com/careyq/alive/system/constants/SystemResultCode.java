@@ -46,4 +46,11 @@ public interface SystemResultCode {
     ResultCode ROLE_NAME_DUPLICATE = new ResultCode(1_50002, "已存在相同名称的角色");
     ResultCode ROLE_DEFAULT_NOT_EXISTS = new ResultCode(1_50003, "必须存在一个默认角色");
 
+    // USER
+    ResultCode USER_NAME_DUPLICATE = new ResultCode(1_60001, "该用户名已存在");
+    ResultCode USER_MOBILE_DUPLICATE = new ResultCode(1_60002, "该手机号已存在");
+    ResultCode USER_EMAIL_DUPLICATE = new ResultCode(1_60003, "该邮箱已存在");
+    ResultCode USER_NOT_EXISTS = new ResultCode(1_60004, "用户不存在");
+    ResultCode USER_STATUS_ALREADY = new ResultCode(1_60005, "用户已经是改状态，请勿重复操作");
+
 }

@@ -1,39 +1,29 @@
-package com.careyq.alive.system.dto;
+package com.careyq.alive.system.vo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.experimental.Accessors;
-import org.hibernate.validator.constraints.Length;
 
 import java.util.Set;
 
 /**
- * 用户信息 DTO
+ * 用户信息 VO
  *
  * @author CareyQ
  */
 @Data
 @Accessors(chain = true)
-@Schema(description = "管理后台 - 用户信息 DTO")
-public class UserDTO {
+@Schema(description = "管理后台 - 用户信息 VO")
+public class UserVO {
 
     @Schema(description = "主键")
     private Long id;
 
-    @Length(max = 20, message = "用户名长度不能超过{max}位")
-    @NotBlank(message = "用户名不能为空")
     @Schema(description = "用户名")
     private String username;
 
-    @Length(max = 20, message = "用户昵称长度不能超过{max}位")
-    @NotBlank(message = "用户昵称不能为空")
     @Schema(description = "用户昵称")
     private String nickname;
-
-    @NotBlank(message = "密码不能为空")
-    @Schema(description = "密码")
-    private String password;
 
     @Schema(description = "备注")
     private String remark;

@@ -31,6 +31,11 @@ public class DictData extends BaseEntity {
     private String dictType;
 
     /**
+     * 颜色类型
+     */
+    private String colorType;
+
+    /**
      * 备注
      */
     private String remark;
