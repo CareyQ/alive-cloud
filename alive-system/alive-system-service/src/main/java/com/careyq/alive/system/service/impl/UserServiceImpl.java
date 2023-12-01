@@ -122,6 +122,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @param dto 用户信息
      */
     private void validUser(UserDTO dto) {
+        if (dto.getId() == null && StrUtil.isBlank(dto.getPassword())) {
+            throw new CustomException(USER_PASSWORD_NOT_EMPTY);
+        }
         if (this.usernameIsExist(dto.getUsername(), dto.getId())) {
             throw new CustomException(USER_NAME_DUPLICATE);
         }
@@ -180,6 +183,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public UserDTO getUserDetail(Long id) {
         User user = this.checkUserExists(id);
+        user.setPassword(null);
         return BeanUtil.copyProperties(user, UserDTO.class);
     }
 

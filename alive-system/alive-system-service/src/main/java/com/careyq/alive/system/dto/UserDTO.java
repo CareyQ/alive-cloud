@@ -31,7 +31,6 @@ public class UserDTO {
     @Schema(description = "用户昵称")
     private String nickname;
 
-    @NotBlank(message = "密码不能为空")
     @Schema(description = "密码")
     private String password;
 

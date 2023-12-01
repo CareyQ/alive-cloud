@@ -27,7 +27,7 @@ public class UserController {
 
     @PostMapping("/save")
     @Operation(summary = "保存用户")
-    public R<Long> saveUser(@Validated @RequestParam UserDTO dto) {
+    public R<Long> saveUser(@Validated @RequestBody UserDTO dto) {
         return R.ok(userService.saveUser(dto));
     }
 
@@ -37,7 +37,7 @@ public class UserController {
         return R.ok(userService.getUserPage(dto));
     }
 
-    @PutMapping("/detail")
+    @GetMapping("/detail")
     @Operation(summary = "获取用户详情")
     public R<UserDTO> getUserDetail(@RequestParam Long id) {
         return R.ok(userService.getUserDetail(id));

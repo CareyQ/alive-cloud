@@ -52,5 +52,6 @@ public interface SystemResultCode {
     ResultCode USER_EMAIL_DUPLICATE = new ResultCode(1_60003, "该邮箱已存在");
     ResultCode USER_NOT_EXISTS = new ResultCode(1_60004, "用户不存在");
     ResultCode USER_STATUS_ALREADY = new ResultCode(1_60005, "用户已经是改状态，请勿重复操作");
+    ResultCode USER_PASSWORD_NOT_EMPTY = new ResultCode(1_60006, "密码不能为空");
 
 }
