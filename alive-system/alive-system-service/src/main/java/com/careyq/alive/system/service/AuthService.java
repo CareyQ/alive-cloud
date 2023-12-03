@@ -27,4 +27,9 @@ public interface AuthService {
      * @return 登录结果
      */
     LoginVO login(LoginDTO dto);
+
+    /**
+     * 退出登录
+     */
+    void logout();
 }

@@ -41,9 +41,16 @@ public class AuthController {
         return R.ok(authService.login(dto));
     }
 
+    @PostMapping("/logout")
+    @Operation(summary = "退出登录")
+    public R<Boolean> logout() {
+        authService.logout();
+        return R.ok(true);
+    }
+
     @GetMapping("/router")
     @Operation(summary = "获取用户菜单路由")
     public R<List<Tree<Long>>> getUserMenus() {
-        return R.ok(menuService.getMenuTree(null, true));
+        return R.ok(menuService.getMenuTree(true));
     }
 }

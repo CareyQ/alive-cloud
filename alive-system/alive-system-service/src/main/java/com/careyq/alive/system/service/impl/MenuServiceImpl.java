@@ -1,14 +1,13 @@
 package com.careyq.alive.system.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.lang.tree.TreeUtil;
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.careyq.alive.core.enums.CommonStatusEnum;
 import com.careyq.alive.core.exception.CustomException;
+import com.careyq.alive.satoken.AuthHelper;
 import com.careyq.alive.system.entity.Menu;
 import com.careyq.alive.system.enums.MenuTypeEnum;
 import com.careyq.alive.system.mapper.MenuMapper;
@@ -20,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Set;
 
 import static com.careyq.alive.system.constants.SystemResultCode.*;
 
@@ -36,37 +34,30 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     private final RoleMenuMapper roleMenuMapper;
 
     @Override
-    public List<Tree<Long>> getMenuTree(Set<Long> roleIds, boolean isRouter) {
-        LambdaQueryChainWrapper<Menu> wrapper = this.lambdaQuery()
-                .ne(isRouter, Menu::getType, MenuTypeEnum.BUTTON.getType())
-                .orderByAsc(Menu::getSort);
-        if (CollUtil.isNotEmpty(roleIds)) {
-            // todo
-        }
-        List<Menu> menus = wrapper.list();
-
+    public List<Tree<Long>> getMenuTree(boolean isRouter) {
         if (isRouter) {
-            return TreeUtil.build(menus, Menu.ROOT_ID, (node, tree) -> {
-                tree.setId(node.getId())
-                        .setParentId(node.getParentId())
-                        .setName(node.getName());
-                tree.putExtra("path", node.getPath());
-                tree.putExtra("component", node.getComponent());
-                tree.putExtra("componentName", node.getComponentName());
-                tree.putExtra("icon", node.getIcon());
-                tree.putExtra("keepAlive", node.getKeepAlive());
-            });
+            Long userId = AuthHelper.getUserId();
         }
+        List<Menu> menus = this.lambdaQuery()
+                .ne(isRouter, Menu::getType, MenuTypeEnum.BUTTON.getType())
+                .orderByAsc(Menu::getSort)
+                .list();
 
         return TreeUtil.build(menus, Menu.ROOT_ID, (node, tree) -> {
             tree.setId(node.getId())
                     .setParentId(node.getParentId())
                     .setName(node.getName());
+            if (isRouter) {
+                tree.putExtra("component", node.getComponent());
+                tree.putExtra("componentName", node.getComponentName());
+                tree.putExtra("icon", node.getIcon());
+            } else {
+                tree.putExtra("permission", node.getPermission());
+                tree.putExtra("sort", node.getSort());
+                tree.putExtra("type", node.getType());
+                tree.putExtra("status", node.getStatus());
+            }
             tree.putExtra("path", node.getPath());
-            tree.putExtra("permission", node.getPermission());
-            tree.putExtra("sort", node.getSort());
-            tree.putExtra("type", node.getType());
-            tree.putExtra("status", node.getStatus());
             tree.putExtra("keepAlive", node.getKeepAlive());
         });
     }

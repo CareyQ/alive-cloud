@@ -2,6 +2,7 @@ package com.careyq.alive.core.util;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.util.StrUtil;
 
 import java.util.*;
 import java.util.function.Function;
@@ -39,7 +40,7 @@ public class CollUtils extends CollUtil {
         if (isEmpty(coll)) {
             return new ArrayList<>();
         }
-        return coll.stream().map(func).filter(Objects::nonNull).collect(Collectors.toList());
+        return coll.stream().map(func).filter(e -> Objects.nonNull(e) && StrUtil.isEmptyIfStr(e)).collect(Collectors.toList());
     }
 
     /**

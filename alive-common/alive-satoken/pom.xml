@@ -21,6 +21,11 @@
             <groupId>cn.dev33</groupId>
             <artifactId>sa-token-redis-jackson</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.careyq</groupId>
+            <artifactId>alive-core</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

@@ -33,11 +33,6 @@
             <artifactId>alive-web</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.careyq</groupId>
-            <artifactId>alive-satoken</artifactId>
-        </dependency>
-
         <!-- Spring Cloud 基础 -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>

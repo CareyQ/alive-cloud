@@ -21,6 +21,11 @@ public class Role extends BaseEntity {
     private String name;
 
     /**
+     * 角色标识
+     */
+    private String code;
+
+    /**
      * 备注
      */
     private String remark;

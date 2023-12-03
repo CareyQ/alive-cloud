@@ -3,8 +3,12 @@ package com.careyq.alive.system.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.toolkit.Db;
 import com.careyq.alive.core.util.CollUtils;
+import com.careyq.alive.system.entity.Menu;
+import com.careyq.alive.system.entity.Role;
 import com.careyq.alive.system.entity.RoleMenu;
 import com.careyq.alive.system.entity.RoleUser;
+import com.careyq.alive.system.mapper.MenuMapper;
+import com.careyq.alive.system.mapper.RoleMapper;
 import com.careyq.alive.system.mapper.RoleMenuMapper;
 import com.careyq.alive.system.mapper.RoleUserMapper;
 import com.careyq.alive.system.service.PermissionService;
@@ -12,6 +16,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -25,6 +30,8 @@ public class PermissionServiceImpl implements PermissionService {
 
     private final RoleMenuMapper roleMenuMapper;
     private final RoleUserMapper roleUserMapper;
+    private final RoleMapper roleMapper;
+    private final MenuMapper menuMapper;
 
     @Override
     public void assignRoleMenu(Long roleId, Set<Long> menuIds) {
@@ -50,7 +57,7 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public Set<Long> getMenuIdsByRole(Long roleId) {
-        return CollUtils.convertSet(roleMenuMapper.getByRole(roleId), RoleMenu::getMenuId);
+        return CollUtils.convertSet(roleMenuMapper.getByRole(List.of(roleId)), RoleMenu::getMenuId);
     }
 
     @Override
@@ -78,5 +85,20 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     public Set<Long> getRoleIdsByUser(Long userId) {
         return CollUtils.convertSet(roleUserMapper.getByUser(userId), RoleUser::getRoleId);
+    }
+
+    @Override
+    public List<String> getUserRole(Long userId) {
+        List<RoleUser> roleUser = roleUserMapper.getRoleByUser(userId);
+        List<Role> roles = roleMapper.getByIds(CollUtils.convertList(roleUser, RoleUser::getRoleId));
+        return CollUtils.convertList(roles, Role::getCode);
+    }
+
+    @Override
+    public List<String> getUserPermission(Long userId) {
+        List<RoleUser> roleUser = roleUserMapper.getRoleByUser(userId);
+        List<RoleMenu> roleMenus = roleMenuMapper.getByRole(CollUtils.convertList(roleUser, RoleUser::getRoleId));
+        List<Menu> menus = menuMapper.getByIds(CollUtils.convertList(roleMenus, RoleMenu::getMenuId));
+        return CollUtils.convertList(menus, Menu::getPermission);
     }
 }

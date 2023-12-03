@@ -52,6 +52,11 @@
             <groupId>com.careyq</groupId>
             <artifactId>alive-core</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.careyq</groupId>
+            <artifactId>alive-satoken</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

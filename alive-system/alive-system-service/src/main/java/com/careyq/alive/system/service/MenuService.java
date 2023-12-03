@@ -6,7 +6,6 @@ import com.careyq.alive.system.entity.Menu;
 import com.careyq.alive.system.vo.MenuVO;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * 菜单权限服务
@@ -18,11 +17,10 @@ public interface MenuService extends IService<Menu> {
     /**
      * 根据角色 ID 获取菜单树
      *
-     * @param roleIds  角色 ID，非必填，不传获取所有
      * @param isRouter 是否是路由
      * @return 菜单树
      */
-    List<Tree<Long>> getMenuTree(Set<Long> roleIds, boolean isRouter);
+    List<Tree<Long>> getMenuTree(boolean isRouter);
 
     /**
      * 获取菜单详情

@@ -1,5 +1,6 @@
 package com.careyq.alive.system.service;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -40,4 +41,20 @@ public interface PermissionService {
      * @return 角色 ID
      */
     Set<Long> getRoleIdsByUser(Long userId);
+
+    /**
+     * 获取用户绑定的角色
+     *
+     * @param userId 用户 ID
+     * @return 角色 code 列表
+     */
+    List<String> getUserRole(Long userId);
+
+    /**
+     * 获取用户拥有的权限
+     *
+     * @param userId 用户 ID
+     * @return 权限标识列表
+     */
+    List<String> getUserPermission(Long userId);
 }

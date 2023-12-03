@@ -22,4 +22,8 @@ public interface RoleUserMapper extends BaseMapper<RoleUser> {
     default List<RoleUser> getByUser(Long userId) {
         return this.selectList(new LambdaQueryWrapper<RoleUser>().eq(RoleUser::getUserId, userId));
     }
+
+    default List<RoleUser> getRoleByUser(Long userId) {
+        return this.selectList(new LambdaQueryWrapper<RoleUser>().eq(RoleUser::getUserId, userId));
+    }
 }

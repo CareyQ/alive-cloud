@@ -1,7 +1,11 @@
 package com.careyq.alive.web.handler;
 
+import cn.dev33.satoken.exception.NotLoginException;
+import cn.dev33.satoken.exception.NotPermissionException;
 import com.careyq.alive.core.domain.R;
 import com.careyq.alive.core.exception.CustomException;
+import com.careyq.alive.satoken.AuthHelper;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
@@ -92,6 +96,24 @@ public class GlobalExceptionHandler {
     public R<?> httpRequestMethodNotSupportedExceptionHandler(HttpRequestMethodNotSupportedException ex) {
         log.error("[httpRequestMethodNotSupportedExceptionHandler]", ex);
         return R.fail(METHOD_NOT_ALLOWED.code(), String.format("请求方法不正确: %s", ex.getMessage()));
+    }
+
+    /**
+     * sa-token 认证异常拦截
+     */
+    @ExceptionHandler(NotLoginException.class)
+    public R<?> notLoginExceptionHandler(NotLoginException ex) {
+        log.error("[notLoginExceptionHandler], msg:{}", ex.getMessage());
+        return R.fail(UNAUTHORIZED);
+    }
+
+    /**
+     * sa-token 权限异常拦截
+     */
+    @ExceptionHandler(NotPermissionException.class)
+    public R<?> notPermissionExceptionHandler(HttpServletRequest req, NotPermissionException ex) {
+        log.error("[notPermissionExceptionHandler][userId({}) url({})]", AuthHelper.getUserId(), req.getRequestURL(), ex);
+        return R.fail(FORBIDDEN);
     }
 
     /**

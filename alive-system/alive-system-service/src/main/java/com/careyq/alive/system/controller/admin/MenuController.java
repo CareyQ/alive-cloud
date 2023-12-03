@@ -28,7 +28,7 @@ public class MenuController {
     @GetMapping("/tree")
     @Operation(summary = "获取菜单树")
     public R<List<Tree<Long>>> getMenuTree() {
-        return R.ok(menuService.getMenuTree(null, false));
+        return R.ok(menuService.getMenuTree(false));
     }
 
     @GetMapping("/detail")
