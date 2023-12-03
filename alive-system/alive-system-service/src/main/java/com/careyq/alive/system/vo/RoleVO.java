@@ -27,8 +27,8 @@ public class RoleVO extends RoleDTO {
     @Schema(description = "创建时间")
     private LocalDateTime createTime;
 
-    public RoleVO(Long id, String name, String remark, Boolean isDefault, LocalDateTime createTime) {
-        super(id, name, remark);
+    public RoleVO(Long id, String name, String code, String remark, Boolean isDefault, LocalDateTime createTime) {
+        super(id, name, code, remark);
         this.isDefault = isDefault;
         this.createTime = createTime;
     }

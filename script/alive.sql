@@ -111,6 +111,7 @@ create table if not exists system_role
 (
     id          bigint       not null auto_increment primary key comment '主键',
     name        varchar(20)  not null default '' comment '角色名称',
+    code        varchar(50)  not null default '' comment '角色标识',
     remark      varchar(500) not null default '' comment '字典类型',
     is_default  tinyint      not null default 0 comment '是否是默认',
     is_del      tinyint      not null default 0 comment '是否删除',

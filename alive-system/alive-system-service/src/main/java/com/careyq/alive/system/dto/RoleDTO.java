@@ -28,6 +28,11 @@ public class RoleDTO {
     @Schema(description = "角色名称")
     private String name;
 
+    @Length(max = 50, message = "角色标识长度不能超过{max}位")
+    @NotBlank(message = "角色标识不能为空")
+    @Schema(description = "角色标识")
+    private String code;
+
     @Schema(description = "备注")
     private String remark;
 

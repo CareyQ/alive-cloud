@@ -60,13 +60,13 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
                 .like(StrUtil.isNotBlank(dto.getName()), Role::getName, dto.getName())
                 .orderByDesc(Role::getId)
                 .page(new Page<>(dto.getCurrent(), dto.getSize()));
-        return page.convert(e -> new RoleVO(e.getId(), e.getName(), e.getRemark(), e.getIsDefault(), e.getCreateTime()));
+        return page.convert(e -> new RoleVO(e.getId(), e.getName(), e.getCode(), e.getRemark(), e.getIsDefault(), e.getCreateTime()));
     }
 
     @Override
     public RoleVO getRoleDetail(Long id) {
         Role role = this.checkRoleExists(id);
-        return new RoleVO(role.getId(), role.getName(), role.getRemark(), role.getIsDefault(), role.getCreateTime());
+        return new RoleVO(role.getId(), role.getName(), role.getCode(), role.getRemark(), role.getIsDefault(), role.getCreateTime());
     }
 
     @Override
