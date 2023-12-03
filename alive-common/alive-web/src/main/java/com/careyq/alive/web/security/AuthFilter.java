@@ -17,10 +17,10 @@ public class AuthFilter implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new SaInterceptor(handler -> {
-                    SaRouter.match("/**")
-                            .notMatch("/auth/login")
-                            .check(StpUtil::checkLogin);
-                })).addPathPatterns("/**");
+        registry.addInterceptor(new SaInterceptor(handler ->
+                        SaRouter.match("/**")
+                                .notMatch("/auth/login")
+                                .check(StpUtil::checkLogin)))
+                .addPathPatterns("/**");
     }
 }
