@@ -105,4 +105,12 @@ public interface UserService extends IService<User> {
      * @param password 新密码
      */
     void resetPassword(Long id, String password);
+
+    /**
+     * 更新最后登录时间
+     *
+     * @param id 用户 ID
+     * @param ip 登录 IP
+     */
+    void updateLoginTime(Long id, String ip);
 }

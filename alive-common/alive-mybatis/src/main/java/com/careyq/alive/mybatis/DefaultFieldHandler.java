@@ -2,6 +2,7 @@ package com.careyq.alive.mybatis;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.careyq.alive.core.domain.BaseEntity;
+import com.careyq.alive.satoken.AuthHelper;
 import org.apache.ibatis.reflection.MetaObject;
 
 import java.time.LocalDateTime;
@@ -24,6 +25,14 @@ public class DefaultFieldHandler implements MetaObjectHandler {
             if (Objects.isNull(entity.getUpdateTime())) {
                 entity.setUpdateTime(now);
             }
+
+            Long userId = AuthHelper.getUserId();
+            if (Objects.nonNull(userId) && Objects.isNull(entity.getCreator())) {
+                entity.setCreator(userId);
+            }
+            if (Objects.nonNull(userId) && Objects.isNull(entity.getCreator())) {
+                entity.setCreator(userId);
+            }
         }
     }
 
@@ -32,6 +41,12 @@ public class DefaultFieldHandler implements MetaObjectHandler {
         Object modifyTime = getFieldValByName("updateTime", metaObject);
         if (Objects.isNull(modifyTime)) {
             setFieldValByName("updateTime", LocalDateTime.now(), metaObject);
+        }
+
+        Object modifier = getFieldValByName("updater", metaObject);
+        Long userId = AuthHelper.getUserId();
+        if (Objects.nonNull(userId) && Objects.isNull(modifier)) {
+            setFieldValByName("updater", userId, metaObject);
         }
     }
 }

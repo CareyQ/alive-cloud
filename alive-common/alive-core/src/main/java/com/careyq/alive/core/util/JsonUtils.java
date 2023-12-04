@@ -1,11 +1,15 @@
 package com.careyq.alive.core.util;
 
+import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+
+import java.io.IOException;
 
 /**
  * JSON 工具类
@@ -34,5 +38,17 @@ public class JsonUtils {
     @SneakyThrows
     public static byte[] toJsonByte(Object object) {
         return objectMapper.writeValueAsBytes(object);
+    }
+
+    public static JsonNode parseObject(String text) {
+        if (StrUtil.isEmpty(text)) {
+            return null;
+        }
+        try {
+            return objectMapper.readTree(text);
+        } catch (IOException e) {
+            log.error("json parse err,json:{}", text, e);
+            throw new RuntimeException(e);
+        }
     }
 }

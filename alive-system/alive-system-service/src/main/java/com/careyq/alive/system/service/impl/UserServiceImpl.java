@@ -23,6 +23,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Set;
 
@@ -192,6 +193,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         this.checkUserExists(id);
         this.lambdaUpdate()
                 .set(User::getPassword, this.encodePassword(password))
+                .eq(User::getId, id)
+                .update();
+    }
+
+    @Override
+    public void updateLoginTime(Long id, String ip) {
+        this.lambdaUpdate()
+                .set(User::getLoginTime, LocalDateTime.now())
+                .set(User::getLoginIp, ip)
                 .eq(User::getId, id)
                 .update();
     }

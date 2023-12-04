@@ -144,3 +144,22 @@ create table if not exists system_role_user
     updater     bigint   null     default null comment '更新者',
     update_time datetime not null default current_timestamp on update current_timestamp comment '更新时间'
 ) comment '角色用户关联';
+
+
+create table if not exists system_login_log
+(
+    id          bigint       not null auto_increment primary key comment '主键',
+    type        int          not null comment '日志类型',
+    trace_id    varchar(64)  not null default '' comment '链路追踪编号',
+    user_id     bigint       not null default 0 comment '用户 ID',
+    username    varchar(20)  not null default '' comment '用户名',
+    result      int          not null comment '登录结果',
+    ip          varchar(50)  not null default '' comment '登录 IP',
+    ip_info     varchar(100) not null default '' comment '登录 IP 信息',
+    device      varchar(100) not null default '' comment '设备信息',
+    is_del      tinyint      not null default 0 comment '是否删除',
+    creator     bigint       null     default null comment '创建者',
+    create_time datetime     not null default current_timestamp comment '创建时间',
+    updater     bigint       null     default null comment '更新者',
+    update_time datetime     not null default current_timestamp on update current_timestamp comment '更新时间'
+) comment '登录日志';
