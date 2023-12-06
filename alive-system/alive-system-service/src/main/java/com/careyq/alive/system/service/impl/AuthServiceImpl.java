@@ -8,6 +8,7 @@ import com.careyq.alive.core.exception.CustomException;
 import com.careyq.alive.core.util.ServletUtils;
 import com.careyq.alive.satoken.AuthHelper;
 import com.careyq.alive.satoken.core.domain.LoginUser;
+import com.careyq.alive.system.convert.UserConvert;
 import com.careyq.alive.system.dto.LoginDTO;
 import com.careyq.alive.system.entity.LoginLog;
 import com.careyq.alive.system.entity.User;
@@ -77,14 +78,7 @@ public class AuthServiceImpl implements AuthService {
         List<String> userRole = permissionService.getUserRole(user.getId());
         // 权限
         List<String> userPermission = permissionService.getUserPermission(user.getId());
-        LoginUser loginUser = new LoginUser();
-        loginUser.setUserId(user.getId())
-                .setDeptId(user.getDeptId())
-                .setPermission(userPermission)
-                .setRole(userRole)
-                .setUsername(user.getUsername())
-                .setNickname(user.getNickname());
-        return loginUser;
+        return UserConvert.INSTANCE.convertToLoginUser(user, userRole, userPermission);
     }
 
     @Override

@@ -1,8 +1,8 @@
 package com.careyq.alive.system.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.careyq.alive.core.domain.EntryVO;
+import com.careyq.alive.mybatis.core.service.IServiceX;
 import com.careyq.alive.system.dto.RoleDTO;
 import com.careyq.alive.system.dto.RolePageDTO;
 import com.careyq.alive.system.entity.Role;
@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @author CareyQ
  */
-public interface RoleService extends IService<Role> {
+public interface RoleService extends IServiceX<Role> {
 
     /**
      * 保存角色

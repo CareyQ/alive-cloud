@@ -1,7 +1,7 @@
 package com.careyq.alive.system.service;
 
 import cn.hutool.core.lang.tree.Tree;
-import com.baomidou.mybatisplus.extension.service.IService;
+import com.careyq.alive.mybatis.core.service.IServiceX;
 import com.careyq.alive.system.entity.Menu;
 import com.careyq.alive.system.vo.MenuVO;
 
@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author CareyQ
  */
-public interface MenuService extends IService<Menu> {
+public interface MenuService extends IServiceX<Menu> {
 
     /**
      * 根据角色 ID 获取菜单树

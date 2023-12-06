@@ -1,14 +1,14 @@
 package com.careyq.alive.system.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.careyq.alive.core.domain.EntryVO;
 import com.careyq.alive.core.enums.CommonStatusEnum;
 import com.careyq.alive.core.exception.CustomException;
+import com.careyq.alive.mybatis.core.service.impl.ServiceImplX;
+import com.careyq.alive.system.convert.PostConvert;
 import com.careyq.alive.system.dto.PostPageDTO;
 import com.careyq.alive.system.entity.Post;
 import com.careyq.alive.system.entity.User;
@@ -31,7 +31,7 @@ import static com.careyq.alive.system.constants.SystemResultCode.*;
  */
 @Service
 @AllArgsConstructor
-public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements PostService {
+public class PostServiceImpl extends ServiceImplX<PostMapper, Post> implements PostService {
 
     private final UserMapper userMapper;
 
@@ -39,8 +39,8 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     @Transactional(rollbackFor = Exception.class)
     public Long savePost(PostVO req) {
         // 检查岗位名称是否已存在
-        boolean exists = this.lambdaQuery()
-                .ne(req.getId() != null, Post::getId, req.getId())
+        boolean exists = this.lambdaQueryX()
+                .neIfPresent(Post::getId, req.getId())
                 .eq(Post::getName, req.getName())
                 .exists();
         if (exists) {
@@ -56,18 +56,18 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
 
     @Override
     public IPage<PostVO> getPostPage(PostPageDTO dto) {
-        IPage<Post> page = this.lambdaQuery()
-                .like(StrUtil.isNotBlank(dto.getName()), Post::getName, dto.getName())
-                .eq(dto.getStatus() != null, Post::getStatus, dto.getStatus())
+        IPage<Post> page = this.lambdaQueryX()
+                .likeIfPresent(Post::getName, dto.getName())
+                .eqIfPresent(Post::getStatus, dto.getStatus())
                 .orderByDesc(Post::getId)
                 .page(new Page<>(dto.getCurrent(), dto.getSize()));
-        return page.convert(e -> PostVO.of(e.getId(), e.getName(), e.getRemark(), e.getStatus(), e.getCreateTime()));
+        return page.convert(PostConvert.INSTANCE::convert);
     }
 
     @Override
     public PostVO getPostDetail(Long id) {
         Post post = this.checkPostExists(id);
-        return PostVO.of(post.getId(), post.getName(), post.getRemark(), post.getStatus(), post.getCreateTime());
+        return PostConvert.INSTANCE.convert(post);
     }
 
     @Override

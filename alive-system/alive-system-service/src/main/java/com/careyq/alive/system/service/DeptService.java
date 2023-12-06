@@ -1,8 +1,8 @@
 package com.careyq.alive.system.service;
 
 import cn.hutool.core.lang.tree.Tree;
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.careyq.alive.core.util.CollUtils;
+import com.careyq.alive.mybatis.core.service.IServiceX;
 import com.careyq.alive.system.dto.DeptDTO;
 import com.careyq.alive.system.dto.DeptSearchDTO;
 import com.careyq.alive.system.entity.Dept;
@@ -17,7 +17,7 @@ import java.util.Map;
  *
  * @author CareyQ
  */
-public interface DeptService extends IService<Dept> {
+public interface DeptService extends IServiceX<Dept> {
 
     /**
      * 保存部门

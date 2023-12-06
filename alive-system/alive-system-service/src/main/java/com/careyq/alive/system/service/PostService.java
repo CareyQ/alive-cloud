@@ -1,8 +1,8 @@
 package com.careyq.alive.system.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.careyq.alive.core.domain.EntryVO;
+import com.careyq.alive.mybatis.core.service.IServiceX;
 import com.careyq.alive.system.dto.PostPageDTO;
 import com.careyq.alive.system.entity.Post;
 import com.careyq.alive.system.vo.PostVO;
@@ -14,7 +14,7 @@ import java.util.List;
  *
  * @author CareyQ
  */
-public interface PostService extends IService<Post> {
+public interface PostService extends IServiceX<Post> {
 
     /**
      * 保存岗位

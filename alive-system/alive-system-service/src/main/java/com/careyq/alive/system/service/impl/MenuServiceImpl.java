@@ -4,10 +4,11 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.lang.tree.TreeUtil;
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.careyq.alive.core.enums.CommonStatusEnum;
 import com.careyq.alive.core.exception.CustomException;
+import com.careyq.alive.mybatis.core.service.impl.ServiceImplX;
 import com.careyq.alive.satoken.AuthHelper;
+import com.careyq.alive.satoken.core.domain.LoginUser;
 import com.careyq.alive.system.entity.Menu;
 import com.careyq.alive.system.enums.MenuTypeEnum;
 import com.careyq.alive.system.mapper.MenuMapper;
@@ -29,16 +30,19 @@ import static com.careyq.alive.system.constants.SystemResultCode.*;
  */
 @Service
 @AllArgsConstructor
-public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements MenuService {
+public class MenuServiceImpl extends ServiceImplX<MenuMapper, Menu> implements MenuService {
 
     private final RoleMenuMapper roleMenuMapper;
 
     @Override
     public List<Tree<Long>> getMenuTree(boolean isRouter) {
+        List<String> permission = null;
         if (isRouter) {
-            Long userId = AuthHelper.getUserId();
+            LoginUser loginUser = AuthHelper.getLoginUser();
+            permission = loginUser.getPermission();
         }
-        List<Menu> menus = this.lambdaQuery()
+        List<Menu> menus = this.lambdaQueryX()
+                .inIfPresent(Menu::getPermission, permission)
                 .ne(isRouter, Menu::getType, MenuTypeEnum.BUTTON.getType())
                 .orderByAsc(Menu::getSort)
                 .list();
@@ -109,9 +113,9 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
             }
         }
         // 校验菜单名称是否已存在，同层级下不可重复
-        boolean exists = this.lambdaQuery()
+        boolean exists = this.lambdaQueryX()
+                .neIfPresent(Menu::getId, menu.getId())
                 .eq(Menu::getName, menu.getName())
-                .ne(menu.getId() != null, Menu::getId, menu.getId())
                 .eq(Menu::getParentId, menu.getParentId())
                 .exists();
         if (exists) {

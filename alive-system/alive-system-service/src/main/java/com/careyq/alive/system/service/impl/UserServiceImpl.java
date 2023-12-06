@@ -6,10 +6,10 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.careyq.alive.core.domain.EntryVO;
 import com.careyq.alive.core.exception.CustomException;
 import com.careyq.alive.core.util.CollUtils;
 import com.careyq.alive.mybatis.core.service.impl.ServiceImplX;
+import com.careyq.alive.system.convert.UserConvert;
 import com.careyq.alive.system.dto.UserDTO;
 import com.careyq.alive.system.dto.UserPageDTO;
 import com.careyq.alive.system.entity.Dept;
@@ -154,17 +154,7 @@ public class UserServiceImpl extends ServiceImplX<UserMapper, User> implements U
         Map<Long, Dept> deptMap = deptService.getDeptMap(deptIds);
         return page.convert(e -> {
             Dept dept = deptMap.getOrDefault(e.getDeptId(), new Dept());
-            UserPageVO vo = new UserPageVO();
-            vo.setId(e.getId())
-                    .setUsername(e.getUsername())
-                    .setNickname(e.getNickname())
-                    .setDept(new EntryVO(dept.getId(), dept.getName()))
-                    .setGender(e.getGender())
-                    .setEmail(e.getEmail())
-                    .setMobile(e.getMobile())
-                    .setStatus(e.getStatus())
-                    .setCreateTime(e.getCreateTime());
-            return vo;
+            return UserConvert.INSTANCE.convertToPageVo(e, dept);
         });
     }
 

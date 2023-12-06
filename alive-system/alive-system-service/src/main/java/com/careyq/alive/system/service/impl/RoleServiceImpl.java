@@ -4,9 +4,10 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.careyq.alive.core.domain.EntryVO;
 import com.careyq.alive.core.exception.CustomException;
+import com.careyq.alive.mybatis.core.service.impl.ServiceImplX;
+import com.careyq.alive.system.convert.RoleConvert;
 import com.careyq.alive.system.dto.RoleDTO;
 import com.careyq.alive.system.dto.RolePageDTO;
 import com.careyq.alive.system.entity.Role;
@@ -30,7 +31,7 @@ import static com.careyq.alive.system.constants.SystemResultCode.*;
  */
 @Service
 @AllArgsConstructor
-public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements RoleService {
+public class RoleServiceImpl extends ServiceImplX<RoleMapper, Role> implements RoleService {
 
     private final RoleUserMapper roleUserMapper;
     private final RoleMenuMapper roleMenuMapper;
@@ -39,8 +40,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     @Transactional(rollbackFor = Exception.class)
     public Long saveRole(RoleDTO dto) {
         // 检查角色名称是否已存在
-        boolean exists = this.lambdaQuery()
-                .ne(dto.getId() != null, Role::getId, dto.getId())
+        boolean exists = this.lambdaQueryX()
+                .neIfPresent(Role::getId, dto.getId())
                 .eq(Role::getName, dto.getName())
                 .exists();
         if (exists) {
@@ -60,13 +61,13 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
                 .like(StrUtil.isNotBlank(dto.getName()), Role::getName, dto.getName())
                 .orderByDesc(Role::getId)
                 .page(new Page<>(dto.getCurrent(), dto.getSize()));
-        return page.convert(e -> new RoleVO(e.getId(), e.getName(), e.getCode(), e.getRemark(), e.getIsDefault(), e.getCreateTime()));
+        return page.convert(RoleConvert.INSTANCE::convert);
     }
 
     @Override
     public RoleVO getRoleDetail(Long id) {
         Role role = this.checkRoleExists(id);
-        return new RoleVO(role.getId(), role.getName(), role.getCode(), role.getRemark(), role.getIsDefault(), role.getCreateTime());
+        return RoleConvert.INSTANCE.convert(role);
     }
 
     @Override

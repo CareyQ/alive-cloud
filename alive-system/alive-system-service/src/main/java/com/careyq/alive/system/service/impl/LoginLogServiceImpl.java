@@ -3,6 +3,7 @@ package com.careyq.alive.system.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.careyq.alive.mybatis.core.service.impl.ServiceImplX;
+import com.careyq.alive.system.convert.LogConvert;
 import com.careyq.alive.system.dto.LoginLogPageDTO;
 import com.careyq.alive.system.entity.LoginLog;
 import com.careyq.alive.system.mapper.LoginLogMapper;
@@ -34,18 +35,8 @@ public class LoginLogServiceImpl extends ServiceImplX<LoginLogMapper, LoginLog> 
                 .likeIfPresent(LoginLog::getUsername, dto.getUsername())
                 .eqIfPresent(LoginLog::getIp, dto.getIp())
                 .dateTimeBetween(LoginLog::getCreateTime, dto.getStartDate(), dto.getEndDate())
-                .orderByDesc(LoginLog::getIp)
+                .orderByDesc(LoginLog::getId)
                 .page(new Page<>(dto.getCurrent(), dto.getSize()));
-        return page.convert(e -> {
-            LoginLogVO vo = new LoginLogVO();
-            vo.setType(e.getType())
-                    .setUsername(e.getUsername())
-                    .setResult(e.getResult())
-                    .setIp(e.getIp())
-                    .setIpInfo(e.getIpInfo())
-                    .setDevice(e.getDevice())
-                    .setLoginTime(e.getCreateTime());
-            return vo;
-        });
+        return page.convert(LogConvert.INSTANCE::convert);
     }
 }

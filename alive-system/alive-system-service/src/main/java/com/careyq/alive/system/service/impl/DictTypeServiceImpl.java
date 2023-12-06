@@ -2,8 +2,9 @@ package com.careyq.alive.system.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.careyq.alive.core.exception.CustomException;
+import com.careyq.alive.mybatis.core.service.impl.ServiceImplX;
+import com.careyq.alive.system.convert.DictConvert;
 import com.careyq.alive.system.entity.DictData;
 import com.careyq.alive.system.entity.DictType;
 import com.careyq.alive.system.mapper.DictDataMapper;
@@ -25,7 +26,7 @@ import static com.careyq.alive.system.constants.SystemResultCode.*;
  */
 @Service
 @AllArgsConstructor
-public class DictTypeServiceImpl extends ServiceImpl<DictTypeMapper, DictType> implements DictTypeService {
+public class DictTypeServiceImpl extends ServiceImplX<DictTypeMapper, DictType> implements DictTypeService {
 
     private final DictDataMapper dictDataMapper;
 
@@ -35,8 +36,8 @@ public class DictTypeServiceImpl extends ServiceImpl<DictTypeMapper, DictType> i
         if (req.getId() != null) {
             this.checkTypeExists(req.getId());
         }
-        List<DictType> dictTypes = this.lambdaQuery()
-                .ne(req.getId() != null, DictType::getId, req.getId())
+        List<DictType> dictTypes = this.lambdaQueryX()
+                .neIfPresent(DictType::getId, req.getId())
                 .and(e -> e.eq(DictType::getName, req.getName()).or().eq(DictType::getType, req.getType()))
                 .list();
         for (DictType dictType : dictTypes) {
@@ -58,19 +59,14 @@ public class DictTypeServiceImpl extends ServiceImpl<DictTypeMapper, DictType> i
         return this.lambdaQuery()
                 .orderByDesc(DictType::getStatus)
                 .list().stream()
-                .map(dictType -> DictTypeVO.builder()
-                        .id(dictType.getId())
-                        .name(dictType.getName())
-                        .type(dictType.getType())
-                        .status(dictType.getStatus())
-                        .build())
+                .map(DictConvert.INSTANCE::convert)
                 .toList();
     }
 
     @Override
     public DictTypeVO getDictTypeDetail(Long id) {
         DictType dictType = this.checkTypeExists(id);
-        return BeanUtil.copyProperties(dictType, DictTypeVO.class);
+        return DictConvert.INSTANCE.convert(dictType);
     }
 
     @Override

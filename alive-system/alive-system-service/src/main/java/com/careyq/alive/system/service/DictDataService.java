@@ -1,7 +1,7 @@
 package com.careyq.alive.system.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.IService;
+import com.careyq.alive.mybatis.core.service.IServiceX;
 import com.careyq.alive.system.dto.DictDataPageDTO;
 import com.careyq.alive.system.entity.DictData;
 import com.careyq.alive.system.vo.DictDataVO;
@@ -14,7 +14,7 @@ import java.util.Map;
  *
  * @author CareyQ
  */
-public interface DictDataService extends IService<DictData> {
+public interface DictDataService extends IServiceX<DictData> {
 
     /**
      * 保存字典数据

@@ -7,6 +7,8 @@ import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjectUtil;
+import com.careyq.alive.core.constants.ResultCodeConstants;
+import com.careyq.alive.core.exception.CustomException;
 import com.careyq.alive.satoken.core.domain.LoginUser;
 
 /**
@@ -46,7 +48,7 @@ public class AuthHelper {
         }
         SaSession session = StpUtil.getSession();
         if (ObjectUtil.isNull(session)) {
-            return null;
+            throw new CustomException(ResultCodeConstants.UNAUTHORIZED);
         }
         loginUser = (LoginUser) session.get(LOGIN_USER);
         SaHolder.getStorage().set(LOGIN_USER, loginUser);

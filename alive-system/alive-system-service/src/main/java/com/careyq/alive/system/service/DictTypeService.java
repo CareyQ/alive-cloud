@@ -1,6 +1,6 @@
 package com.careyq.alive.system.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
+import com.careyq.alive.mybatis.core.service.IServiceX;
 import com.careyq.alive.system.entity.DictType;
 import com.careyq.alive.system.vo.DictTypeVO;
 
@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author CareyQ
  */
-public interface DictTypeService extends IService<DictType> {
+public interface DictTypeService extends IServiceX<DictType> {
 
     /**
      * 保存字典类型

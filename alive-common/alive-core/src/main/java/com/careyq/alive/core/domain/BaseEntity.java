@@ -30,7 +30,7 @@ public abstract class BaseEntity implements Serializable {
     private Long creator;
 
     /**
-     * 创建人
+     * 创建时间
      */
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;

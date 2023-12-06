@@ -4,13 +4,12 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.lang.tree.TreeUtil;
 import cn.hutool.core.map.MapUtil;
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.careyq.alive.core.enums.CommonStatusEnum;
 import com.careyq.alive.core.exception.CustomException;
 import com.careyq.alive.core.util.CollUtils;
 import com.careyq.alive.core.util.TreeUtils;
+import com.careyq.alive.mybatis.core.service.impl.ServiceImplX;
 import com.careyq.alive.system.dto.DeptDTO;
 import com.careyq.alive.system.dto.DeptSearchDTO;
 import com.careyq.alive.system.entity.Dept;
@@ -35,7 +34,7 @@ import static com.careyq.alive.system.constants.SystemResultCode.*;
  */
 @Service
 @AllArgsConstructor
-public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements DeptService {
+public class DeptServiceImpl extends ServiceImplX<DeptMapper, Dept> implements DeptService {
 
     private final UserMapper userMapper;
 
@@ -43,8 +42,8 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements De
     @Transactional(rollbackFor = Exception.class)
     public Long saveDept(DeptDTO dto) {
         // 检查部门名称是否已存在
-        boolean exists = this.lambdaQuery()
-                .ne(dto.getId() != null, Dept::getId, dto.getId())
+        boolean exists = this.lambdaQueryX()
+                .neIfPresent(Dept::getId, dto.getId())
                 .eq(Dept::getName, dto.getName())
                 .exists();
         if (exists) {
@@ -61,9 +60,9 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements De
 
     @Override
     public List<Tree<Long>> getDeptList(DeptSearchDTO dto) {
-        List<Dept> deptList = this.lambdaQuery()
-                .like(StrUtil.isNotBlank(dto.getName()), Dept::getName, dto.getName())
-                .eq(dto.getStatus() != null, Dept::getStatus, dto.getStatus())
+        List<Dept> deptList = this.lambdaQueryX()
+                .likeIfPresent(Dept::getName, dto.getName())
+                .eqIfPresent(Dept::getStatus, dto.getStatus())
                 .orderByAsc(Dept::getSort)
                 .list();
         Set<Long> managerIds = deptList.stream().map(Dept::getManagerId).collect(Collectors.toSet());
