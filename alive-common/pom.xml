@@ -17,6 +17,7 @@
         <module>alive-mybatis</module>
         <module>alive-redis</module>
         <module>alive-satoken</module>
+        <module>alive-operatelog</module>
     </modules>
 
 </project>

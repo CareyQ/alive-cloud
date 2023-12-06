@@ -50,5 +50,10 @@
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.navercorp.pinpoint</groupId>
+            <artifactId>pinpoint-agent-sdk</artifactId>
+        </dependency>
     </dependencies>
 </project>

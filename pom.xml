@@ -42,6 +42,7 @@
         <jsoup.version>1.17.1</jsoup.version>
         <caffeine.version>3.1.8</caffeine.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
+        <pinpoint.version>2.5.3</pinpoint.version>
     </properties>
 
     <dependencyManagement>
@@ -228,11 +229,23 @@
                 <version>${revision}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.careyq</groupId>
+                <artifactId>alive-operatelog</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
             <!-- LoadBalancer 使用该缓存 -->
             <dependency>
                 <groupId>com.github.ben-manes.caffeine</groupId>
                 <artifactId>caffeine</artifactId>
                 <version>${caffeine.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.navercorp.pinpoint</groupId>
+                <artifactId>pinpoint-agent-sdk</artifactId>
+                <version>${pinpoint.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
