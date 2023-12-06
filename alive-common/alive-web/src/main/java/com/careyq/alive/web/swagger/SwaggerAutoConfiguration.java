@@ -22,7 +22,7 @@ import org.springframework.context.annotation.Bean;
 public class SwaggerAutoConfiguration {
 
     @Bean
-    public OpenAPI openAPI(SwaggerProperties properties) {
+    public OpenAPI openApi(SwaggerProperties properties) {
         return new OpenAPI()
                 .info(buildInfo(properties));
     }

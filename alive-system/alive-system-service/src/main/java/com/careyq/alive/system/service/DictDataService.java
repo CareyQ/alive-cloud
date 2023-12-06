@@ -27,6 +27,7 @@ public interface DictDataService extends IServiceX<DictData> {
     /**
      * 获取字典数据分页
      *
+     * @param dto 字典数据筛选项
      * @return 字典数据分页
      */
     IPage<DictDataVO> getDictDataPage(DictDataPageDTO dto);

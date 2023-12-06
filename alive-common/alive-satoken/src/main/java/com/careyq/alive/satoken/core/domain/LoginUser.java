@@ -3,6 +3,7 @@ package com.careyq.alive.satoken.core.domain;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -27,7 +28,7 @@ public class LoginUser {
     /**
      * 登录时间
      */
-    private Long loginTime;
+    private LocalDateTime loginTime;
 
     /**
      * 过期时间

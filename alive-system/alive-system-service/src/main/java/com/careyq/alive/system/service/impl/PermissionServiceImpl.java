@@ -89,14 +89,14 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public List<String> getUserRole(Long userId) {
-        List<RoleUser> roleUser = roleUserMapper.getRoleByUser(userId);
+        List<RoleUser> roleUser = roleUserMapper.getByUser(userId);
         List<Role> roles = roleMapper.getByIds(CollUtils.convertList(roleUser, RoleUser::getRoleId));
         return CollUtils.convertList(roles, Role::getCode);
     }
 
     @Override
     public List<String> getUserPermission(Long userId) {
-        List<RoleUser> roleUser = roleUserMapper.getRoleByUser(userId);
+        List<RoleUser> roleUser = roleUserMapper.getByUser(userId);
         List<RoleMenu> roleMenus = roleMenuMapper.getByRole(CollUtils.convertList(roleUser, RoleUser::getRoleId));
         List<Menu> menus = menuMapper.getByIds(CollUtils.convertList(roleMenus, RoleMenu::getMenuId));
         return CollUtils.convertList(menus, Menu::getPermission);

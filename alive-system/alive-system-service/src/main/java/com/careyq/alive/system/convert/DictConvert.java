@@ -17,8 +17,20 @@ public interface DictConvert {
 
     DictConvert INSTANCE = Mappers.getMapper(DictConvert.class);
 
+    /**
+     * 字典数据转换为 VO
+     *
+     * @param dictData DictData
+     * @return VO
+     */
     DictDataVO convert(DictData dictData);
 
+    /**
+     * 字典类型转换为 VO
+     *
+     * @param dictType DictData
+     * @return VO
+     */
     DictTypeVO convert(DictType dictType);
 
 }

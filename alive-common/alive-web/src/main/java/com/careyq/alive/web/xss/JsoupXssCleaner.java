@@ -46,14 +46,6 @@ public class JsoupXssCleaner {
         relaxedSafelist.addAttributes("a", "target");
         // 支持img 为base64
         relaxedSafelist.addProtocols("img", "src", "data");
-
-        // 保留相对路径, 保留相对路径时，必须提供对应的 baseUri 属性，否则依然会被删除
-        // WHITELIST.preserveRelativeLinks(false);
-
-        // 移除 a 标签和 img 标签的一些协议限制，这会导致 xss 防注入失效，如 <img src=javascript:alert("xss")>
-        // 虽然可以重写 WhiteList#isSafeAttribute 来处理，但是有隐患，所以暂时不支持相对路径
-        // WHITELIST.removeProtocols("a", "href", "ftp", "http", "https", "mailto");
-        // WHITELIST.removeProtocols("img", "src", "http", "https");
         return relaxedSafelist;
     }
 

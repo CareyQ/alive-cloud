@@ -1,7 +1,7 @@
 package com.careyq.alive.system.controller.admin;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.careyq.alive.core.domain.R;
+import com.careyq.alive.core.domain.Result;
 import com.careyq.alive.system.dto.DictDataPageDTO;
 import com.careyq.alive.system.service.DictDataService;
 import com.careyq.alive.system.vo.DictDataVO;
@@ -29,32 +29,32 @@ public class DictDataController {
 
     @PostMapping("/save")
     @Operation(summary = "保存字典数据")
-    public R<Long> saveDictData(@Validated @RequestBody DictDataVO req) {
-        return R.ok(dictDataService.saveDictData(req));
+    public Result<Long> saveDictData(@Validated @RequestBody DictDataVO req) {
+        return Result.ok(dictDataService.saveDictData(req));
     }
 
     @PostMapping("/page")
     @Operation(summary = "获取字典数据分页")
-    public R<IPage<DictDataVO>> getDictDataPage(@Validated @RequestBody DictDataPageDTO dto) {
-        return R.ok(dictDataService.getDictDataPage(dto));
+    public Result<IPage<DictDataVO>> getDictDataPage(@Validated @RequestBody DictDataPageDTO dto) {
+        return Result.ok(dictDataService.getDictDataPage(dto));
     }
 
     @GetMapping("/detail")
     @Operation(summary = "获取字典数据详情")
-    public R<DictDataVO> getDictDataDetail(@RequestParam Long id) {
-        return R.ok(dictDataService.getDictDataDetail(id));
+    public Result<DictDataVO> getDictDataDetail(@RequestParam Long id) {
+        return Result.ok(dictDataService.getDictDataDetail(id));
     }
 
     @DeleteMapping("/del")
     @Operation(summary = "删除字典数据")
-    public R<Boolean> delDictData(@RequestParam Long id) {
+    public Result<Boolean> delDictData(@RequestParam Long id) {
         dictDataService.delDictData(id);
-        return R.ok(true);
+        return Result.ok(true);
     }
 
     @GetMapping("/list")
     @Operation(summary = "获取字典数据，根据类型分组，只有启用状态")
-    public R<Map<String, List<DictDataVO>>> getDictDataMap() {
-        return R.ok(dictDataService.getDictDataMap());
+    public Result<Map<String, List<DictDataVO>>> getDictDataMap() {
+        return Result.ok(dictDataService.getDictDataMap());
     }
 }

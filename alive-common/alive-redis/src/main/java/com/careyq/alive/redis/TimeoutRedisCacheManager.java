@@ -21,6 +21,7 @@ import java.time.Duration;
 public class TimeoutRedisCacheManager extends RedisCacheManager {
 
     private static final String SPLIT = "#";
+    private static final int NAMES_LENGTH = 2;
 
     public TimeoutRedisCacheManager(RedisCacheWriter cacheWriter, RedisCacheConfiguration defaultCacheConfiguration) {
         super(cacheWriter, defaultCacheConfiguration);
@@ -33,7 +34,7 @@ public class TimeoutRedisCacheManager extends RedisCacheManager {
             return super.createRedisCache(name, cacheConfig);
         }
         String[] names = StrUtil.splitToArray(name, SPLIT);
-        if (names.length != 2) {
+        if (names.length != NAMES_LENGTH) {
             return super.createRedisCache(name, cacheConfig);
         }
         // 通过修改 cacheConfig 的过期时间，实现自定义过期时间

@@ -12,6 +12,9 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum CommonStatusEnum {
 
+    /**
+     * 状态枚举
+     */
     ENABLE(1, "启用"),
     DISABLE(0, "禁用");
 

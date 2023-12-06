@@ -2,7 +2,7 @@ package com.careyq.alive.system.controller.admin;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.careyq.alive.core.domain.EntryVO;
-import com.careyq.alive.core.domain.R;
+import com.careyq.alive.core.domain.Result;
 import com.careyq.alive.system.dto.PostPageDTO;
 import com.careyq.alive.system.service.PostService;
 import com.careyq.alive.system.vo.PostVO;
@@ -29,32 +29,32 @@ public class PostController {
 
     @PostMapping("/save")
     @Operation(summary = "保存岗位")
-    public R<Long> savePost(@Validated @RequestBody PostVO req) {
-        return R.ok(deptService.savePost(req));
+    public Result<Long> savePost(@Validated @RequestBody PostVO req) {
+        return Result.ok(deptService.savePost(req));
     }
 
     @PostMapping("/page")
     @Operation(summary = "获取岗位分页")
-    public R<IPage<PostVO>> getPostPage(@Validated @RequestBody PostPageDTO dto) {
-        return R.ok(deptService.getPostPage(dto));
+    public Result<IPage<PostVO>> getPostPage(@Validated @RequestBody PostPageDTO dto) {
+        return Result.ok(deptService.getPostPage(dto));
     }
 
     @GetMapping("/detail")
     @Operation(summary = "获取岗位详情")
-    public R<PostVO> getPostDetail(@RequestParam Long id) {
-        return R.ok(deptService.getPostDetail(id));
+    public Result<PostVO> getPostDetail(@RequestParam Long id) {
+        return Result.ok(deptService.getPostDetail(id));
     }
 
     @DeleteMapping("/del")
     @Operation(summary = "删除岗位")
-    public R<Boolean> delPost(@RequestParam Long id) {
+    public Result<Boolean> delPost(@RequestParam Long id) {
         deptService.delPost(id);
-        return R.ok(true);
+        return Result.ok(true);
     }
 
     @GetMapping("/simple-list")
     @Operation(summary = "获取岗位，只有启用状态")
-    public R<List<EntryVO>> getPostSimpleList() {
-        return R.ok(deptService.getPostSimpleList());
+    public Result<List<EntryVO>> getPostSimpleList() {
+        return Result.ok(deptService.getPostSimpleList());
     }
 }

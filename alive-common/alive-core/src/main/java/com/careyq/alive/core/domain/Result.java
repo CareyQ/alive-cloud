@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 @Data
 @Builder
-public class R<T> implements Serializable {
+public class Result<T> implements Serializable {
 
     /**
      * 响应码
@@ -30,26 +30,26 @@ public class R<T> implements Serializable {
      */
     private T data;
 
-    public static <T> R<T> fail(ResultCode resultCode) {
+    public static <T> Result<T> fail(ResultCode resultCode) {
         return fail(resultCode.code(), resultCode.msg());
     }
 
-    public static <T> R<T> fail(Integer code, String msg) {
-        return R.<T>builder()
+    public static <T> Result<T> fail(Integer code, String msg) {
+        return Result.<T>builder()
                 .code(code)
                 .msg(msg)
                 .build();
     }
 
-    public static <T> R<T> ok() {
-        return R.<T>builder()
+    public static <T> Result<T> ok() {
+        return Result.<T>builder()
                 .code(ResultCodeConstants.OK.code())
                 .msg(ResultCodeConstants.OK.msg())
                 .build();
     }
 
-    public static <T> R<T> ok(T data) {
-        R<T> res = R.ok();
+    public static <T> Result<T> ok(T data) {
+        Result<T> res = Result.ok();
         res.setData(data);
         return res;
     }

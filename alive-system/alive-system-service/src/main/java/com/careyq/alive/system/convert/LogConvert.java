@@ -16,6 +16,12 @@ public interface LogConvert {
 
     LogConvert INSTANCE = Mappers.getMapper(LogConvert.class);
 
+    /**
+     * 错误日志转换为 VO
+     *
+     * @param loginLog LoginLog
+     * @return VO
+     */
     @Mapping(target = "loginTime", source = "createTime")
     LoginLogVO convert(LoginLog loginLog);
 

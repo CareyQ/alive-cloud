@@ -1,7 +1,7 @@
 package com.careyq.alive.system.controller.admin;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.careyq.alive.core.domain.R;
+import com.careyq.alive.core.domain.Result;
 import com.careyq.alive.system.dto.LoginLogPageDTO;
 import com.careyq.alive.system.service.LoginLogService;
 import com.careyq.alive.system.vo.LoginLogVO;
@@ -29,8 +29,8 @@ public class LogController {
 
     @PostMapping("/login-log")
     @Operation(summary = "登录日志")
-    public R<IPage<LoginLogVO>> saveUser(@Validated @RequestBody LoginLogPageDTO dto) {
-        return R.ok(loginLogService.getLoginLogPage(dto));
+    public Result<IPage<LoginLogVO>> saveUser(@Validated @RequestBody LoginLogPageDTO dto) {
+        return Result.ok(loginLogService.getLoginLogPage(dto));
     }
 
 }

@@ -3,6 +3,7 @@ package com.careyq.alive.core.domain;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 /**
@@ -15,23 +16,16 @@ import lombok.Data;
 public class PageDTO {
 
     /**
-     * 默认当前页码
-     */
-    private static final long CURRENT = 1;
-    /**
-     * 默认页面条数
-     */
-    private static final long SIZE = 10;
-
-    /**
      * 当前页
      */
+    @NotNull(message = "当前页数不能为空")
     @Min(value = 1, message = "当前页数不能小于 1")
-    private Long current = CURRENT;
+    private Long current;
 
     /**
      * 页面大小
      */
+    @NotNull(message = "页面大小不能为空")
     @Max(value = 100, message = "页面大小不能大于 100")
-    private Long size = SIZE;
+    private Long size;
 }

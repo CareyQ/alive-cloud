@@ -15,6 +15,12 @@ public interface RoleConvert {
 
     RoleConvert INSTANCE = Mappers.getMapper(RoleConvert.class);
 
+    /**
+     * 角色转换为 VO
+     *
+     * @param role Role
+     * @return VO
+     */
     RoleVO convert(Role role);
 
 }

@@ -2,7 +2,7 @@ package com.careyq.alive.web.handler;
 
 import cn.dev33.satoken.exception.NotLoginException;
 import cn.dev33.satoken.exception.NotPermissionException;
-import com.careyq.alive.core.domain.R;
+import com.careyq.alive.core.domain.Result;
 import com.careyq.alive.core.exception.CustomException;
 import com.careyq.alive.satoken.AuthHelper;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,103 +34,103 @@ public class GlobalExceptionHandler {
      * 请求参数缺失
      */
     @ExceptionHandler(MissingServletRequestParameterException.class)
-    public R<?> missingServletRequestParameterExceptionHandler(MissingServletRequestParameterException ex) {
+    public Result<?> missingServletRequestParameterExceptionHandler(MissingServletRequestParameterException ex) {
         log.error("[missingServletRequestParameterExceptionHandler]", ex);
-        return R.fail(FAIL_REQUEST.code(), String.format("请求参数缺失: %s", ex.getParameterName()));
+        return Result.fail(FAIL_REQUEST.code(), String.format("请求参数缺失: %s", ex.getParameterName()));
     }
 
     /**
      * 请求参数类型错误
      */
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public R<?> methodArgumentTypeMismatchExceptionHandler(MethodArgumentTypeMismatchException ex) {
+    public Result<?> methodArgumentTypeMismatchExceptionHandler(MethodArgumentTypeMismatchException ex) {
         log.error("[methodArgumentTypeMismatchExceptionHandler]", ex);
-        return R.fail(FAIL_REQUEST.code(), String.format("请求参数类型错误: %s", ex.getMessage()));
+        return Result.fail(FAIL_REQUEST.code(), String.format("请求参数类型错误: %s", ex.getMessage()));
     }
 
     /**
      * 参数校验不正确
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public R<?> methodArgumentNotValidExceptionExceptionHandler(MethodArgumentNotValidException ex) {
+    public Result<?> methodArgumentNotValidExceptionExceptionHandler(MethodArgumentNotValidException ex) {
         log.error("[methodArgumentNotValidExceptionExceptionHandler]", ex);
         FieldError fieldError = ex.getBindingResult().getFieldError();
         assert fieldError != null;
-        return R.fail(FAIL_REQUEST.code(), String.format("请求参数不正确: %s", fieldError.getDefaultMessage()));
+        return Result.fail(FAIL_REQUEST.code(), String.format("请求参数不正确: %s", fieldError.getDefaultMessage()));
     }
 
     /**
      * Validator 校验参数绑定不正确
      */
     @ExceptionHandler(BindException.class)
-    public R<?> bindExceptionHandler(BindException ex) {
+    public Result<?> bindExceptionHandler(BindException ex) {
         log.error("[handleBindException]", ex);
         FieldError fieldError = ex.getFieldError();
         assert fieldError != null;
-        return R.fail(FAIL_REQUEST.code(), String.format("请求参数不正确: %s", fieldError.getDefaultMessage()));
+        return Result.fail(FAIL_REQUEST.code(), String.format("请求参数不正确: %s", fieldError.getDefaultMessage()));
     }
 
     /**
      * Validator 校验不通过
      */
     @ExceptionHandler(ConstraintViolationException.class)
-    public R<?> constraintViolationExceptionHandler(ConstraintViolationException ex) {
+    public Result<?> constraintViolationExceptionHandler(ConstraintViolationException ex) {
         log.error("[constraintViolationExceptionHandler]", ex);
         ConstraintViolation<?> constraintViolation = ex.getConstraintViolations().iterator().next();
-        return R.fail(FAIL_REQUEST.code(), String.format("请求参数不正确: %s", constraintViolation.getMessage()));
+        return Result.fail(FAIL_REQUEST.code(), String.format("请求参数不正确: %s", constraintViolation.getMessage()));
     }
 
     /**
      * 请求地址不存在
      */
     @ExceptionHandler(NoHandlerFoundException.class)
-    public R<?> noHandlerFoundExceptionHandler(NoHandlerFoundException ex) {
+    public Result<?> noHandlerFoundExceptionHandler(NoHandlerFoundException ex) {
         log.error("[noHandlerFoundExceptionHandler]", ex);
-        return R.fail(NOT_FOUND.code(), String.format("请求地址不存在: %s", ex.getRequestURL()));
+        return Result.fail(NOT_FOUND.code(), String.format("请求地址不存在: %s", ex.getRequestURL()));
     }
 
     /**
      * 请求方法不正确
      */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public R<?> httpRequestMethodNotSupportedExceptionHandler(HttpRequestMethodNotSupportedException ex) {
+    public Result<?> httpRequestMethodNotSupportedExceptionHandler(HttpRequestMethodNotSupportedException ex) {
         log.error("[httpRequestMethodNotSupportedExceptionHandler]", ex);
-        return R.fail(METHOD_NOT_ALLOWED.code(), String.format("请求方法不正确: %s", ex.getMessage()));
+        return Result.fail(METHOD_NOT_ALLOWED.code(), String.format("请求方法不正确: %s", ex.getMessage()));
     }
 
     /**
      * sa-token 认证异常拦截
      */
     @ExceptionHandler(NotLoginException.class)
-    public R<?> notLoginExceptionHandler(NotLoginException ex) {
+    public Result<?> notLoginExceptionHandler(NotLoginException ex) {
         log.error("[notLoginExceptionHandler], msg:{}", ex.getMessage());
-        return R.fail(UNAUTHORIZED);
+        return Result.fail(UNAUTHORIZED);
     }
 
     /**
      * sa-token 权限异常拦截
      */
     @ExceptionHandler(NotPermissionException.class)
-    public R<?> notPermissionExceptionHandler(HttpServletRequest req, NotPermissionException ex) {
+    public Result<?> notPermissionExceptionHandler(HttpServletRequest req, NotPermissionException ex) {
         log.error("[notPermissionExceptionHandler][userId({}) url({})]", AuthHelper.getUserId(), req.getRequestURL(), ex);
-        return R.fail(FORBIDDEN);
+        return Result.fail(FORBIDDEN);
     }
 
     /**
      * 自定义异常
      */
     @ExceptionHandler(CustomException.class)
-    public R<?> customExceptionHandler(CustomException ex) {
+    public Result<?> customExceptionHandler(CustomException ex) {
         log.error("[customExceptionHandler]", ex);
-        return R.fail(ex.getCode(), ex.getMessage());
+        return Result.fail(ex.getCode(), ex.getMessage());
     }
 
     /**
      * 未捕获到的异常
      */
     @ExceptionHandler(Exception.class)
-    public R<?> defaultExceptionHandler(Throwable ex) {
+    public Result<?> defaultExceptionHandler(Throwable ex) {
         log.error("[defaultExceptionHandler]", ex);
-        return R.fail(SERVER_ERROR.code(), SERVER_ERROR.msg());
+        return Result.fail(SERVER_ERROR.code(), SERVER_ERROR.msg());
     }
 }

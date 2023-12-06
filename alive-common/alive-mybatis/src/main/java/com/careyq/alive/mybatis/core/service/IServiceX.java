@@ -10,6 +10,11 @@ import com.careyq.alive.mybatis.core.mapper.LambdaQueryChainWrapperX;
  */
 public interface IServiceX<T> extends IService<T> {
 
+    /**
+     * 使用重写的 LambdaQueryChainWrapperX
+     *
+     * @return LambdaQueryChainWrapperX
+     */
     default LambdaQueryChainWrapperX<T> lambdaQueryX() {
         return new LambdaQueryChainWrapperX<>(getBaseMapper(), getEntityClass());
     }

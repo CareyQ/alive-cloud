@@ -17,6 +17,12 @@ import java.util.List;
 @Mapper
 public interface RoleMapper extends BaseMapper<Role> {
 
+    /**
+     * 根据 ID 获取角色列表
+     *
+     * @param ids 角色 ID
+     * @return 角色列表
+     */
     default List<Role> getByIds(List<Long> ids) {
         if (CollUtils.isEmpty(ids)) {
             return new ArrayList<>();

@@ -23,6 +23,6 @@ public class PermissionAssignDTO {
     private Long primaryId;
 
     @Schema(description = "关联 ID")
-    private Set<Long> linkIds = new HashSet<>();
+    private Set<Long> linkIds;
 
 }

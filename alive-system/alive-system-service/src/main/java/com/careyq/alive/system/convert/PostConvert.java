@@ -15,6 +15,12 @@ public interface PostConvert {
 
     PostConvert INSTANCE = Mappers.getMapper(PostConvert.class);
 
+    /**
+     * 岗位转换为 VO
+     *
+     * @param post Post
+     * @return VO
+     */
     PostVO convert(Post post);
 
 }

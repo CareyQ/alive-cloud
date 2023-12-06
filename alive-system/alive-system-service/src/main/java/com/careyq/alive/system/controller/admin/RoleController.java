@@ -2,7 +2,7 @@ package com.careyq.alive.system.controller.admin;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.careyq.alive.core.domain.EntryVO;
-import com.careyq.alive.core.domain.R;
+import com.careyq.alive.core.domain.Result;
 import com.careyq.alive.system.dto.RoleDTO;
 import com.careyq.alive.system.dto.RolePageDTO;
 import com.careyq.alive.system.service.RoleService;
@@ -30,39 +30,39 @@ public class RoleController {
 
     @PostMapping("/save")
     @Operation(summary = "保存角色")
-    public R<Long> saveRole(@Validated @RequestBody RoleDTO dto) {
-        return R.ok(roleService.saveRole(dto));
+    public Result<Long> saveRole(@Validated @RequestBody RoleDTO dto) {
+        return Result.ok(roleService.saveRole(dto));
     }
 
     @PostMapping("/page")
     @Operation(summary = "获取角色分页")
-    public R<IPage<RoleVO>> getRolePage(@Validated @RequestBody RolePageDTO dto) {
-        return R.ok(roleService.getRolePage(dto));
+    public Result<IPage<RoleVO>> getRolePage(@Validated @RequestBody RolePageDTO dto) {
+        return Result.ok(roleService.getRolePage(dto));
     }
 
     @GetMapping("/detail")
     @Operation(summary = "获取角色详情")
-    public R<RoleVO> getRoleDetail(@RequestParam Long id) {
-        return R.ok(roleService.getRoleDetail(id));
+    public Result<RoleVO> getRoleDetail(@RequestParam Long id) {
+        return Result.ok(roleService.getRoleDetail(id));
     }
 
     @DeleteMapping("/del")
     @Operation(summary = "删除角色")
-    public R<Boolean> delRole(@RequestParam Long id) {
+    public Result<Boolean> delRole(@RequestParam Long id) {
         roleService.delRole(id);
-        return R.ok(true);
+        return Result.ok(true);
     }
 
     @GetMapping("/list")
     @Operation(summary = "获取角色列表")
-    public R<List<EntryVO>> getRoleSimpleList() {
-        return R.ok(roleService.getRoleSimpleList());
+    public Result<List<EntryVO>> getRoleSimpleList() {
+        return Result.ok(roleService.getRoleSimpleList());
     }
 
     @PutMapping("/default")
     @Operation(summary = "改变默认角色")
-    public R<Boolean> changeDefault(@RequestParam Long id, @RequestParam Boolean isDefault) {
+    public Result<Boolean> changeDefault(@RequestParam Long id, @RequestParam Boolean isDefault) {
         roleService.changeDefault(id, isDefault);
-        return R.ok();
+        return Result.ok();
     }
 }

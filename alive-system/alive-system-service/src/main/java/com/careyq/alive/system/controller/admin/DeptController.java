@@ -1,7 +1,7 @@
 package com.careyq.alive.system.controller.admin;
 
 import cn.hutool.core.lang.tree.Tree;
-import com.careyq.alive.core.domain.R;
+import com.careyq.alive.core.domain.Result;
 import com.careyq.alive.system.dto.DeptDTO;
 import com.careyq.alive.system.dto.DeptSearchDTO;
 import com.careyq.alive.system.service.DeptService;
@@ -29,32 +29,32 @@ public class DeptController {
 
     @PostMapping("/save")
     @Operation(summary = "保存部门")
-    public R<Long> saveDept(@Validated @RequestBody DeptDTO dto) {
-        return R.ok(deptService.saveDept(dto));
+    public Result<Long> saveDept(@Validated @RequestBody DeptDTO dto) {
+        return Result.ok(deptService.saveDept(dto));
     }
 
     @PostMapping("/list")
     @Operation(summary = "获取部门列表")
-    public R<List<Tree<Long>>> getDeptList(@Validated @RequestBody DeptSearchDTO dto) {
-        return R.ok(deptService.getDeptList(dto));
+    public Result<List<Tree<Long>>> getDeptList(@Validated @RequestBody DeptSearchDTO dto) {
+        return Result.ok(deptService.getDeptList(dto));
     }
 
     @GetMapping("/detail")
     @Operation(summary = "获取部门详情")
-    public R<DeptVO> getDeptDetail(@RequestParam Long id) {
-        return R.ok(deptService.getDeptDetail(id));
+    public Result<DeptVO> getDeptDetail(@RequestParam Long id) {
+        return Result.ok(deptService.getDeptDetail(id));
     }
 
     @DeleteMapping("/del")
     @Operation(summary = "删除部门")
-    public R<Boolean> delDept(@RequestParam Long id) {
+    public Result<Boolean> delDept(@RequestParam Long id) {
         deptService.delDept(id);
-        return R.ok(true);
+        return Result.ok(true);
     }
 
     @GetMapping("/simple-list")
     @Operation(summary = "获取部门，只有启用状态")
-    public R<List<Tree<Long>>> getDeptSimpleList() {
-        return R.ok(deptService.getDeptSimpleList());
+    public Result<List<Tree<Long>>> getDeptSimpleList() {
+        return Result.ok(deptService.getDeptSimpleList());
     }
 }

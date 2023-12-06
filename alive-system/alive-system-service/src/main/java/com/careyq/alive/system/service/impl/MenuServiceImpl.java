@@ -1,6 +1,7 @@
 package com.careyq.alive.system.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.lang.Validator;
 import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.lang.tree.TreeUtil;
 import cn.hutool.core.util.StrUtil;
@@ -81,7 +82,7 @@ public class MenuServiceImpl extends ServiceImplX<MenuMapper, Menu> implements M
         this.validMenu(menuVo);
         Menu menu = BeanUtil.copyProperties(menuVo, Menu.class);
         // 目录路由地址开头携带斜杠 "/"，菜单地址不携带
-        if (MenuTypeEnum.DIR.getType().equals(menu.getType()) && !menu.getPath().startsWith("http")) {
+        if (MenuTypeEnum.DIR.getType().equals(menu.getType()) && !Validator.isUrl(menu.getPath())) {
             if (!menu.getPath().startsWith(StrUtil.SLASH)) {
                 menu.setPath(StrUtil.SLASH + menu.getPath());
             }
@@ -141,10 +142,9 @@ public class MenuServiceImpl extends ServiceImplX<MenuMapper, Menu> implements M
                 .eq(Menu::getStatus, CommonStatusEnum.ENABLE.getStatus())
                 .orderByAsc(Menu::getSort)
                 .list();
-        return TreeUtil.build(menus, Menu.ROOT_ID, (node, tree) -> {
-            tree.setId(node.getId())
-                    .setParentId(node.getParentId())
-                    .setName(node.getName());
-        });
+        return TreeUtil.build(menus, Menu.ROOT_ID, (node, tree) ->
+                tree.setId(node.getId())
+                        .setParentId(node.getParentId())
+                        .setName(node.getName()));
     }
 }

@@ -1,6 +1,6 @@
 package com.careyq.alive.system.controller.admin;
 
-import com.careyq.alive.core.domain.R;
+import com.careyq.alive.core.domain.Result;
 import com.careyq.alive.system.service.DictTypeService;
 import com.careyq.alive.system.vo.DictTypeVO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,26 +26,26 @@ public class DictTypeController {
 
     @PostMapping("/save")
     @Operation(summary = "保存字典类型")
-    public R<Long> saveDictType(@Validated @RequestBody DictTypeVO req) {
-        return R.ok(dictTypeService.saveDictType(req));
+    public Result<Long> saveDictType(@Validated @RequestBody DictTypeVO req) {
+        return Result.ok(dictTypeService.saveDictType(req));
     }
 
     @GetMapping("/list")
     @Operation(summary = "获取字典类型列表")
-    public R<List<DictTypeVO>> getDictTypeList() {
-        return R.ok(dictTypeService.getDictTypeList());
+    public Result<List<DictTypeVO>> getDictTypeList() {
+        return Result.ok(dictTypeService.getDictTypeList());
     }
 
     @GetMapping("/detail")
     @Operation(summary = "获取字典类型详情")
-    public R<DictTypeVO> getDictTypeDetail(@RequestParam Long id) {
-        return R.ok(dictTypeService.getDictTypeDetail(id));
+    public Result<DictTypeVO> getDictTypeDetail(@RequestParam Long id) {
+        return Result.ok(dictTypeService.getDictTypeDetail(id));
     }
 
     @DeleteMapping("/del")
     @Operation(summary = "删除字典类型")
-    public R<Boolean> delDictType(@RequestParam Long id) {
+    public Result<Boolean> delDictType(@RequestParam Long id) {
         dictTypeService.delDictType(id);
-        return R.ok(true);
+        return Result.ok(true);
     }
 }

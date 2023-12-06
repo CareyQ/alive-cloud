@@ -15,6 +15,12 @@ import java.util.List;
 @Mapper
 public interface MenuMapper extends BaseMapper<Menu> {
 
+    /**
+     * 根据 ID 获取菜单列表
+     *
+     * @param ids 菜单 ID
+     * @return 菜单列表
+     */
     default List<Menu> getByIds(List<Long> ids) {
         return this.selectList(new LambdaQueryWrapperX<Menu>().inIfPresent(Menu::getId, ids));
     }
