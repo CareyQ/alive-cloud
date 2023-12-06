@@ -2,11 +2,10 @@ package com.careyq.alive.system.mapper;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.careyq.alive.core.util.CollUtils;
+import com.careyq.alive.mybatis.core.mapper.LambdaQueryWrapperX;
 import com.careyq.alive.system.entity.RoleMenu;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,10 +25,7 @@ public interface RoleMenuMapper extends BaseMapper<RoleMenu> {
     }
 
     default List<RoleMenu> getByRole(List<Long> roleIds) {
-        if (CollUtils.isEmpty(roleIds)) {
-            return new ArrayList<>();
-        }
-        return this.selectList(new LambdaQueryWrapper<RoleMenu>().in(RoleMenu::getRoleId, roleIds));
+        return this.selectList(new LambdaQueryWrapperX<RoleMenu>().in(RoleMenu::getRoleId, roleIds));
     }
 
 }

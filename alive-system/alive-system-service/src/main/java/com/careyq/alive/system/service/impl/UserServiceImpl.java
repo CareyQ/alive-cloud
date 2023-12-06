@@ -2,15 +2,14 @@ package com.careyq.alive.system.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.careyq.alive.core.domain.EntryVO;
 import com.careyq.alive.core.exception.CustomException;
 import com.careyq.alive.core.util.CollUtils;
+import com.careyq.alive.mybatis.core.service.impl.ServiceImplX;
 import com.careyq.alive.system.dto.UserDTO;
 import com.careyq.alive.system.dto.UserPageDTO;
 import com.careyq.alive.system.entity.Dept;
@@ -36,7 +35,7 @@ import static com.careyq.alive.system.constants.SystemResultCode.*;
  */
 @Service
 @AllArgsConstructor
-public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
+public class UserServiceImpl extends ServiceImplX<UserMapper, User> implements UserService {
 
     private final DeptService deptService;
 
@@ -45,9 +44,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (StrUtil.isBlank(mobile)) {
             return false;
         }
-        return this.lambdaQuery()
+        return this.lambdaQueryX()
+                .neIfPresent(User::getId, id)
                 .eq(User::getMobile, mobile)
-                .ne(id != null, User::getId, id)
                 .exists();
     }
 
@@ -56,9 +55,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (StrUtil.isBlank(username)) {
             return false;
         }
-        return this.lambdaQuery()
+        return this.lambdaQueryX()
+                .neIfPresent(User::getId, id)
                 .eq(User::getUsername, username)
-                .ne(id != null, User::getId, id)
                 .exists();
     }
 
@@ -67,9 +66,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (StrUtil.isBlank(email)) {
             return false;
         }
-        return this.lambdaQuery()
+        return this.lambdaQueryX()
+                .neIfPresent(User::getId, id)
                 .eq(User::getEmail, email)
-                .ne(id != null, User::getId, id)
                 .exists();
     }
 
@@ -139,13 +138,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public IPage<UserPageVO> getUserPage(UserPageDTO dto) {
-        IPage<User> page = this.lambdaQuery()
-                .like(StrUtil.isNotBlank(dto.getUsername()), User::getUsername, dto.getUsername())
-                .eq(ObjectUtil.isNotNull(dto.getStatus()), User::getStatus, dto.getStatus())
-                .eq(ObjectUtil.isNotNull(dto.getDeptId()), User::getDeptId, dto.getDeptId())
-                .eq(ObjectUtil.isNotNull(dto.getGender()), User::getGender, dto.getGender())
-                .eq(ObjectUtil.isNotNull(dto.getMobile()), User::getMobile, dto.getMobile())
-                .between(ObjectUtil.isAllNotEmpty(dto.getCreateStartDate(), dto.getCreateEndDate()), User::getCreateTime, dto.getCreateStartDate(), dto.getCreateEndDate())
+        IPage<User> page = this.lambdaQueryX()
+                .likeIfPresent(User::getUsername, dto.getUsername())
+                .eqIfPresent(User::getStatus, dto.getStatus())
+                .eqIfPresent(User::getDeptId, dto.getDeptId())
+                .eqIfPresent(User::getGender, dto.getGender())
+                .eqIfPresent(User::getMobile, dto.getMobile())
+                .dateTimeBetween(User::getCreateTime, dto.getCreateStartDate(), dto.getCreateEndDate())
                 .orderByDesc(User::getId)
                 .page(new Page<>(dto.getCurrent(), dto.getSize()));
         if (CollUtil.isEmpty(page.getRecords())) {

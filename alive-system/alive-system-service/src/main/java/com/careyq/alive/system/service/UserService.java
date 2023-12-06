@@ -1,7 +1,7 @@
 package com.careyq.alive.system.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.IService;
+import com.careyq.alive.mybatis.core.service.IServiceX;
 import com.careyq.alive.system.dto.UserDTO;
 import com.careyq.alive.system.dto.UserPageDTO;
 import com.careyq.alive.system.entity.User;
@@ -12,7 +12,7 @@ import com.careyq.alive.system.vo.UserPageVO;
  *
  * @author CareyQ
  */
-public interface UserService extends IService<User> {
+public interface UserService extends IServiceX<User> {
 
     /**
      * 手机号是否已存在

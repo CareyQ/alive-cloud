@@ -1,7 +1,7 @@
 package com.careyq.alive.mybatis.core.service;
 
-import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.careyq.alive.mybatis.core.mapper.LambdaQueryChainWrapperX;
 
 /**
  * MyBatis-Plus 服务扩展
@@ -10,7 +10,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IServiceX<T> extends IService<T> {
 
-    default LambdaQueryChainWrapper<T> lambdaQueryX() {
-        return IService.super.lambdaQuery();
+    default LambdaQueryChainWrapperX<T> lambdaQueryX() {
+        return new LambdaQueryChainWrapperX<>(getBaseMapper(), getEntityClass());
     }
 }

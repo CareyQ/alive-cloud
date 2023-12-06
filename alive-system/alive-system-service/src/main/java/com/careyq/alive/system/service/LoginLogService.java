@@ -1,7 +1,7 @@
 package com.careyq.alive.system.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.IService;
+import com.careyq.alive.mybatis.core.service.IServiceX;
 import com.careyq.alive.system.dto.LoginLogPageDTO;
 import com.careyq.alive.system.entity.LoginLog;
 import com.careyq.alive.system.vo.LoginLogVO;
@@ -11,7 +11,7 @@ import com.careyq.alive.system.vo.LoginLogVO;
  *
  * @author CareyQ
  */
-public interface LoginLogService extends IService<LoginLog> {
+public interface LoginLogService extends IServiceX<LoginLog> {
 
     /**
      * 保存登录日志

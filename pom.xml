@@ -41,6 +41,7 @@
         <lombok.version>1.18.30</lombok.version>
         <jsoup.version>1.17.1</jsoup.version>
         <caffeine.version>3.1.8</caffeine.version>
+        <mapstruct.version>1.5.5.Final</mapstruct.version>
     </properties>
 
     <dependencyManagement>
@@ -192,6 +193,12 @@
             </dependency>
 
             <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>${mapstruct.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>com.careyq</groupId>
                 <artifactId>alive-core</artifactId>
                 <version>${revision}</version>
@@ -266,6 +273,13 @@
                 <configuration>
                     <!-- 使用 StandardReflectionParameterNameDiscoverer -->
                     <parameters>true</parameters>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${mapstruct.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
         </plugins>
