@@ -33,6 +33,22 @@
             <artifactId>alive-web</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.careyq</groupId>
+            <artifactId>alive-rpc</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.careyq</groupId>
+            <artifactId>alive-system-cloud</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.careyq</groupId>
+            <artifactId>alive-operatelog</artifactId>
+        </dependency>
+
         <!-- Spring Cloud 基础 -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>

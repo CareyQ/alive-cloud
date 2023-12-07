@@ -1,19 +1,36 @@
-package com.careyq.alive.operatelog.core.domain;
+package com.careyq.alive.system.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.careyq.alive.core.domain.BaseEntity;
+import com.careyq.alive.core.domain.ResultCode;
+import com.careyq.alive.operatelog.core.enums.OperateTypeEnum;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
 import java.util.Map;
 
 /**
- * 操作日志记录
+ * 操作日志
  *
  * @author CareyQ
  */
 @Data
 @Accessors(chain = true)
-public class OperateLogRecord {
+@EqualsAndHashCode(callSuper = true)
+@TableName("system_operate_log")
+public class OperateLog extends BaseEntity {
+
+    /**
+     * {@link #javaMethodArgs} 最大长度
+     */
+    public static final Integer JAVA_METHOD_ARGS_MAX_LENGTH = 8000;
+
+    /**
+     * {@link #resultData} 最大长度
+     */
+    public static final Integer RESULT_MAX_LENGTH = 4000;
 
     /**
      * 链路追踪编号
@@ -24,8 +41,9 @@ public class OperateLogRecord {
      * 用户编号
      */
     private Long userId;
+
     /**
-     * 用户类型
+     * 用户类型 {@link com.careyq.alive.core.enums.UserTypeEnum}
      */
     private Integer userType;
 
@@ -40,7 +58,7 @@ public class OperateLogRecord {
     private String name;
 
     /**
-     * 操作分类
+     * 操作分类 {@link OperateTypeEnum}
      */
     private Integer type;
 
@@ -95,12 +113,12 @@ public class OperateLogRecord {
     private Integer duration;
 
     /**
-     * 结果码
+     * 结果码，{@link ResultCode#code()}
      */
     private Integer resultCode;
 
     /**
-     * 结果提示
+     * 结果提示，{@link ResultCode#msg()}
      */
     private String resultMsg;
 

@@ -2,10 +2,10 @@ package com.careyq.alive.system.service.impl;
 
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
-import cn.hutool.core.util.IdUtil;
 import com.careyq.alive.core.enums.CommonStatusEnum;
 import com.careyq.alive.core.exception.CustomException;
 import com.careyq.alive.core.util.ServletUtils;
+import com.careyq.alive.core.util.TraceUtils;
 import com.careyq.alive.satoken.AuthHelper;
 import com.careyq.alive.satoken.core.domain.LoginUser;
 import com.careyq.alive.system.convert.UserConvert;
@@ -98,7 +98,7 @@ public class AuthServiceImpl implements AuthService {
         String clientIp = ServletUtils.getClientIp();
         LoginLog loginLog = new LoginLog();
         loginLog.setType(loginLogType.getType())
-                .setTraceId(IdUtil.fastSimpleUUID())
+                .setTraceId(TraceUtils.getTraceId())
                 .setUserId(userId)
                 .setUsername(username)
                 .setResult(loginResult.getType())

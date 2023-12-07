@@ -1,6 +1,8 @@
 package com.careyq.alive.system.convert;
 
+import com.careyq.alive.system.dto.OperateLogDTO;
 import com.careyq.alive.system.entity.LoginLog;
+import com.careyq.alive.system.entity.OperateLog;
 import com.careyq.alive.system.vo.LoginLogVO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -25,4 +27,17 @@ public interface LogConvert {
     @Mapping(target = "loginTime", source = "createTime")
     LoginLogVO convert(LoginLog loginLog);
 
+    /**
+     * 操作日志转换
+     *
+     * @param dto DTO
+     * @return 实体
+     */
+    @Mapping(target = "updater", ignore = true)
+    @Mapping(target = "updateTime", ignore = true)
+    @Mapping(target = "isDel", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "creator", ignore = true)
+    @Mapping(target = "createTime", ignore = true)
+    OperateLog convert(OperateLogDTO dto);
 }

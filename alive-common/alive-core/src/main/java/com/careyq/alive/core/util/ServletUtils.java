@@ -44,6 +44,15 @@ public class ServletUtils extends JakartaServletUtil {
         return JakartaServletUtil.getClientIP(request);
     }
 
+    /**
+     * 获取 IP
+     *
+     * @return IP 地址
+     */
+    public static String getClientIp(HttpServletRequest request) {
+        return JakartaServletUtil.getClientIP(request);
+    }
+
     public static String getIpInfo(String ip) {
         if (StrUtil.isBlank(ip)) {
             return UNKNOWN;
@@ -69,8 +78,21 @@ public class ServletUtils extends JakartaServletUtil {
         return UNKNOWN;
     }
 
+    /**
+     * 获取设备信息
+     *
+     * @return 设备信息
+     */
     public static String getUserAgentInfo() {
-        HttpServletRequest request = getRequest();
+        return getUserAgentInfo(getRequest());
+    }
+
+    /**
+     * 获取设备信息
+     *
+     * @return 设备信息
+     */
+    public static String getUserAgentInfo(HttpServletRequest request) {
         if (request == null) {
             return UNKNOWN;
         }

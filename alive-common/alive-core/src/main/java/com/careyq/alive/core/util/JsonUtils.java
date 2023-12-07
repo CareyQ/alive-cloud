@@ -28,6 +28,18 @@ public class JsonUtils {
     }
 
     /**
+     * 将对象转为 json 字符串
+     *
+     * @param object 对象
+     * @return json 字符串
+     */
+    @SneakyThrows
+    public static String toJsonString(Object object) {
+        return objectMapper.writeValueAsString(object);
+    }
+
+
+    /**
      * 初始化 objectMapper，使用 bean
      */
     public static void init(ObjectMapper objectMapper) {

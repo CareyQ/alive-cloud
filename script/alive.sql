@@ -163,3 +163,32 @@ create table if not exists system_login_log
     updater     bigint       null     default null comment '更新者',
     update_time datetime     not null default current_timestamp on update current_timestamp comment '更新时间'
 ) comment '登录日志';
+
+create table if not exists system_operate_log
+(
+    id               bigint        not null auto_increment primary key comment '主键',
+    trace_id         varchar(64)   not null default '' comment '链路追踪编号',
+    user_id          bigint        not null default 0 comment '用户 ID',
+    user_type        tinyint       not null default 0 comment '用户名',
+    module           varchar(50)   not null comment '模块',
+    name             varchar(50)   not null comment '操作名称',
+    type             bigint        not null default 0 comment '操作类型',
+    content          varchar(2000) not null default '' comment '操作内容',
+    extra            varchar(512)  not null default '' comment '拓展字段',
+    request_method   varchar(16)   null     default '' comment '请求方法名',
+    request_url      varchar(255)  null     default '' comment '请求地址',
+    ip               varchar(50)   null     default null comment 'IP',
+    device           varchar(200)  null     default null comment '设备名',
+    java_method      varchar(512)  not null default '' comment 'Java 方法名',
+    java_method_args varchar(8000) null     default '' comment 'Java 方法的参数',
+    start_time       datetime      not null comment '操作时间',
+    duration         int           not null comment '执行时长',
+    result_code      int           not null default 0 comment '结果码',
+    result_msg       varchar(512)  null     default '' comment '结果提示',
+    result_data      varchar(4000) null     default '' comment '结果数据',
+    is_del           tinyint       not null default 0 comment '是否删除',
+    creator          bigint        null     default null comment '创建者',
+    create_time      datetime      not null default current_timestamp comment '创建时间',
+    updater          bigint        null     default null comment '更新者',
+    update_time      datetime      not null default current_timestamp on update current_timestamp comment '更新时间'
+) comment '操作日志';

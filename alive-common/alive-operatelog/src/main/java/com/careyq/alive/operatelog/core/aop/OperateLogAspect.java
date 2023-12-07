@@ -1,24 +1,44 @@
 package com.careyq.alive.operatelog.core.aop;
 
+import cn.hutool.core.date.LocalDateTimeUtil;
+import cn.hutool.core.exceptions.ExceptionUtil;
+import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.StrUtil;
+import com.careyq.alive.core.constants.ResultCodeConstants;
+import com.careyq.alive.core.domain.Result;
 import com.careyq.alive.core.enums.UserTypeEnum;
+import com.careyq.alive.core.util.JsonUtils;
+import com.careyq.alive.core.util.ServletUtils;
+import com.careyq.alive.core.util.TraceUtils;
 import com.careyq.alive.operatelog.core.annotations.OperateLog;
-import com.careyq.alive.operatelog.core.domain.OperateLogRecord;
+import com.careyq.alive.operatelog.core.enums.OperateTypeEnum;
+import com.careyq.alive.satoken.AuthHelper;
+import com.careyq.alive.system.dto.OperateLogDTO;
 import com.careyq.alive.web.util.WebUtils;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.lang.annotation.Annotation;
+import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Map;
 import java.util.Objects;
+import java.util.function.Predicate;
+import java.util.stream.IntStream;
 
 /**
  * 拦截使用 @OperateLog 注解，如果满足条件，则生成操作日志
@@ -34,7 +54,7 @@ public class OperateLogAspect {
 
     @Around("@annotation(operation)")
     public Object around(ProceedingJoinPoint joinPoint, Operation operation) throws Throwable {
-        OperateLog operateLog = getMethodAnnotation(joinPoint, OperateLog.class);
+        OperateLog operateLog = ((MethodSignature) joinPoint.getSignature()).getMethod().getAnnotation(OperateLog.class);
         return aroundHandle(joinPoint, operateLog, operation);
     }
 
@@ -51,21 +71,93 @@ public class OperateLogAspect {
 
         LocalDateTime startTime = LocalDateTime.now();
         try {
-
+            Object result = joinPoint.proceed();
+            this.log(joinPoint, operateLog, operation, startTime, result, null);
+            return result;
         } catch (Throwable ex) {
-
-        } finally {
-
+            this.log(joinPoint, operateLog, operation, startTime, null, ex);
+            throw ex;
         }
-        return null;
     }
 
     private void log(ProceedingJoinPoint joinPoint, OperateLog operateLog, Operation operation, LocalDateTime startTime, Object result, Throwable ex) {
-        if (!enableLog(joinPoint, operateLog)) {
-            return;
-        }
-        OperateLogRecord record = new OperateLogRecord();
+        try {
+            if (!enableLog(joinPoint, operateLog)) {
+                return;
+            }
 
+            MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+
+            OperateLogDTO record = new OperateLogDTO();
+            record.setTraceId(TraceUtils.getTraceId())
+                    .setUserId(AuthHelper.getUserId())
+                    .setUserType(WebUtils.getLoginUserType())
+                    .setJavaMethod(signature.toString());
+
+            if (operateLog != null) {
+                // module 属性
+                if (StrUtil.isEmpty(operateLog.module())) {
+                    Tag tag = signature.getMethod().getDeclaringClass().getAnnotation(Tag.class);
+                    if (tag != null) {
+                        if (StrUtil.isNotEmpty(tag.name())) {
+                            record.setModule(tag.name());
+                        } else if (ArrayUtil.isNotEmpty(tag.description())) {
+                            record.setModule(tag.description());
+                        }
+                    }
+                } else {
+                    record.setModule(operateLog.module());
+                }
+
+                // name 属性
+                if (StrUtil.isEmpty(operateLog.name())) {
+                    if (operation != null) {
+                        record.setName(operation.summary());
+                    }
+                } else {
+                    record.setName(operateLog.name());
+                }
+
+                // type 属性
+                if (ArrayUtil.isNotEmpty(operateLog.type())) {
+                    record.setType(operateLog.type()[0].getType());
+                } else {
+                    RequestMethod requestMethod = obtainFirstMatchRequestMethod(obtainRequestMethod(joinPoint));
+                    OperateTypeEnum operateLogType = convertOperateLogType(requestMethod);
+                    record.setType(operateLogType != null ? operateLogType.getType() : null);
+                }
+            }
+
+            HttpServletRequest request = ServletUtils.getRequest();
+            if (request != null) {
+                record.setRequestMethod(request.getMethod())
+                        .setRequestUrl(request.getRequestURI())
+                        .setIp(ServletUtils.getClientIp(request))
+                        .setDevice(ServletUtils.getUserAgentInfo(request));
+            }
+
+            if (operateLog == null || operateLog.logArgs()) {
+                record.setJavaMethodArgs(obtainMethodArgs(signature, joinPoint.getArgs()));
+            }
+            if (operateLog == null || operateLog.logResultData()) {
+                record.setResultData(obtainResultData(result));
+            }
+            record.setDuration((int) (LocalDateTimeUtil.between(startTime, LocalDateTime.now()).toMillis()));
+            // （正常）处理 resultCode 和 resultMsg 字段
+            if (result instanceof Result<?> commonResult) {
+                record.setResultCode(commonResult.getCode());
+                record.setResultMsg(commonResult.getMsg());
+            } else {
+                record.setResultCode(ResultCodeConstants.OK.code());
+            }
+            // （异常）处理 resultCode 和 resultMsg 字段
+            if (ex != null) {
+                record.setResultCode(ResultCodeConstants.SERVER_ERROR.code());
+                record.setResultMsg(ExceptionUtil.getRootCauseMessage(ex));
+            }
+        } catch (Throwable e) {
+            log.error("[operate-log][point({}) operateLog({}) apiOperation({}) result({}) exception({})]", joinPoint, operateLog, operation, result, ex, e);
+        }
     }
 
     /**
@@ -86,6 +178,25 @@ public class OperateLogAspect {
         }
 
         return obtainFirstLogRequestMethod(obtainRequestMethod(joinPoint)) != null;
+    }
+
+    private static RequestMethod obtainFirstMatchRequestMethod(RequestMethod[] requestMethods) {
+        if (ArrayUtil.isEmpty(requestMethods)) {
+            return null;
+        }
+        // 优先，匹配最优的 POST、PUT、DELETE
+        RequestMethod result = obtainFirstLogRequestMethod(requestMethods);
+        if (result != null) {
+            return result;
+        }
+        // 然后，匹配次优的 GET
+        result = Arrays.stream(requestMethods).filter(requestMethod -> requestMethod == RequestMethod.GET)
+                .findFirst().orElse(null);
+        if (result != null) {
+            return result;
+        }
+        // 兜底，获得第一个
+        return requestMethods[0];
     }
 
 
@@ -117,7 +228,61 @@ public class OperateLogAspect {
         return requestMapping != null ? requestMapping.method() : new RequestMethod[]{};
     }
 
-    private static <T extends Annotation> T getMethodAnnotation(ProceedingJoinPoint joinPoint, Class<T> annotationClass) {
-        return ((MethodSignature) joinPoint.getSignature()).getMethod().getDeclaringClass().getAnnotation(annotationClass);
+    private static String obtainMethodArgs(MethodSignature methodSignature, Object[] argValues) {
+        // TODO 提升：参数脱敏和忽略
+        String[] argNames = methodSignature.getParameterNames();
+        // 拼接参数
+        Map<String, Object> args = MapUtil.newHashMap(argValues.length);
+        for (int i = 0; i < argNames.length; i++) {
+            String argName = argNames[i];
+            Object argValue = argValues[i];
+            // 被忽略时，标记为 ignore 字符串，避免和 null 混在一起
+            args.put(argName, !isIgnoreArgs(argValue) ? argValue : "[ignore]");
+        }
+        return JsonUtils.toJsonString(args);
     }
+
+    private static String obtainResultData(Object result) {
+        // TODO 提升：结果脱敏和忽略
+        if (result instanceof Result<?>) {
+            result = ((Result<?>) result).getData();
+        }
+        return JsonUtils.toJsonString(result);
+    }
+
+    private static OperateTypeEnum convertOperateLogType(RequestMethod requestMethod) {
+        if (requestMethod == null) {
+            return null;
+        }
+        return switch (requestMethod) {
+            case GET -> OperateTypeEnum.QUERY;
+            case POST -> OperateTypeEnum.CREATE;
+            case PUT -> OperateTypeEnum.UPDATE;
+            case DELETE -> OperateTypeEnum.DELETE;
+            default -> OperateTypeEnum.OTHER;
+        };
+    }
+
+    private static boolean isIgnoreArgs(Object object) {
+        Class<?> clazz = object.getClass();
+        // 处理数组的情况
+        if (clazz.isArray()) {
+            return IntStream.range(0, Array.getLength(object))
+                    .anyMatch(index -> isIgnoreArgs(Array.get(object, index)));
+        }
+        // 递归，处理数组、Collection、Map 的情况
+        if (Collection.class.isAssignableFrom(clazz)) {
+            return ((Collection<?>) object).stream()
+                    .anyMatch((Predicate<Object>) OperateLogAspect::isIgnoreArgs);
+        }
+        if (Map.class.isAssignableFrom(clazz)) {
+            return isIgnoreArgs(((Map<?, ?>) object).values());
+        }
+        // obj
+        return object instanceof MultipartFile
+                || object instanceof HttpServletRequest
+                || object instanceof HttpServletResponse
+                || object instanceof BindingResult;
+    }
+
 }
