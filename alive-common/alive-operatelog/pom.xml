@@ -24,6 +24,11 @@
 
         <dependency>
             <groupId>com.careyq</groupId>
+            <artifactId>alive-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.careyq</groupId>
             <artifactId>alive-rpc</artifactId>
         </dependency>
 

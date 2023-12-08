@@ -1,10 +1,9 @@
 package com.careyq.alive.operatelog.core.service;
 
+import com.careyq.alive.core.util.AsyncUtils;
 import com.careyq.alive.system.api.OperateLogApi;
 import com.careyq.alive.system.dto.OperateLogDTO;
 import lombok.RequiredArgsConstructor;
-
-import java.util.concurrent.CompletableFuture;
 
 /**
  * 操作日志 Framework 接口实现
@@ -18,6 +17,6 @@ public class OperateLogFrameworkServiceImpl implements OperateLogFrameworkServic
 
     @Override
     public void createOperateLog(OperateLogDTO dto) {
-        CompletableFuture.runAsync(() -> operateLogApi.createOperateLog(dto));
+        AsyncUtils.runAsync(() -> operateLogApi.createOperateLog(dto));
     }
 }
