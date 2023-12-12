@@ -32,3 +32,6 @@ target/*
 
 # maven
 .flattened-pom.xml
+
+# Jrebel
+rebel.xml
