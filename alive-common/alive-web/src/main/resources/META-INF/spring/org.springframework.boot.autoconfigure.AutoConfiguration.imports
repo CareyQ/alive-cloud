@@ -2,5 +2,6 @@ com.careyq.alive.web.undertow.UndertowAutoConfiguration
 com.careyq.alive.web.swagger.SwaggerAutoConfiguration
 com.careyq.alive.web.jackson.JacksonAutoConfiguration
 com.careyq.alive.web.xss.XssAutoConfiguration
-com.careyq.alive.web.WebAutoConfiguration
+com.careyq.alive.web.config.WebProperties
+com.careyq.alive.web.config.WebAutoConfiguration
 com.careyq.alive.web.security.AuthFilter

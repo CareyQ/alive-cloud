@@ -1,6 +1,7 @@
 package com.careyq.alive.web.util;
 
 import com.careyq.alive.core.enums.UserTypeEnum;
+import com.careyq.alive.web.config.WebProperties;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -13,9 +14,13 @@ import org.springframework.web.context.request.ServletRequestAttributes;
  */
 public class WebUtils {
 
-    private static final String APP_API = "/app-api";
-    private static final String ADMIN_API = "/admin-api";
     private static final String REQUEST_ATTRIBUTE_LOGIN_USER_TYPE = "login_user_type";
+
+    private static WebProperties properties;
+
+    public WebUtils(WebProperties webProperties) {
+        WebUtils.properties = webProperties;
+    }
 
     /**
      * 获取请求 HttpServletRequest
@@ -55,7 +60,7 @@ public class WebUtils {
             return userType;
         }
         // 2. 其次，基于 URL 前缀的约定
-        if (request.getServletPath().startsWith(ADMIN_API)) {
+        if (request.getServletPath().startsWith(properties.getAdminApi().getPrefix())) {
             return UserTypeEnum.ADMIN.getType();
         }
         return null;

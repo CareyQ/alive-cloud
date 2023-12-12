@@ -26,13 +26,14 @@
         <flatten-maven-plugin.version>1.5.0</flatten-maven-plugin.version>
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
 
-        <spring.boot.version>3.1.6</spring.boot.version>
-        <spring.cloud.version>2022.0.4</spring.cloud.version>
+        <spring.boot.version>3.2.0</spring.boot.version>
+        <spring.cloud.version>2023.0.0</spring.cloud.version>
         <spring.cloud.alibaba.version>2022.0.0.0</spring.cloud.alibaba.version>
         <snakeyaml.version>2.2</snakeyaml.version>
         <logback.adapter.version>1.0.0</logback.adapter.version>
         <knife4j.version>4.3.0</knife4j.version>
         <druid.version>1.2.20</druid.version>
+        <mybatis.spring.version>3.0.3</mybatis.spring.version>
         <mybatis-plus.version>3.5.4.1</mybatis-plus.version>
         <sa-token.version>1.37.0</sa-token.version>
         <redisson.version>3.24.3</redisson.version>
@@ -40,7 +41,6 @@
         <hutool.version>5.8.23</hutool.version>
         <lombok.version>1.18.30</lombok.version>
         <jsoup.version>1.17.1</jsoup.version>
-        <caffeine.version>3.1.8</caffeine.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
         <skywalking.version>9.1.0</skywalking.version>
     </properties>
@@ -94,19 +94,6 @@
                 <version>${snakeyaml.version}</version>
             </dependency>
 
-            <!-- nacos logback 适配器 -->
-            <dependency>
-                <groupId>com.alibaba.nacos</groupId>
-                <artifactId>logback-adapter</artifactId>
-                <version>${logback.adapter.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>com.alibaba.nacos</groupId>
-                        <artifactId>nacos-common</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-
             <!-- web undertow 容器 -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -126,6 +113,18 @@
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>${mybatis-plus.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.mybatis</groupId>
+                        <artifactId>mybatis-spring</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis-spring</artifactId>
+                <version>${mybatis.spring.version}</version>
             </dependency>
 
             <!-- Sa-Token 权限认证，在线文档：https://sa-token.cc -->
@@ -239,13 +238,6 @@
                 <groupId>com.careyq</groupId>
                 <artifactId>alive-rpc</artifactId>
                 <version>${revision}</version>
-            </dependency>
-
-            <!-- LoadBalancer 使用该缓存 -->
-            <dependency>
-                <groupId>com.github.ben-manes.caffeine</groupId>
-                <artifactId>caffeine</artifactId>
-                <version>${caffeine.version}</version>
             </dependency>
 
             <dependency>

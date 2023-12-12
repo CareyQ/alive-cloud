@@ -23,7 +23,7 @@ import java.util.List;
 @Tag(name = "管理后台 - 角色管理")
 @RestController
 @AllArgsConstructor
-@RequestMapping("/role")
+@RequestMapping("/system/role")
 public class RoleController {
 
     private final RoleService roleService;

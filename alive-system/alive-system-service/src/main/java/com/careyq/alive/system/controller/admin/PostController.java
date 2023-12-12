@@ -22,7 +22,7 @@ import java.util.List;
 @Tag(name = "管理后台 - 岗位管理")
 @RestController
 @AllArgsConstructor
-@RequestMapping("/post")
+@RequestMapping("/system/post")
 public class PostController {
 
     private final PostService deptService;

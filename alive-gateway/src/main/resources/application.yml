@@ -14,7 +14,6 @@ spring:
             - Path=/api-admin/system/**
           filters:
             - RewritePath=/api-admin/system/v3/api-docs, /v3/api-docs
-            - RewritePath=/api-admin/system/(?<segment>.*), /$\{segment}
       x-forwarded:
         prefix-enabled: false
 

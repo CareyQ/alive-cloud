@@ -9,7 +9,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import static com.careyq.alive.web.WebAutoConfiguration.createFilterBean;
+import static com.careyq.alive.web.config.WebAutoConfiguration.createFilterBean;
 
 /**
  * @author CareyQ

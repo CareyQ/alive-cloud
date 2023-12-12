@@ -19,7 +19,7 @@ import java.util.List;
 @Tag(name = "管理后台 - 字典类型")
 @RestController
 @AllArgsConstructor
-@RequestMapping("/dict-type")
+@RequestMapping("/system/dict-type")
 public class DictTypeController {
 
     private final DictTypeService dictTypeService;

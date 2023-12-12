@@ -19,7 +19,7 @@ import java.util.Set;
 @Tag(name = "管理后台 - 权限管理")
 @RestController
 @AllArgsConstructor
-@RequestMapping("/permission")
+@RequestMapping("/system/permission")
 public class PermissionController {
 
     private final PermissionService permissionService;

@@ -22,7 +22,7 @@ import java.util.List;
 @Tag(name = "管理后台 - 认证")
 @RestController
 @AllArgsConstructor
-@RequestMapping("/auth")
+@RequestMapping("/system/auth")
 public class AuthController {
 
     private final AuthService authService;

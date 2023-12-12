@@ -13,11 +13,13 @@ import com.careyq.alive.core.util.ServletUtils;
 import com.careyq.alive.core.util.TraceUtils;
 import com.careyq.alive.operatelog.core.annotations.OperateLog;
 import com.careyq.alive.operatelog.core.enums.OperateTypeEnum;
+import com.careyq.alive.operatelog.core.service.OperateLogFrameworkService;
 import com.careyq.alive.satoken.AuthHelper;
 import com.careyq.alive.system.dto.OperateLogDTO;
 import com.careyq.alive.web.util.WebUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -51,6 +53,9 @@ import java.util.stream.IntStream;
 @Slf4j
 @Aspect
 public class OperateLogAspect {
+
+    @Resource
+    private OperateLogFrameworkService operateLogFrameworkService;
 
     @Around("@annotation(operation)")
     public Object around(ProceedingJoinPoint joinPoint, Operation operation) throws Throwable {
@@ -155,6 +160,8 @@ public class OperateLogAspect {
                 record.setResultCode(ResultCodeConstants.SERVER_ERROR.code());
                 record.setResultMsg(ExceptionUtil.getRootCauseMessage(ex));
             }
+
+            operateLogFrameworkService.createOperateLog(record);
         } catch (Throwable e) {
             log.error("[operate-log][point({}) operateLog({}) apiOperation({}) result({}) exception({})]", joinPoint, operateLog, operation, result, ex, e);
         }

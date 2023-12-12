@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "管理后台 - 日志查询")
 @RestController
 @AllArgsConstructor
-@RequestMapping("/log")
+@RequestMapping("/system/log")
 public class LogController {
 
     private final LoginLogService loginLogService;
