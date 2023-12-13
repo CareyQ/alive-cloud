@@ -88,4 +88,10 @@ public class OperateLogDTO {
 
     @Schema(description = "结果数据")
     private String resultData;
+
+    @Schema(description = "创建人")
+    private Long creator;
+
+    @Schema(description = "更新人")
+    private Long updater;
 }

@@ -2,6 +2,7 @@ package com.careyq.alive.system.controller.admin;
 
 import cn.hutool.core.lang.tree.Tree;
 import com.careyq.alive.core.domain.Result;
+import com.careyq.alive.operatelog.core.annotations.OperateLog;
 import com.careyq.alive.system.dto.DeptDTO;
 import com.careyq.alive.system.dto.DeptSearchDTO;
 import com.careyq.alive.system.service.DeptService;
@@ -33,6 +34,7 @@ public class DeptController {
         return Result.ok(deptService.saveDept(dto));
     }
 
+    @OperateLog(enable = false)
     @PostMapping("/list")
     @Operation(summary = "获取部门列表")
     public Result<List<Tree<Long>>> getDeptList(@Validated @RequestBody DeptSearchDTO dto) {

@@ -26,12 +26,12 @@ public class DefaultFieldHandler implements MetaObjectHandler {
                 entity.setUpdateTime(now);
             }
 
-            Long userId = AuthHelper.getUserId();
-            if (Objects.nonNull(userId) && Objects.isNull(entity.getCreator())) {
-                entity.setCreator(userId);
-            }
-            if (Objects.nonNull(userId) && Objects.isNull(entity.getCreator())) {
-                entity.setCreator(userId);
+            if (Objects.isNull(entity.getCreator()) || Objects.isNull(entity.getUpdater())) {
+                Long userId = AuthHelper.getUserId();
+                if (Objects.nonNull(userId)) {
+                    entity.setCreator(userId);
+                    entity.setUpdater(userId);
+                }
             }
         }
     }

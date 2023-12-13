@@ -92,45 +92,44 @@ public class OperateLogAspect {
             }
 
             MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-
+            Long userId = AuthHelper.getUserId();
             OperateLogDTO record = new OperateLogDTO();
             record.setTraceId(TraceUtils.getTraceId())
-                    .setUserId(AuthHelper.getUserId())
+                    .setUserId(userId)
+                    .setCreator(userId)
+                    .setUpdater(userId)
                     .setUserType(WebUtils.getLoginUserType())
-                    .setJavaMethod(signature.toString());
-
+                    .setJavaMethod(signature.toString())
+                    .setStartTime(startTime);
+            // module 属性
             if (operateLog != null) {
-                // module 属性
-                if (StrUtil.isEmpty(operateLog.module())) {
-                    Tag tag = signature.getMethod().getDeclaringClass().getAnnotation(Tag.class);
-                    if (tag != null) {
-                        if (StrUtil.isNotEmpty(tag.name())) {
-                            record.setModule(tag.name());
-                        } else if (ArrayUtil.isNotEmpty(tag.description())) {
-                            record.setModule(tag.description());
-                        }
+                record.setModule(operateLog.module());
+            }
+            if (StrUtil.isEmpty(record.getModule())) {
+                Tag tag = signature.getMethod().getDeclaringClass().getAnnotation(Tag.class);
+                if (tag != null) {
+                    if (StrUtil.isNotEmpty(tag.name())) {
+                        record.setModule(tag.name());
+                    } else if (ArrayUtil.isNotEmpty(tag.description())) {
+                        record.setModule(tag.description());
                     }
-                } else {
-                    record.setModule(operateLog.module());
                 }
-
-                // name 属性
-                if (StrUtil.isEmpty(operateLog.name())) {
-                    if (operation != null) {
-                        record.setName(operation.summary());
-                    }
-                } else {
-                    record.setName(operateLog.name());
-                }
-
-                // type 属性
-                if (ArrayUtil.isNotEmpty(operateLog.type())) {
-                    record.setType(operateLog.type()[0].getType());
-                } else {
-                    RequestMethod requestMethod = obtainFirstMatchRequestMethod(obtainRequestMethod(joinPoint));
-                    OperateTypeEnum operateLogType = convertOperateLogType(requestMethod);
-                    record.setType(operateLogType != null ? operateLogType.getType() : null);
-                }
+            }
+            // name 属性
+            if (operateLog != null) {
+                record.setName(operateLog.name());
+            }
+            if (StrUtil.isEmpty(record.getName()) && operation != null) {
+                record.setName(operation.summary());
+            }
+            // type 属性
+            if (operateLog != null && ArrayUtil.isNotEmpty(operateLog.type())) {
+                record.setType(operateLog.type()[0].getType());
+            }
+            if (record.getType() == null) {
+                RequestMethod requestMethod = obtainFirstMatchRequestMethod(obtainRequestMethod(joinPoint));
+                OperateTypeEnum operateLogType = convertOperateLogType(requestMethod);
+                record.setType(operateLogType != null ? operateLogType.getType() : null);
             }
 
             HttpServletRequest request = ServletUtils.getRequest();

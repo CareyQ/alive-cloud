@@ -8,6 +8,7 @@ import com.careyq.alive.system.entity.OperateLog;
 import com.careyq.alive.system.mapper.OperateLogMapper;
 import com.careyq.alive.system.service.OperateLogService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 /**
@@ -21,9 +22,9 @@ public class OperateLogServiceImpl extends ServiceImplX<OperateLogMapper, Operat
 
     @Override
     public void crateOperateLog(OperateLogDTO dto) {
-        OperateLog log = LogConvert.INSTANCE.convert(dto);
-        log.setResultData(StrUtil.maxLength(log.getResultData(), OperateLog.RESULT_MAX_LENGTH));
-        log.setJavaMethodArgs(StrUtil.maxLength(log.getJavaMethodArgs(), OperateLog.JAVA_METHOD_ARGS_MAX_LENGTH));
-        this.save(log);
+        OperateLog operateLog = LogConvert.INSTANCE.convert(dto);
+        operateLog.setResultData(StrUtil.maxLength(operateLog.getResultData(), OperateLog.RESULT_MAX_LENGTH));
+        operateLog.setJavaMethodArgs(StrUtil.maxLength(operateLog.getJavaMethodArgs(), OperateLog.JAVA_METHOD_ARGS_MAX_LENGTH));
+        this.save(operateLog);
     }
 }

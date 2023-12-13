@@ -33,11 +33,9 @@ public interface LogConvert {
      * @param dto DTO
      * @return 实体
      */
-    @Mapping(target = "updater", ignore = true)
     @Mapping(target = "updateTime", ignore = true)
     @Mapping(target = "isDel", ignore = true)
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "creator", ignore = true)
     @Mapping(target = "createTime", ignore = true)
     OperateLog convert(OperateLogDTO dto);
 }
