@@ -1,8 +1,8 @@
 package com.careyq.alive.operatelog.core.service;
 
 import com.careyq.alive.core.util.AsyncUtils;
-import com.careyq.alive.system.api.OperateLogApi;
-import com.careyq.alive.system.dto.OperateLogDTO;
+import com.careyq.alive.module.system.api.OperateLogApi;
+import com.careyq.alive.module.system.dto.OperateLogDTO;
 import lombok.RequiredArgsConstructor;
 
 /**

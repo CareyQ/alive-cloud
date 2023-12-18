@@ -29,12 +29,7 @@
 
         <dependency>
             <groupId>com.careyq</groupId>
-            <artifactId>alive-rpc</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.careyq</groupId>
-            <artifactId>alive-system-cloud</artifactId>
+            <artifactId>alive-system-api</artifactId>
             <version>${revision}</version>
         </dependency>
     </dependencies>

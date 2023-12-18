@@ -18,7 +18,6 @@
         <module>alive-redis</module>
         <module>alive-satoken</module>
         <module>alive-operatelog</module>
-        <module>alive-rpc</module>
     </modules>
 
 </project>

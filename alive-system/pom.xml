@@ -12,7 +12,7 @@
     <artifactId>alive-system</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>alive-system-cloud</module>
+        <module>alive-system-api</module>
         <module>alive-system-service</module>
     </modules>
 

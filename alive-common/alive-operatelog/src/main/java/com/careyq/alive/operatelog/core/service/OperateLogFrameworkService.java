@@ -1,6 +1,6 @@
 package com.careyq.alive.operatelog.core.service;
 
-import com.careyq.alive.system.dto.OperateLogDTO;
+import com.careyq.alive.module.system.dto.OperateLogDTO;
 
 /**
  * 操作日志 Framework 接口

@@ -9,6 +9,9 @@ import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -45,5 +48,22 @@ public class WebAutoConfiguration implements WebMvcConfigurer {
     @SuppressWarnings("InstantiationOfUtilityClass")
     public WebUtils webUtils(WebProperties webProperties) {
         return new WebUtils(webProperties);
+    }
+
+    @Bean
+    public FilterRegistrationBean<CorsFilter> corsFilter() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        // 设置访问源地址
+        config.addAllowedOriginPattern("*");
+        // 设置访问源请求头
+        config.addAllowedHeader("*");
+        // 设置访问源请求方法
+        config.addAllowedMethod("*");
+        // 创建 UrlBasedCorsConfigurationSource 对象
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        // 对接口配置跨域设置
+        source.registerCorsConfiguration("/**", config);
+        return createFilterBean(new CorsFilter(source), Integer.MIN_VALUE);
     }
 }

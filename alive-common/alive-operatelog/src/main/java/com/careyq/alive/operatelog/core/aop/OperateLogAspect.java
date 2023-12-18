@@ -15,7 +15,7 @@ import com.careyq.alive.operatelog.core.annotations.OperateLog;
 import com.careyq.alive.operatelog.core.enums.OperateTypeEnum;
 import com.careyq.alive.operatelog.core.service.OperateLogFrameworkService;
 import com.careyq.alive.satoken.AuthHelper;
-import com.careyq.alive.system.dto.OperateLogDTO;
+import com.careyq.alive.module.system.dto.OperateLogDTO;
 import com.careyq.alive.web.util.WebUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
