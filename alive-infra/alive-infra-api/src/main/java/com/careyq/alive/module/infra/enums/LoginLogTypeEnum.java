@@ -1,4 +1,4 @@
-package com.careyq.alive.module.system.enums;
+package com.careyq.alive.module.infra.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

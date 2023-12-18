@@ -1,14 +1,15 @@
-package com.careyq.alive.module.system.service.impl;
+package com.careyq.alive.module.infra.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.careyq.alive.module.infra.convert.LogConvert;
+import com.careyq.alive.module.infra.dto.LoginLogDTO;
+import com.careyq.alive.module.infra.dto.LoginLogPageDTO;
+import com.careyq.alive.module.infra.entity.LoginLog;
+import com.careyq.alive.module.infra.mapper.LoginLogMapper;
+import com.careyq.alive.module.infra.service.LoginLogService;
+import com.careyq.alive.module.infra.vo.LoginLogVO;
 import com.careyq.alive.mybatis.core.service.impl.ServiceImplX;
-import com.careyq.alive.module.system.convert.LogConvert;
-import com.careyq.alive.module.system.dto.LoginLogPageDTO;
-import com.careyq.alive.module.system.entity.LoginLog;
-import com.careyq.alive.module.system.mapper.LoginLogMapper;
-import com.careyq.alive.module.system.service.LoginLogService;
-import com.careyq.alive.module.system.vo.LoginLogVO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,9 +23,10 @@ import org.springframework.stereotype.Service;
 public class LoginLogServiceImpl extends ServiceImplX<LoginLogMapper, LoginLog> implements LoginLogService {
 
     @Override
-    public void saveLoginLog(LoginLog loginLog) {
-        if (loginLog != null) {
-            loginLog.setIpInfo(loginLog.getIpInfo().trim());
+    public void createLoginLog(LoginLogDTO dto) {
+        if (dto != null) {
+            dto.setIpInfo(dto.getIpInfo().trim());
+            LoginLog loginLog = LogConvert.INSTANCE.convert(dto);
             this.save(loginLog);
         }
     }

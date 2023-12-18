@@ -1,4 +1,4 @@
-package com.careyq.alive.module.system.vo;
+package com.careyq.alive.module.infra.vo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

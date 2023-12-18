@@ -1,4 +1,4 @@
-package com.careyq.alive.module.system.dto;
+package com.careyq.alive.module.infra.dto;
 
 import com.careyq.alive.core.domain.PageDTO;
 import io.swagger.v3.oas.annotations.media.Schema;

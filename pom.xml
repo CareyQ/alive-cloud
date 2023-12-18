@@ -12,6 +12,7 @@
         <module>alive-common</module>
         <module>alive-system</module>
         <module>alive-server</module>
+        <module>alive-infra</module>
     </modules>
     <packaging>pom</packaging>
 

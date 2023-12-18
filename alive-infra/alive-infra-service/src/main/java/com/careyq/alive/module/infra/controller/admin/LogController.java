@@ -1,10 +1,10 @@
-package com.careyq.alive.module.system.controller.admin;
+package com.careyq.alive.module.infra.controller.admin;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.careyq.alive.core.domain.Result;
-import com.careyq.alive.module.system.dto.LoginLogPageDTO;
-import com.careyq.alive.module.system.service.LoginLogService;
-import com.careyq.alive.module.system.vo.LoginLogVO;
+import com.careyq.alive.module.infra.dto.LoginLogPageDTO;
+import com.careyq.alive.module.infra.service.LoginLogService;
+import com.careyq.alive.module.infra.vo.LoginLogVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
@@ -29,7 +29,7 @@ public class LogController {
 
     @PostMapping("/login-log")
     @Operation(summary = "登录日志")
-    public Result<IPage<LoginLogVO>> saveUser(@Validated @RequestBody LoginLogPageDTO dto) {
+    public Result<IPage<LoginLogVO>> getLoginLogPage(@Validated @RequestBody LoginLogPageDTO dto) {
         return Result.ok(loginLogService.getLoginLogPage(dto));
     }
 

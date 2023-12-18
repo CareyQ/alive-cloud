@@ -1,10 +1,11 @@
-package com.careyq.alive.module.system.service;
+package com.careyq.alive.module.infra.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.careyq.alive.module.infra.dto.LoginLogDTO;
+import com.careyq.alive.module.infra.dto.LoginLogPageDTO;
+import com.careyq.alive.module.infra.entity.LoginLog;
+import com.careyq.alive.module.infra.vo.LoginLogVO;
 import com.careyq.alive.mybatis.core.service.IServiceX;
-import com.careyq.alive.module.system.dto.LoginLogPageDTO;
-import com.careyq.alive.module.system.entity.LoginLog;
-import com.careyq.alive.module.system.vo.LoginLogVO;
 
 /**
  * 登录日志服务
@@ -16,9 +17,9 @@ public interface LoginLogService extends IServiceX<LoginLog> {
     /**
      * 保存登录日志
      *
-     * @param loginLog 登录日志
+     * @param dto 登录日志
      */
-    void saveLoginLog(LoginLog loginLog);
+    void createLoginLog(LoginLogDTO dto);
 
     /**
      * 查询登录日志分页

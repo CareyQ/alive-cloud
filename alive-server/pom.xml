@@ -24,6 +24,12 @@
             <artifactId>alive-system-service</artifactId>
             <version>${revision}</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.careyq</groupId>
+            <artifactId>alive-infra-service</artifactId>
+            <version>${revision}</version>
+        </dependency>
     </dependencies>
 
     <build>

@@ -5,23 +5,14 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.careyq</groupId>
-        <artifactId>alive-common</artifactId>
+        <artifactId>alive-infra</artifactId>
         <version>${revision}</version>
     </parent>
 
-    <artifactId>alive-operatelog</artifactId>
+    <artifactId>alive-infra-service</artifactId>
 
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.careyq</groupId>
-            <artifactId>alive-web</artifactId>
-        </dependency>
-
+        <!-- alive 依赖服务 -->
         <dependency>
             <groupId>com.careyq</groupId>
             <artifactId>alive-core</artifactId>
@@ -29,8 +20,29 @@
 
         <dependency>
             <groupId>com.careyq</groupId>
+            <artifactId>alive-mybatis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.careyq</groupId>
+            <artifactId>alive-redis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.careyq</groupId>
             <artifactId>alive-infra-api</artifactId>
             <version>${revision}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.careyq</groupId>
+            <artifactId>alive-system-api</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.careyq</groupId>
+            <artifactId>alive-operatelog</artifactId>
         </dependency>
     </dependencies>
 

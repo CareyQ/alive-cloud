@@ -1,21 +1,36 @@
-package com.careyq.alive.module.system.dto;
+package com.careyq.alive.module.infra.entity;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.careyq.alive.core.domain.BaseEntity;
+import com.careyq.alive.core.domain.ResultCode;
+import com.careyq.alive.operatelog.core.enums.OperateTypeEnum;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
 import java.util.Map;
 
 /**
- * 操作日志 DTO
+ * 操作日志
  *
  * @author CareyQ
  */
 @Data
 @Accessors(chain = true)
-public class OperateLogDTO {
+@EqualsAndHashCode(callSuper = true)
+@TableName("system_operate_log")
+public class OperateLog extends BaseEntity {
+
+    /**
+     * {@link #javaMethodArgs} 最大长度
+     */
+    public static final Integer JAVA_METHOD_ARGS_MAX_LENGTH = 8000;
+
+    /**
+     * {@link #resultData} 最大长度
+     */
+    public static final Integer RESULT_MAX_LENGTH = 4000;
 
     /**
      * 链路追踪编号
@@ -25,31 +40,26 @@ public class OperateLogDTO {
     /**
      * 用户编号
      */
-    @NotNull(message = "用户编号不能为空")
     private Long userId;
 
     /**
-     * 用户类型
+     * 用户类型 {@link com.careyq.alive.core.enums.UserTypeEnum}
      */
-    @NotNull(message = "用户类型不能为空")
     private Integer userType;
 
     /**
      * 操作模块
      */
-    @NotBlank(message = "操作模块不能为空")
     private String module;
 
     /**
      * 操作名
      */
-    @NotBlank(message = "操作名")
     private String name;
 
     /**
-     * 操作分类
+     * 操作分类 {@link OperateTypeEnum}
      */
-    @NotNull(message = "操作分类不能为空")
     private Integer type;
 
     /**
@@ -65,58 +75,50 @@ public class OperateLogDTO {
     /**
      * 请求方法名
      */
-    @NotBlank(message = "请求方法名不能为空")
     private String requestMethod;
 
     /**
      * 请求地址
      */
-    @NotBlank(message = "请求地址不能为空")
     private String requestUrl;
 
     /**
      * IP
      */
-    @NotBlank(message = "IP 不能为空")
     private String ip;
 
     /**
-     * 设备信息
+     * 设备
      */
-    @NotBlank(message = "设备信息不能为空")
     private String device;
 
     /**
      * Java 方法名
      */
-    @NotBlank(message = "Java 方法名不能为空")
     private String javaMethod;
 
     /**
-     * Java 方法参数
+     * Java 方法的参数
      */
     private String javaMethodArgs;
 
     /**
      * 开始时间
      */
-    @NotNull(message = "开始时间不能为空")
     private LocalDateTime startTime;
 
     /**
      * 执行时长，单位：毫秒
      */
-    @NotNull(message = "执行时长不能为空")
     private Integer duration;
 
     /**
-     * 结果码
+     * 结果码，{@link ResultCode#code()}
      */
-    @NotNull(message = "结果码不能为空")
     private Integer resultCode;
 
     /**
-     * 结果提示
+     * 结果提示，{@link ResultCode#msg()}
      */
     private String resultMsg;
 
@@ -125,13 +127,4 @@ public class OperateLogDTO {
      */
     private String resultData;
 
-    /**
-     * 创建人
-     */
-    private Long creator;
-
-    /**
-     * 更新人
-     */
-    private Long updater;
 }

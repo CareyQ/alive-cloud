@@ -1,9 +1,10 @@
-package com.careyq.alive.module.system.convert;
+package com.careyq.alive.module.infra.convert;
 
-import com.careyq.alive.module.system.dto.OperateLogDTO;
-import com.careyq.alive.module.system.entity.LoginLog;
-import com.careyq.alive.module.system.entity.OperateLog;
-import com.careyq.alive.module.system.vo.LoginLogVO;
+import com.careyq.alive.module.infra.dto.LoginLogDTO;
+import com.careyq.alive.module.infra.entity.LoginLog;
+import com.careyq.alive.module.infra.entity.OperateLog;
+import com.careyq.alive.module.infra.vo.LoginLogVO;
+import com.careyq.alive.module.infra.dto.OperateLogDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -19,13 +20,21 @@ public interface LogConvert {
     LogConvert INSTANCE = Mappers.getMapper(LogConvert.class);
 
     /**
-     * 错误日志转换为 VO
+     * 日志转换为 VO
      *
      * @param loginLog LoginLog
      * @return VO
      */
     @Mapping(target = "loginTime", source = "createTime")
     LoginLogVO convert(LoginLog loginLog);
+
+    /**
+     * 转换为登录日志实体
+     *
+     * @param dto LoginLogDTO
+     * @return LoginLog
+     */
+    LoginLog convert(LoginLogDTO dto);
 
     /**
      * 操作日志转换

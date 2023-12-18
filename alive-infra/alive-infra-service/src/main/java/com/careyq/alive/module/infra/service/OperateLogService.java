@@ -1,8 +1,8 @@
-package com.careyq.alive.module.system.service;
+package com.careyq.alive.module.infra.service;
 
+import com.careyq.alive.module.infra.entity.OperateLog;
+import com.careyq.alive.module.infra.dto.OperateLogDTO;
 import com.careyq.alive.mybatis.core.service.IServiceX;
-import com.careyq.alive.module.system.dto.OperateLogDTO;
-import com.careyq.alive.module.system.entity.OperateLog;
 
 /**
  * 操作日志服务

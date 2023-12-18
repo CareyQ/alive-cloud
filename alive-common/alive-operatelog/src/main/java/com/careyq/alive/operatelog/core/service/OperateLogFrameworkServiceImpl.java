@@ -1,8 +1,8 @@
 package com.careyq.alive.operatelog.core.service;
 
 import com.careyq.alive.core.util.AsyncUtils;
-import com.careyq.alive.module.system.api.OperateLogApi;
-import com.careyq.alive.module.system.dto.OperateLogDTO;
+import com.careyq.alive.module.infra.api.LogApi;
+import com.careyq.alive.module.infra.dto.OperateLogDTO;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -13,10 +13,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OperateLogFrameworkServiceImpl implements OperateLogFrameworkService {
 
-    private final OperateLogApi operateLogApi;
+    private final LogApi logApi;
 
     @Override
     public void createOperateLog(OperateLogDTO dto) {
-        AsyncUtils.runAsync(() -> operateLogApi.createOperateLog(dto));
+        AsyncUtils.runAsync(() -> logApi.createOperateLog(dto));
     }
 }

@@ -1,11 +1,6 @@
-package com.careyq.alive.module.system.entity;
+package com.careyq.alive.module.infra.dto;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.careyq.alive.core.domain.BaseEntity;
-import com.careyq.alive.module.system.enums.LoginLogTypeEnum;
-import com.careyq.alive.module.system.enums.LoginResultEnum;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
@@ -15,12 +10,10 @@ import lombok.experimental.Accessors;
  */
 @Data
 @Accessors(chain = true)
-@EqualsAndHashCode(callSuper = true)
-@TableName("system_login_log")
-public class LoginLog extends BaseEntity {
+public class LoginLogDTO {
 
     /**
-     * 登录类型 {@link LoginLogTypeEnum}
+     * 登录类型
      */
     private Integer type;
 
@@ -30,7 +23,7 @@ public class LoginLog extends BaseEntity {
     private String traceId;
 
     /**
-     * 用户 ID {@link User#getId()}
+     * 用户 ID
      */
     private Long userId;
 
@@ -40,7 +33,7 @@ public class LoginLog extends BaseEntity {
     private String username;
 
     /**
-     * 登录结果 {@link LoginResultEnum}
+     * 登录结果
      */
     private Integer result;
 

@@ -6,6 +6,9 @@ import com.careyq.alive.core.enums.CommonStatusEnum;
 import com.careyq.alive.core.exception.CustomException;
 import com.careyq.alive.core.util.ServletUtils;
 import com.careyq.alive.core.util.TraceUtils;
+import com.careyq.alive.module.infra.api.LogApi;
+import com.careyq.alive.module.infra.dto.LoginLogDTO;
+import com.careyq.alive.module.infra.enums.LoginLogTypeEnum;
 import com.careyq.alive.module.system.constants.SystemResultCode;
 import com.careyq.alive.module.system.service.PermissionService;
 import com.careyq.alive.module.system.service.UserService;
@@ -13,12 +16,9 @@ import com.careyq.alive.satoken.AuthHelper;
 import com.careyq.alive.satoken.core.domain.LoginUser;
 import com.careyq.alive.module.system.convert.UserConvert;
 import com.careyq.alive.module.system.dto.LoginDTO;
-import com.careyq.alive.module.system.entity.LoginLog;
 import com.careyq.alive.module.system.entity.User;
-import com.careyq.alive.module.system.enums.LoginLogTypeEnum;
 import com.careyq.alive.module.system.enums.LoginResultEnum;
 import com.careyq.alive.module.system.service.AuthService;
-import com.careyq.alive.module.system.service.LoginLogService;
 import com.careyq.alive.module.system.vo.LoginVO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -36,7 +36,7 @@ public class AuthServiceImpl implements AuthService {
 
     private final PermissionService permissionService;
     private final UserService userService;
-    private final LoginLogService loginLogService;
+    private final LogApi logApi;
 
     @Override
     public User authenticate(String username, String password) {
@@ -94,7 +94,7 @@ public class AuthServiceImpl implements AuthService {
      */
     private void createLoginLog(Long userId, String username, LoginLogTypeEnum loginLogType, LoginResultEnum loginResult) {
         String clientIp = ServletUtils.getClientIp();
-        LoginLog loginLog = new LoginLog();
+        LoginLogDTO loginLog = new LoginLogDTO();
         loginLog.setType(loginLogType.getType())
                 .setTraceId(TraceUtils.getTraceId())
                 .setUserId(userId)
@@ -103,7 +103,7 @@ public class AuthServiceImpl implements AuthService {
                 .setIp(clientIp)
                 .setIpInfo(ServletUtils.getIpInfo(clientIp))
                 .setDevice(ServletUtils.getUserAgentInfo());
-        loginLogService.saveLoginLog(loginLog);
+        logApi.createLoginLog(loginLog);
         if (userId != null && LoginResultEnum.SUCCESS.equals(loginResult)) {
             userService.updateLoginTime(userId, loginLog.getIp());
         }

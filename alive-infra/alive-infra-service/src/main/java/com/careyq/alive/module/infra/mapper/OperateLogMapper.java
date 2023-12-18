@@ -1,7 +1,7 @@
-package com.careyq.alive.module.system.mapper;
+package com.careyq.alive.module.infra.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.careyq.alive.module.system.entity.OperateLog;
+import com.careyq.alive.module.infra.entity.OperateLog;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

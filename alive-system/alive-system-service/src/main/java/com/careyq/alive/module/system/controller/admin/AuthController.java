@@ -1,5 +1,6 @@
 package com.careyq.alive.module.system.controller.admin;
 
+import cn.dev33.satoken.annotation.SaIgnore;
 import cn.hutool.core.lang.tree.Tree;
 import com.careyq.alive.core.domain.Result;
 import com.careyq.alive.module.system.dto.LoginDTO;
@@ -29,12 +30,14 @@ public class AuthController {
     private final UserService userService;
     private final MenuService menuService;
 
+    @SaIgnore
     @GetMapping("/check-mobile")
     @Operation(summary = "检查手机号是否已存在")
     public Result<Boolean> checkMobile(@RequestParam String mobile) {
         return Result.ok(userService.mobileIsExist(mobile, null));
     }
 
+    @SaIgnore
     @PostMapping("/login")
     @Operation(summary = "账号密码登录")
     public Result<LoginVO> login(@RequestBody LoginDTO dto) {
