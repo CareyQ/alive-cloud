@@ -19,7 +19,7 @@ import java.util.Map;
 @Data
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
-@TableName("system_operate_log")
+@TableName("infra_operate_log")
 public class OperateLog extends BaseEntity {
 
     /**

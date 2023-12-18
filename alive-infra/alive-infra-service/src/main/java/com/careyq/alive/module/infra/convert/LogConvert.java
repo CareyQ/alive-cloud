@@ -1,6 +1,8 @@
 package com.careyq.alive.module.infra.convert;
 
+import com.careyq.alive.module.infra.dto.ErrorLogDTO;
 import com.careyq.alive.module.infra.dto.LoginLogDTO;
+import com.careyq.alive.module.infra.entity.ErrorLog;
 import com.careyq.alive.module.infra.entity.LoginLog;
 import com.careyq.alive.module.infra.entity.OperateLog;
 import com.careyq.alive.module.infra.vo.LoginLogVO;
@@ -34,6 +36,12 @@ public interface LogConvert {
      * @param dto LoginLogDTO
      * @return LoginLog
      */
+    @Mapping(target = "updater", ignore = true)
+    @Mapping(target = "updateTime", ignore = true)
+    @Mapping(target = "isDel", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "creator", ignore = true)
+    @Mapping(target = "createTime", ignore = true)
     LoginLog convert(LoginLogDTO dto);
 
     /**
@@ -47,4 +55,21 @@ public interface LogConvert {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createTime", ignore = true)
     OperateLog convert(OperateLogDTO dto);
+
+    /**
+     * 错误日志转换
+     *
+     * @param dto DTO
+     * @return 实体
+     */
+    @Mapping(target = "updater", ignore = true)
+    @Mapping(target = "updateTime", ignore = true)
+    @Mapping(target = "processUserId", ignore = true)
+    @Mapping(target = "processTime", ignore = true)
+    @Mapping(target = "processStatus", ignore = true)
+    @Mapping(target = "isDel", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "creator", ignore = true)
+    @Mapping(target = "createTime", ignore = true)
+    ErrorLog convert(ErrorLogDTO dto);
 }

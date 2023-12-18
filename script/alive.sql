@@ -146,7 +146,7 @@ create table if not exists system_role_user
 ) comment '角色用户关联';
 
 
-create table if not exists system_login_log
+create table if not exists infra_login_log
 (
     id          bigint       not null auto_increment primary key comment '主键',
     type        int          not null comment '日志类型',
@@ -164,7 +164,7 @@ create table if not exists system_login_log
     update_time datetime     not null default current_timestamp on update current_timestamp comment '更新时间'
 ) comment '登录日志';
 
-create table if not exists system_operate_log
+create table if not exists infra_operate_log
 (
     id               bigint        not null auto_increment primary key comment '主键',
     trace_id         varchar(64)   not null default '' comment '链路追踪编号',
@@ -192,3 +192,29 @@ create table if not exists system_operate_log
     updater          bigint        null     default null comment '更新者',
     update_time      datetime      not null default current_timestamp on update current_timestamp comment '更新时间'
 ) comment '操作日志';
+
+create table if not exists infra_error_log
+(
+    id                    bigint        not null auto_increment primary key comment '主键',
+    trace_id              varchar(64)   not null default '' comment '链路追踪编号',
+    user_id               bigint        not null default 0 comment '用户 ID',
+    user_type             tinyint       not null default 0 comment '用户名',
+    request_method        varchar(16)   null     default '' comment '请求方法名',
+    request_url           varchar(255)  null     default '' comment '请求地址',
+    request_params        varchar(5000) null     default '' comment '请求参数',
+    request_curl          varchar(5000) null     default '' comment '请求 curl',
+    ip                    varchar(50)   null     default null comment 'IP',
+    device                varchar(200)  null     default null comment '设备名',
+    ex_name               varchar(128)  not null default '' comment '异常名，Throwable.getClass() 类全名',
+    ex_message            text          not null comment '异常消息',
+    ex_root_cause_message text          not null comment '异常导致的根消息',
+    ex_stack_trace        text          not null comment '异常的栈轨迹',
+    process_status        tinyint       not null default 0 comment '处理状态',
+    process_time          datetime      null     default null comment '处理时间',
+    process_user_id       bigint        null     default null comment '处理人',
+    is_del                tinyint       not null default 0 comment '是否删除',
+    creator               bigint        null     default null comment '创建者',
+    create_time           datetime      not null default current_timestamp comment '创建时间',
+    updater               bigint        null     default null comment '更新者',
+    update_time           datetime      not null default current_timestamp on update current_timestamp comment '更新时间'
+) comment '异常错误日志';

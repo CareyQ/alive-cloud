@@ -2,13 +2,24 @@ package com.careyq.alive.web.handler;
 
 import cn.dev33.satoken.exception.NotLoginException;
 import cn.dev33.satoken.exception.NotPermissionException;
+import cn.hutool.core.exceptions.ExceptionUtil;
 import com.careyq.alive.core.domain.Result;
 import com.careyq.alive.core.exception.CustomException;
+import com.careyq.alive.core.util.AsyncUtils;
+import com.careyq.alive.core.util.JsonUtils;
+import com.careyq.alive.core.util.ServletUtils;
+import com.careyq.alive.core.util.TraceUtils;
+import com.careyq.alive.module.infra.api.LogApi;
+import com.careyq.alive.module.infra.dto.ErrorLogDTO;
 import com.careyq.alive.satoken.AuthHelper;
+import com.careyq.alive.web.util.WebUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -19,6 +30,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
+import java.util.Map;
+
 import static com.careyq.alive.core.constants.ResultCodeConstants.*;
 
 /**
@@ -28,7 +41,10 @@ import static com.careyq.alive.core.constants.ResultCodeConstants.*;
  */
 @Slf4j
 @RestControllerAdvice
+@RequiredArgsConstructor
 public class GlobalExceptionHandler {
+
+    private final LogApi logApi;
 
     /**
      * 请求参数缺失
@@ -129,8 +145,45 @@ public class GlobalExceptionHandler {
      * 未捕获到的异常
      */
     @ExceptionHandler(Exception.class)
-    public Result<?> defaultExceptionHandler(Throwable ex) {
+    public Result<?> defaultExceptionHandler(HttpServletRequest req, Throwable ex) {
         log.error("[defaultExceptionHandler]", ex);
+        AsyncUtils.runAsync(() -> this.createErrorLog(req, ex));
         return Result.fail(SERVER_ERROR.code(), SERVER_ERROR.msg());
+    }
+
+    private void createErrorLog(HttpServletRequest req, Throwable e) {
+        // 插入错误日志
+        ErrorLogDTO errorLog = new ErrorLogDTO();
+        try {
+            // 初始化 errorLog
+            initErrorLog(errorLog, req, e);
+            // 执行插入 errorLog
+            logApi.createErrorLog(errorLog);
+        } catch (Throwable th) {
+            log.error("[createExceptionLog][url({}) log({}) 发生异常]", req.getRequestURI(), JsonUtils.toJsonString(errorLog), th);
+        }
+    }
+
+    private void initErrorLog(ErrorLogDTO errorLog, HttpServletRequest request, Throwable e) {
+        // 处理用户信息
+        errorLog.setUserId(AuthHelper.getUserId());
+        errorLog.setUserType(WebUtils.getLoginUserType(request));
+        // 设置异常字段
+        errorLog.setExName(e.getClass().getName());
+        errorLog.setExMessage(ExceptionUtil.getMessage(e));
+        errorLog.setExRootCauseMessage(ExceptionUtil.getRootCauseMessage(e));
+        errorLog.setExStackTrace(ExceptionUtils.getStackTrace(e));
+        StackTraceElement[] stackTraceElements = e.getStackTrace();
+        Assert.notEmpty(stackTraceElements, "异常 stackTraceElements 不能为空");
+        // 设置其它字段
+        errorLog.setTraceId(TraceUtils.getTraceId());
+        errorLog.setRequestUrl(request.getRequestURI());
+        Map<String, Object> requestParams = Map.of("query", ServletUtils.getParamMap(request),
+                "body", ServletUtils.getBody(request));
+        errorLog.setRequestParams(JsonUtils.toJsonString(requestParams));
+        errorLog.setRequestMethod(request.getMethod());
+        errorLog.setRequestCurl(ServletUtils.getCurl(request));
+        errorLog.setDevice(ServletUtils.getUserAgentInfo(request));
+        errorLog.setIp(ServletUtils.getClientIP(request));
     }
 }

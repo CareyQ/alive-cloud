@@ -1,5 +1,6 @@
 package com.careyq.alive.module.infra.api;
 
+import com.careyq.alive.module.infra.dto.ErrorLogDTO;
 import com.careyq.alive.module.infra.dto.LoginLogDTO;
 import com.careyq.alive.module.infra.dto.OperateLogDTO;
 import org.springframework.validation.annotation.Validated;
@@ -24,4 +25,11 @@ public interface LogApi {
      * @param dto 日志信息
      */
     void createOperateLog(@Validated OperateLogDTO dto);
+
+    /**
+     * 创建错误日志
+     *
+     * @param dto 日志信息
+     */
+    void createErrorLog(@Validated ErrorLogDTO dto);
 }

@@ -1,6 +1,7 @@
 package com.careyq.alive.web.config;
 
 import cn.hutool.core.text.AntPathMatcher;
+import com.careyq.alive.module.infra.api.LogApi;
 import com.careyq.alive.web.handler.GlobalExceptionHandler;
 import com.careyq.alive.web.util.WebUtils;
 import jakarta.servlet.Filter;
@@ -40,8 +41,8 @@ public class WebAutoConfiguration implements WebMvcConfigurer {
     }
 
     @Bean
-    public GlobalExceptionHandler globalExceptionHandler() {
-        return new GlobalExceptionHandler();
+    public GlobalExceptionHandler globalExceptionHandler(LogApi logApi) {
+        return new GlobalExceptionHandler(logApi);
     }
 
     @Bean

@@ -15,7 +15,7 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
-@TableName("system_login_log")
+@TableName("infra_login_log")
 public class LoginLog extends BaseEntity {
 
     /**

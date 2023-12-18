@@ -1,10 +1,10 @@
 package com.careyq.alive.module.infra.api;
 
 
+import com.careyq.alive.module.infra.dto.ErrorLogDTO;
 import com.careyq.alive.module.infra.dto.LoginLogDTO;
 import com.careyq.alive.module.infra.dto.OperateLogDTO;
-import com.careyq.alive.module.infra.service.LoginLogService;
-import com.careyq.alive.module.infra.service.OperateLogService;
+import com.careyq.alive.module.infra.service.LogService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -19,16 +19,20 @@ import org.springframework.validation.annotation.Validated;
 @AllArgsConstructor
 public class LogApiImpl implements LogApi {
 
-    private final LoginLogService loginLogService;
-    private final OperateLogService operateLogService;
+    private final LogService logService;
 
     @Override
     public void createLoginLog(LoginLogDTO dto) {
-        loginLogService.createLoginLog(dto);
+        logService.createLoginLog(dto);
     }
 
     @Override
     public void createOperateLog(OperateLogDTO dto) {
-        operateLogService.crateOperateLog(dto);
+        logService.createOperateLog(dto);
+    }
+
+    @Override
+    public void createErrorLog(ErrorLogDTO dto) {
+        logService.createErrorLog(dto);
     }
 }

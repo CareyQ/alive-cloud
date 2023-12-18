@@ -1,7 +1,11 @@
 package com.careyq.alive.core.util;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.servlet.JakartaServletUtil;
+import cn.hutool.http.ContentType;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.http.useragent.UserAgent;
 import cn.hutool.http.useragent.UserAgentUtil;
@@ -11,6 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+
+import java.util.*;
 
 /**
  * ServletUtil 扩展
@@ -22,6 +28,11 @@ public class ServletUtils extends JakartaServletUtil {
 
     public static final String UNKNOWN = "未知";
     public static final String IP_QUERY_RUL = "https://whois.pconline.com.cn/ipJson.jsp?json=true&ip=";
+    private static final String FORMAT_HEADER = "-H '%1$s:%2$s'";
+    private static final String FORMAT_METHOD = "-X %1$s";
+    private static final String FORMAT_BODY = "-d '%1$s'";
+    private static final String FORMAT_URL = "'%1$s'";
+    private static final String CONTENT_TYPE = "Content-Type";
 
     public static HttpServletRequest getRequest() {
         RequestAttributes attributes = RequestContextHolder.getRequestAttributes();
@@ -105,5 +116,49 @@ public class ServletUtils extends JakartaServletUtil {
         String isMobile = ua.isMobile() ? "移动端" : "PC端";
         return ua.getBrowser().toString() + " " + ua.getVersion() + " | " + ua.getPlatform().toString()
                 + " " + ua.getOs().toString() + " | " + isMobile;
+    }
+
+    /**
+     * 获取请求 curl
+     *
+     * @param request HttpServletRequest
+     * @return curl
+     */
+    public static String getCurl(HttpServletRequest request) {
+        if (request == null) {
+            return null;
+        }
+        String curl;
+        try {
+            List<String> parts = new ArrayList<>();
+            parts.add("curl");
+            String url = request.getRequestURL().toString();
+            String method = request.getMethod();
+            String contentType = request.getContentType();
+            String queryString = request.getQueryString();
+            parts.add(String.format(FORMAT_METHOD, method.toUpperCase()));
+
+            Enumeration<String> headerNames = request.getHeaderNames();
+            while (headerNames.hasMoreElements()) {
+                String key = headerNames.nextElement();
+                String value = request.getHeader(key);
+                parts.add(String.format(FORMAT_HEADER, key, value));
+            }
+            if (contentType != null && !contentType.contains(CONTENT_TYPE)) {
+                parts.add(String.format(FORMAT_HEADER, CONTENT_TYPE, contentType));
+            }
+            if (queryString != null) {
+                url = HttpUtil.urlWithForm(url, queryString, CharsetUtil.CHARSET_UTF_8, false);
+            }
+            if (ContentType.isFormUrlEncode(contentType) && CollUtil.isNotEmpty(request.getParameterMap())) {
+                request.getParameterMap().forEach((k, v) ->
+                        parts.add(StrUtil.format("--data-urlencode '{}={}'", k, ArrayUtil.get(v, 0))));
+            }
+            parts.add(String.format(FORMAT_URL, url));
+            curl = StrUtil.join(" ", parts);
+        } catch (Exception ignored) {
+            curl = null;
+        }
+        return curl;
     }
 }
