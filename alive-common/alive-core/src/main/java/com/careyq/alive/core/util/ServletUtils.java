@@ -9,14 +9,16 @@ import cn.hutool.http.ContentType;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.http.useragent.UserAgent;
 import cn.hutool.http.useragent.UserAgentUtil;
+import com.careyq.alive.core.thread.AliveThreadContextHolder;
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
 
 /**
  * ServletUtil 扩展
@@ -26,20 +28,27 @@ import java.util.*;
 @Slf4j
 public class ServletUtils extends JakartaServletUtil {
 
+    public static final String CONTENT_TYPE = "Content-Type";
     public static final String UNKNOWN = "未知";
     public static final String IP_QUERY_RUL = "https://whois.pconline.com.cn/ipJson.jsp?json=true&ip=";
     private static final String FORMAT_HEADER = "-H '%1$s:%2$s'";
     private static final String FORMAT_METHOD = "-X %1$s";
     private static final String FORMAT_BODY = "-d '%1$s'";
     private static final String FORMAT_URL = "'%1$s'";
-    private static final String CONTENT_TYPE = "Content-Type";
 
     public static HttpServletRequest getRequest() {
-        RequestAttributes attributes = RequestContextHolder.getRequestAttributes();
-        if (attributes == null) {
-            return null;
+        return AliveThreadContextHolder.getRequest();
+    }
+
+    public static HttpServletResponse getResponse() {
+        return AliveThreadContextHolder.getResponse();
+    }
+
+    public static boolean isWeb() {
+        if (ServletUtils.getRequest() == null) {
+            return RequestContextHolder.getRequestAttributes() != null;
         }
-        return ((ServletRequestAttributes) attributes).getRequest();
+        return true;
     }
 
     /**

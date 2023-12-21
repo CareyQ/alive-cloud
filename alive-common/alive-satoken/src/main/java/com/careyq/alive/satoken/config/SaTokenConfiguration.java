@@ -1,6 +1,8 @@
 package com.careyq.alive.satoken.config;
 
 import cn.dev33.satoken.config.SaTokenConfig;
+import cn.dev33.satoken.context.SaTokenContext;
+import com.careyq.alive.satoken.core.service.SaTokenContextImpl;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
@@ -24,5 +26,11 @@ public class SaTokenConfiguration {
         config.setTokenStyle(TOKEN_STYLE);
         config.setIsLog(true);
         return config;
+    }
+
+    @Bean
+    @Primary
+    public SaTokenContext getSaTokenContext() {
+        return new SaTokenContextImpl();
     }
 }
