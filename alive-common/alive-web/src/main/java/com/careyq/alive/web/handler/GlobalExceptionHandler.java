@@ -151,16 +151,16 @@ public class GlobalExceptionHandler {
         return Result.fail(SERVER_ERROR.code(), SERVER_ERROR.msg());
     }
 
-    private void createErrorLog(HttpServletRequest req, Throwable e) {
+    private void createErrorLog(HttpServletRequest request, Throwable e) {
         // 插入错误日志
         ErrorLogDTO errorLog = new ErrorLogDTO();
         try {
             // 初始化 errorLog
-            initErrorLog(errorLog, req, e);
+            initErrorLog(errorLog, request, e);
             // 执行插入 errorLog
             logApi.createErrorLog(errorLog);
         } catch (Throwable th) {
-            log.error("[createExceptionLog][url({}) log({}) 发生异常]", req.getRequestURI(), JsonUtils.toJsonString(errorLog), th);
+            log.error("[createExceptionLog][url({}) log({}) 发生异常]", request.getRequestURI(), JsonUtils.toJsonString(errorLog), th);
         }
     }
 

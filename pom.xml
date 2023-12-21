@@ -42,6 +42,7 @@
         <jsoup.version>1.17.1</jsoup.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
         <skywalking.version>9.1.0</skywalking.version>
+        <transmittable.version>2.14.4</transmittable.version>
     </properties>
 
     <dependencyManagement>
@@ -217,6 +218,12 @@
                 <groupId>org.apache.skywalking</groupId>
                 <artifactId>apm-toolkit-trace</artifactId>
                 <version>${skywalking.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>transmittable-thread-local</artifactId>
+                <version>${transmittable.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
