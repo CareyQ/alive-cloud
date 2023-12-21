@@ -29,11 +29,6 @@ public class LoginLog extends BaseEntity {
     private String traceId;
 
     /**
-     * 用户 ID
-     */
-    private Long userId;
-
-    /**
      * 用户名，万一以后可以变更
      */
     private String username;

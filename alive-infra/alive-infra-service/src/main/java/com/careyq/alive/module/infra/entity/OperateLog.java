@@ -38,9 +38,9 @@ public class OperateLog extends BaseEntity {
     private String traceId;
 
     /**
-     * 用户编号
+     * 用户名称
      */
-    private Long userId;
+    private String username;
 
     /**
      * 用户类型 {@link com.careyq.alive.core.enums.UserTypeEnum}

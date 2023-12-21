@@ -151,7 +151,6 @@ create table if not exists infra_login_log
     id          bigint       not null auto_increment primary key comment '主键',
     type        int          not null comment '日志类型',
     trace_id    varchar(64)  not null default '' comment '链路追踪编号',
-    user_id     bigint       not null default 0 comment '用户 ID',
     username    varchar(20)  not null default '' comment '用户名',
     result      int          not null comment '登录结果',
     ip          varchar(50)  not null default '' comment '登录 IP',
@@ -168,7 +167,7 @@ create table if not exists infra_operate_log
 (
     id               bigint        not null auto_increment primary key comment '主键',
     trace_id         varchar(64)   not null default '' comment '链路追踪编号',
-    user_id          bigint        not null default 0 comment '用户 ID',
+    username         varchar(20)   not null default '' comment '用户名',
     user_type        tinyint       not null default 0 comment '用户名',
     module           varchar(50)   not null comment '模块',
     name             varchar(50)   not null comment '操作名称',
@@ -197,7 +196,7 @@ create table if not exists infra_error_log
 (
     id                    bigint        not null auto_increment primary key comment '主键',
     trace_id              varchar(64)   not null default '' comment '链路追踪编号',
-    user_id               bigint        not null default 0 comment '用户 ID',
+    username              varchar(20)   not null default '' comment '用户名',
     user_type             tinyint       not null default 0 comment '用户名',
     request_method        varchar(16)   null     default '' comment '请求方法名',
     request_url           varchar(255)  null     default '' comment '请求地址',

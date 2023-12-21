@@ -1,11 +1,9 @@
 package com.careyq.alive.module.infra.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.careyq.alive.module.infra.dto.ErrorLogDTO;
-import com.careyq.alive.module.infra.dto.LoginLogDTO;
-import com.careyq.alive.module.infra.dto.LoginLogPageDTO;
-import com.careyq.alive.module.infra.dto.OperateLogDTO;
-import com.careyq.alive.module.infra.vo.LoginLogVO;
+import com.careyq.alive.module.infra.dto.*;
+import com.careyq.alive.module.infra.vo.LoginLogPageVO;
+import com.careyq.alive.module.infra.vo.OperateLogPageVO;
 
 /**
  * 日志服务
@@ -27,7 +25,7 @@ public interface LogService {
      * @param dto 分页请求筛选项
      * @return 日志分页
      */
-    IPage<LoginLogVO> getLoginLogPage(LoginLogPageDTO dto);
+    IPage<LoginLogPageVO> getLoginLogPage(LoginLogPageDTO dto);
 
     /**
      * 创建操作日志
@@ -42,4 +40,12 @@ public interface LogService {
      * @param dto 错误日志
      */
     void createErrorLog(ErrorLogDTO dto);
+
+    /**
+     * 查询操作日志分页
+     *
+     * @param dto 分页请求筛选项
+     * @return 日志分页
+     */
+    IPage<OperateLogPageVO> getOperateLogPage(OperateLogPageDTO dto);
 }

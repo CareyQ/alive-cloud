@@ -5,8 +5,9 @@ import com.careyq.alive.module.infra.dto.LoginLogDTO;
 import com.careyq.alive.module.infra.entity.ErrorLog;
 import com.careyq.alive.module.infra.entity.LoginLog;
 import com.careyq.alive.module.infra.entity.OperateLog;
-import com.careyq.alive.module.infra.vo.LoginLogVO;
+import com.careyq.alive.module.infra.vo.LoginLogPageVO;
 import com.careyq.alive.module.infra.dto.OperateLogDTO;
+import com.careyq.alive.module.infra.vo.OperateLogPageVO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -22,13 +23,13 @@ public interface LogConvert {
     LogConvert INSTANCE = Mappers.getMapper(LogConvert.class);
 
     /**
-     * 日志转换为 VO
+     * 日志转换为分页 VO
      *
      * @param loginLog LoginLog
      * @return VO
      */
     @Mapping(target = "loginTime", source = "createTime")
-    LoginLogVO convert(LoginLog loginLog);
+    LoginLogPageVO convert(LoginLog loginLog);
 
     /**
      * 转换为登录日志实体
@@ -72,4 +73,12 @@ public interface LogConvert {
     @Mapping(target = "creator", ignore = true)
     @Mapping(target = "createTime", ignore = true)
     ErrorLog convert(ErrorLogDTO dto);
+
+    /**
+     * 日志转换为分页 VO
+     *
+     * @param operateLog 操作日志实体
+     * @return 分页 VO
+     */
+    OperateLogPageVO convert(OperateLog operateLog);
 }

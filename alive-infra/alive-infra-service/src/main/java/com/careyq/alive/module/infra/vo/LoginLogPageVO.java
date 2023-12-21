@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Data
 @Accessors(chain = true)
 @Schema(description = "管理后台 - 登录日志 VO")
-public class LoginLogVO {
+public class LoginLogPageVO {
 
     @Schema(description = "日志类型")
     private Integer type;

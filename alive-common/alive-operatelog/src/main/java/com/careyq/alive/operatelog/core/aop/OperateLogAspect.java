@@ -16,6 +16,7 @@ import com.careyq.alive.operatelog.core.annotations.OperateLog;
 import com.careyq.alive.operatelog.core.enums.OperateTypeEnum;
 import com.careyq.alive.operatelog.core.service.OperateLogFrameworkService;
 import com.careyq.alive.satoken.AuthHelper;
+import com.careyq.alive.satoken.core.domain.LoginUser;
 import com.careyq.alive.web.util.WebUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -92,12 +93,12 @@ public class OperateLogAspect {
             }
 
             MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-            Long userId = AuthHelper.getUserId();
+            LoginUser loginUser = AuthHelper.getLoginUser();
             OperateLogDTO record = new OperateLogDTO();
             record.setTraceId(TraceUtils.getTraceId())
-                    .setUserId(userId)
-                    .setCreator(userId)
-                    .setUpdater(userId)
+                    .setUsername(loginUser.getUsername())
+                    .setCreator(loginUser.getUserId())
+                    .setUpdater(loginUser.getUserId())
                     .setUserType(WebUtils.getLoginUserType())
                     .setJavaMethod(signature.toString())
                     .setStartTime(startTime);
