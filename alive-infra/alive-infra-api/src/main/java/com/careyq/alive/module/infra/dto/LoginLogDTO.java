@@ -23,12 +23,7 @@ public class LoginLogDTO {
     private String traceId;
 
     /**
-     * 用户 ID
-     */
-    private Long userId;
-
-    /**
-     * 用户名，万一以后可以变更
+     * 用户名
      */
     private String username;
 

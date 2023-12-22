@@ -14,8 +14,8 @@ import com.careyq.alive.module.infra.mapper.ErrorLogMapper;
 import com.careyq.alive.module.infra.mapper.LoginLogMapper;
 import com.careyq.alive.module.infra.mapper.OperateLogMapper;
 import com.careyq.alive.module.infra.service.LogService;
-import com.careyq.alive.module.infra.vo.LoginLogPageVO;
-import com.careyq.alive.module.infra.vo.OperateLogPageVO;
+import com.careyq.alive.module.infra.vo.*;
+import com.careyq.alive.module.system.api.UserApi;
 import com.careyq.alive.mybatis.core.mapper.LambdaQueryWrapperX;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,6 +32,7 @@ public class LogServiceImpl implements LogService {
     private final LoginLogMapper loginLogMapper;
     private final ErrorLogMapper errorLogMapper;
     private final OperateLogMapper operateLogMapper;
+    private final UserApi userApi;
 
     @Override
     public void createLoginLog(LoginLogDTO dto) {
@@ -46,7 +47,7 @@ public class LogServiceImpl implements LogService {
     public IPage<LoginLogPageVO> getLoginLogPage(LoginLogPageDTO dto) {
         IPage<LoginLog> page = loginLogMapper.selectPage(new Page<>(dto.getCurrent(), dto.getSize()),
                 new LambdaQueryWrapperX<LoginLog>()
-                        .likeIfPresent(LoginLog::getUsername, dto.getUsername())
+                        .likeIfPresent(LoginLog::getNickname, dto.getNickname())
                         .eqIfPresent(LoginLog::getIp, dto.getIp())
                         .dateTimeBetween(LoginLog::getCreateTime, dto.getStartDate(), dto.getEndDate())
                         .orderByDesc(LoginLog::getId));
@@ -72,12 +73,40 @@ public class LogServiceImpl implements LogService {
     public IPage<OperateLogPageVO> getOperateLogPage(OperateLogPageDTO dto) {
         IPage<OperateLog> page = operateLogMapper.selectPage(new Page<>(dto.getCurrent(), dto.getSize()),
                 new LambdaQueryWrapperX<OperateLog>()
-                        .likeIfPresent(OperateLog::getUsername, dto.getUsername())
+                        .likeIfPresent(OperateLog::getNickname, dto.getNickname())
                         .likeIfPresent(OperateLog::getModule, dto.getModule())
                         .dateTimeBetween(OperateLog::getStartTime, dto.getStartDate(), dto.getEndDate())
                         .eq(Boolean.TRUE.equals(dto.getSuccess()), OperateLog::getResultCode, ResultCodeConstants.OK.code())
                         .gt(Boolean.FALSE.equals(dto.getSuccess()), OperateLog::getResultCode, ResultCodeConstants.OK.code())
                         .orderByDesc(OperateLog::getId));
         return page.convert(LogConvert.INSTANCE::convert);
+    }
+
+    @Override
+    public OperateLogVO getOperateLogDetail(Long id) {
+        OperateLog operateLog = operateLogMapper.selectById(id);
+        return LogConvert.INSTANCE.convertToVo(operateLog);
+    }
+
+    @Override
+    public IPage<ErrorLogPageVO> getErrorLogPage(ErrorLogPageDTO dto) {
+        IPage<ErrorLog> page = errorLogMapper.selectPage(new Page<>(dto.getCurrent(), dto.getSize()),
+                new LambdaQueryWrapperX<ErrorLog>()
+                        .likeIfPresent(ErrorLog::getNickname, dto.getNickname())
+                        .likeIfPresent(ErrorLog::getRequestUrl, dto.getRequestUrl())
+                        .eqIfPresent(ErrorLog::getProcessStatus, dto.getProcessStatus())
+                        .dateTimeBetween(ErrorLog::getCreateTime, dto.getStartDate(), dto.getEndDate())
+                        .orderByDesc(ErrorLog::getId));
+        return page.convert(LogConvert.INSTANCE::convert);
+    }
+
+    @Override
+    public ErrorLogVO getErrorLogDetail(Long id) {
+        ErrorLog errorLog = errorLogMapper.selectById(id);
+        ErrorLogVO vo = LogConvert.INSTANCE.convertToVo(errorLog);
+        if (errorLog.getProcessUserId() != null) {
+            vo.setProcessUsername(userApi.getNickname(errorLog.getProcessUserId()));
+        }
+        return vo;
     }
 }

@@ -2,12 +2,11 @@ package com.careyq.alive.module.infra.convert;
 
 import com.careyq.alive.module.infra.dto.ErrorLogDTO;
 import com.careyq.alive.module.infra.dto.LoginLogDTO;
+import com.careyq.alive.module.infra.dto.OperateLogDTO;
 import com.careyq.alive.module.infra.entity.ErrorLog;
 import com.careyq.alive.module.infra.entity.LoginLog;
 import com.careyq.alive.module.infra.entity.OperateLog;
-import com.careyq.alive.module.infra.vo.LoginLogPageVO;
-import com.careyq.alive.module.infra.dto.OperateLogDTO;
-import com.careyq.alive.module.infra.vo.OperateLogPageVO;
+import com.careyq.alive.module.infra.vo.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -75,10 +74,35 @@ public interface LogConvert {
     ErrorLog convert(ErrorLogDTO dto);
 
     /**
-     * 日志转换为分页 VO
+     * 操作日志转换为分页 VO
      *
      * @param operateLog 操作日志实体
      * @return 分页 VO
      */
     OperateLogPageVO convert(OperateLog operateLog);
+
+    /**
+     * 操作日志转换为 VO
+     *
+     * @param operateLog 操作日志实体
+     * @return 分页 VO
+     */
+    OperateLogVO convertToVo(OperateLog operateLog);
+
+    /**
+     * 错误日志转换为分页 VO
+     *
+     * @param errorLog 错误日志实体
+     * @return 分页 VO
+     */
+    ErrorLogPageVO convert(ErrorLog errorLog);
+
+    /**
+     * 错误日志转换为 VO
+     *
+     * @param errorLog 错误日志实体
+     * @return 分页 VO
+     */
+    @Mapping(target = "processUsername", ignore = true)
+    ErrorLogVO convertToVo(ErrorLog errorLog);
 }

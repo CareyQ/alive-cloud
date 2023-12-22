@@ -7,20 +7,20 @@ import lombok.experimental.Accessors;
 import java.time.LocalDateTime;
 
 /**
- * 登录日志 VO
+ * 登录日志分页 VO
  *
  * @author CareyQ
  */
 @Data
 @Accessors(chain = true)
-@Schema(description = "管理后台 - 登录日志 VO")
+@Schema(description = "管理后台 - 登录日志分页 VO")
 public class LoginLogPageVO {
 
     @Schema(description = "日志类型")
     private Integer type;
 
-    @Schema(description = "用户名")
-    private String username;
+    @Schema(description = "用户昵称")
+    private String nickname;
 
     @Schema(description = "登录结果")
     private Integer result;

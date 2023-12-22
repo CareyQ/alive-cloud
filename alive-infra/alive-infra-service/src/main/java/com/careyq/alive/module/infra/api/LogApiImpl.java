@@ -7,7 +7,6 @@ import com.careyq.alive.module.infra.dto.OperateLogDTO;
 import com.careyq.alive.module.infra.service.LogService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
 
 /**
  * 操作日志 API 实现
@@ -15,7 +14,6 @@ import org.springframework.validation.annotation.Validated;
  * @author CareyQ
  */
 @Service
-@Validated
 @AllArgsConstructor
 public class LogApiImpl implements LogApi {
 

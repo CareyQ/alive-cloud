@@ -9,21 +9,24 @@ import lombok.experimental.Accessors;
 import java.time.LocalDate;
 
 /**
- * 登录日志分页 DTO
+ * 错误日志分页 DTO
  *
  * @author CareyQ
  */
 @Data
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
-@Schema(description = "管理后台 - 登录日志分页 DTO")
-public class LoginLogPageDTO extends PageDTO {
+@Schema(description = "管理后台 - 错误日志分页 DTO")
+public class ErrorLogPageDTO extends PageDTO {
 
-    @Schema(description = "用户昵称")
+    @Schema(description = "操作人员")
     private String nickname;
 
-    @Schema(description = "IP")
-    private String ip;
+    @Schema(description = "请求地址")
+    private String requestUrl;
+
+    @Schema(description = "处理状态")
+    private Integer processStatus;
 
     @Schema(description = "开始日期")
     private LocalDate startDate;

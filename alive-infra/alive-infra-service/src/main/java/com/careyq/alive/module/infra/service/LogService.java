@@ -2,8 +2,7 @@ package com.careyq.alive.module.infra.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.careyq.alive.module.infra.dto.*;
-import com.careyq.alive.module.infra.vo.LoginLogPageVO;
-import com.careyq.alive.module.infra.vo.OperateLogPageVO;
+import com.careyq.alive.module.infra.vo.*;
 
 /**
  * 日志服务
@@ -48,4 +47,29 @@ public interface LogService {
      * @return 日志分页
      */
     IPage<OperateLogPageVO> getOperateLogPage(OperateLogPageDTO dto);
+
+    /**
+     * 查询操作日志详情
+     *
+     * @param id 日志编号
+     * @return 日志详情
+     */
+    OperateLogVO getOperateLogDetail(Long id);
+
+    /**
+     * 查询错误日志分页
+     *
+     * @param dto 分页请求筛选项
+     * @return 日志分页
+     */
+    IPage<ErrorLogPageVO> getErrorLogPage(ErrorLogPageDTO dto);
+
+    /**
+     * 查询错误日志详情
+     *
+     * @param id 日志编号
+     * @return 日志详情
+     */
+    ErrorLogVO getErrorLogDetail(Long id);
+
 }

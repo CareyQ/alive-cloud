@@ -25,9 +25,9 @@ public class ErrorLog extends BaseEntity {
     private String traceId;
 
     /**
-     * 用户编号
+     * 用户昵称
      */
-    private Long userId;
+    private String nickname;
 
     /**
      * 用户类型 {@link com.careyq.alive.core.enums.UserTypeEnum}

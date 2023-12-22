@@ -96,7 +96,7 @@ public class OperateLogAspect {
             LoginUser loginUser = AuthHelper.getLoginUser();
             OperateLogDTO record = new OperateLogDTO();
             record.setTraceId(TraceUtils.getTraceId())
-                    .setUsername(loginUser.getUsername())
+                    .setNickname(loginUser.getUsername())
                     .setCreator(loginUser.getUserId())
                     .setUpdater(loginUser.getUserId())
                     .setUserType(WebUtils.getLoginUserType())

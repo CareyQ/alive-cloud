@@ -20,7 +20,7 @@ import java.time.LocalDate;
 public class OperateLogPageDTO extends PageDTO {
 
     @Schema(description = "操作人员")
-    private String username;
+    private String nickname;
 
     @Schema(description = "操作模块")
     private String module;

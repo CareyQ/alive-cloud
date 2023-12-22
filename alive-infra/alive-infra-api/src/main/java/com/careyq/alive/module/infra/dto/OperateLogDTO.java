@@ -21,9 +21,9 @@ public class OperateLogDTO {
     private String traceId;
 
     /**
-     * 用户名称
+     * 用户昵称
      */
-    private String username;
+    private String nickname;
 
     /**
      * 用户类型
