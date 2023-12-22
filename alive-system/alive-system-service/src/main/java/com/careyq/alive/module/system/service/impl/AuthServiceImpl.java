@@ -97,7 +97,6 @@ public class AuthServiceImpl implements AuthService {
         LoginLogDTO loginLog = new LoginLogDTO();
         loginLog.setType(loginLogType.getType())
                 .setTraceId(TraceUtils.getTraceId())
-                .setUserId(userId)
                 .setUsername(username)
                 .setResult(loginResult.getType())
                 .setIp(clientIp)

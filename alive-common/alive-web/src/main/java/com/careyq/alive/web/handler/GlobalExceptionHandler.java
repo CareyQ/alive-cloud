@@ -12,6 +12,7 @@ import com.careyq.alive.core.util.TraceUtils;
 import com.careyq.alive.module.infra.api.LogApi;
 import com.careyq.alive.module.infra.dto.ErrorLogDTO;
 import com.careyq.alive.satoken.AuthHelper;
+import com.careyq.alive.satoken.core.domain.LoginUser;
 import com.careyq.alive.web.util.WebUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
@@ -166,7 +167,8 @@ public class GlobalExceptionHandler {
 
     private void initErrorLog(ErrorLogDTO errorLog, HttpServletRequest request, Throwable e) {
         // 处理用户信息
-        errorLog.setUserId(AuthHelper.getUserId());
+        LoginUser loginUser = AuthHelper.getLoginUser();
+        errorLog.setNickname(loginUser.getNickname());
         errorLog.setUserType(WebUtils.getLoginUserType(request));
         // 设置异常字段
         errorLog.setExName(e.getClass().getName());
