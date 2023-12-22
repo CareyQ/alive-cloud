@@ -217,3 +217,17 @@ create table if not exists infra_error_log
     updater               bigint        null     default null comment '更新者',
     update_time           datetime      not null default current_timestamp on update current_timestamp comment '更新时间'
 ) comment '异常错误日志';
+
+create table if not exists infra_data_source_config
+(
+    id                    bigint        not null auto_increment primary key comment '主键',
+    name                  varchar(64)   not null default '' comment '数据源名称',
+    url                   varchar(1024) not null default '' comment '数据源地址',
+    username              varchar(255)  not null default '' comment '用户名',
+    password              varchar(255)  not null default '' comment '密码',
+    is_del                tinyint       not null default 0 comment '是否删除',
+    creator               bigint        null     default null comment '创建者',
+    create_time           datetime      not null default current_timestamp comment '创建时间',
+    updater               bigint        null     default null comment '更新者',
+    update_time           datetime      not null default current_timestamp on update current_timestamp comment '更新时间'
+) comment '数据源配置';
