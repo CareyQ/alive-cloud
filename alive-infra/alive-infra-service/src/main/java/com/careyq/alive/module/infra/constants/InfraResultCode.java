@@ -16,13 +16,10 @@ public interface InfraResultCode {
     ResultCode ERROR_LOG_PROCESSED = new ResultCode(2_10002, "错误日志已处理");
 
     /**
-     * MENU
+     * DB
      */
-    ResultCode MENU_NAME_DUPLICATE = new ResultCode(1_20001, "该菜单名称已存在");
-    ResultCode MENU_PARENT_NOT_EXISTS = new ResultCode(1_20002, "父菜单不存在");
-    ResultCode MENU_NOT_EXISTS = new ResultCode(1_20003, "该菜单不存在");
-    ResultCode MENU_EXISTS_CHILDREN = new ResultCode(1_20004, "还存在子菜单，无法删除");
-    ResultCode MENU_PARENT_SELF = new ResultCode(1_20004, "不可以指定自身为父级菜单");
+    ResultCode DB_CONFIG_NOT_FOUND = new ResultCode(2_20001, "数据源配置不存在");
+    ResultCode DB_CONFIG_NAME_DUPLICATE = new ResultCode(2_20002, "数据源配置名称已存在");
 
     /**
      * DICT
