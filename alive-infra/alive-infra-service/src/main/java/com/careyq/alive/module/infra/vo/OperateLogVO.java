@@ -71,7 +71,7 @@ public class OperateLogVO {
     @Schema(description = "结果码")
     private Integer resultCode;
 
-    @Schema(description = "结果码")
+    @Schema(description = "结果消息")
     private String resultMsg;
 
     @Schema(description = "结果数据")

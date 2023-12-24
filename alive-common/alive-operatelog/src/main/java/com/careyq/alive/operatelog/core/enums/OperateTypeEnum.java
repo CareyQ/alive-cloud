@@ -18,35 +18,36 @@ public enum OperateTypeEnum {
      * 绝大多数情况下，不会记录查询动作，因为过于大量显得没有意义。
      * 在有需要的时候，通过声明 {@link OperateLog} 注解来记录
      */
-    QUERY(1),
+    QUERY(1, new String[]{"查询", "获取"}),
     /**
      * 新增
      */
-    CREATE(2),
+    CREATE(2, new String[]{"新增", "添加"}),
     /**
      * 修改
      */
-    UPDATE(3),
+    UPDATE(3, new String[]{"更新", "修改"}),
     /**
      * 删除
      */
-    DELETE(4),
+    DELETE(4, null),
     /**
      * 导出
      */
-    EXPORT(5),
+    EXPORT(5, null),
     /**
      * 导入
      */
-    IMPORT(6),
+    IMPORT(6, null),
     /**
-     * 其它
-     * 在无法归类时，可以选择使用其它。因为还有操作名可以进一步标识
+     * 其他
+     * 在无法归类时，可以选择使用其他。因为还有操作名可以进一步标识
      */
-    OTHER(0);
+    OTHER(0, null);
 
     /**
      * 类型
      */
     private final Integer type;
+    private final String[] prefix;
 }

@@ -151,7 +151,7 @@ create table if not exists infra_login_log
     id          bigint       not null auto_increment primary key comment '主键',
     type        int          not null comment '日志类型',
     trace_id    varchar(64)  not null default '' comment '链路追踪编号',
-    nickname    varchar(20)  not null default '' comment '用户昵称',
+    username    varchar(20)  not null default '' comment '用户名',
     result      int          not null comment '登录结果',
     ip          varchar(50)  not null default '' comment '登录 IP',
     ip_info     varchar(100) not null default '' comment '登录 IP 信息',

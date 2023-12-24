@@ -72,4 +72,11 @@ public interface LogService {
      */
     ErrorLogVO getErrorLogDetail(Long id);
 
+    /**
+     * 更新错误日志处理状态
+     *
+     * @param id            日志编号
+     * @param processStatus 处理状态
+     */
+    void updateErrorProcessStatus(Long id, Integer processStatus);
 }

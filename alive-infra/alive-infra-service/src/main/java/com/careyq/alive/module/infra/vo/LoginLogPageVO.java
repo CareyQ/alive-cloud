@@ -20,7 +20,7 @@ public class LoginLogPageVO {
     private Integer type;
 
     @Schema(description = "用户昵称")
-    private String nickname;
+    private String username;
 
     @Schema(description = "登录结果")
     private Integer result;

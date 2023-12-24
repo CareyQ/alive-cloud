@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import java.time.LocalDateTime;
+
 /**
  * 错误日志分页 VO
  *
@@ -29,10 +31,10 @@ public class ErrorLogPageVO {
     @Schema(description = "异常类全名")
     private String exName;
 
-    @Schema(description = "异常消息")
-    private String exMessage;
-
     @Schema(description = "处理状态")
     private Integer processStatus;
+
+    @Schema(description = "错误时间")
+    private LocalDateTime createTime;
 
 }

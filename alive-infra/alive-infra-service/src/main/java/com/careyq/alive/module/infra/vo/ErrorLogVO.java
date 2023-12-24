@@ -46,12 +46,6 @@ public class ErrorLogVO {
     @Schema(description = "异常类全名")
     private String exName;
 
-    @Schema(description = "异常消息")
-    private String exMessage;
-
-    @Schema(description = "异常导致的根消息")
-    private String exRootCauseMessage;
-
     @Schema(description = "异常的栈轨迹")
     private String exStackTrace;
 
@@ -67,4 +61,6 @@ public class ErrorLogVO {
     @Schema(description = "处理人的用户名称")
     private String processUsername;
 
+    @Schema(description = "异常时间")
+    private LocalDateTime createTime;
 }

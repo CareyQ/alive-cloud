@@ -4,6 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.careyq.alive.core.constants.ResultCodeConstants;
+import com.careyq.alive.core.exception.CustomException;
 import com.careyq.alive.module.infra.convert.LogConvert;
 import com.careyq.alive.module.infra.dto.*;
 import com.careyq.alive.module.infra.entity.ErrorLog;
@@ -17,8 +18,14 @@ import com.careyq.alive.module.infra.service.LogService;
 import com.careyq.alive.module.infra.vo.*;
 import com.careyq.alive.module.system.api.UserApi;
 import com.careyq.alive.mybatis.core.mapper.LambdaQueryWrapperX;
+import com.careyq.alive.satoken.AuthHelper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+
+import static com.careyq.alive.module.infra.constants.InfraResultCode.ERROR_LOG_NOT_FOUND;
+import static com.careyq.alive.module.infra.constants.InfraResultCode.ERROR_LOG_PROCESSED;
 
 /**
  * 日志服务实现
@@ -47,7 +54,7 @@ public class LogServiceImpl implements LogService {
     public IPage<LoginLogPageVO> getLoginLogPage(LoginLogPageDTO dto) {
         IPage<LoginLog> page = loginLogMapper.selectPage(new Page<>(dto.getCurrent(), dto.getSize()),
                 new LambdaQueryWrapperX<LoginLog>()
-                        .likeIfPresent(LoginLog::getNickname, dto.getNickname())
+                        .likeIfPresent(LoginLog::getUsername, dto.getUsername())
                         .eqIfPresent(LoginLog::getIp, dto.getIp())
                         .dateTimeBetween(LoginLog::getCreateTime, dto.getStartDate(), dto.getEndDate())
                         .orderByDesc(LoginLog::getId));
@@ -75,6 +82,7 @@ public class LogServiceImpl implements LogService {
                 new LambdaQueryWrapperX<OperateLog>()
                         .likeIfPresent(OperateLog::getNickname, dto.getNickname())
                         .likeIfPresent(OperateLog::getModule, dto.getModule())
+                        .eqIfPresent(OperateLog::getType, dto.getType())
                         .dateTimeBetween(OperateLog::getStartTime, dto.getStartDate(), dto.getEndDate())
                         .eq(Boolean.TRUE.equals(dto.getSuccess()), OperateLog::getResultCode, ResultCodeConstants.OK.code())
                         .gt(Boolean.FALSE.equals(dto.getSuccess()), OperateLog::getResultCode, ResultCodeConstants.OK.code())
@@ -94,6 +102,7 @@ public class LogServiceImpl implements LogService {
                 new LambdaQueryWrapperX<ErrorLog>()
                         .likeIfPresent(ErrorLog::getNickname, dto.getNickname())
                         .likeIfPresent(ErrorLog::getRequestUrl, dto.getRequestUrl())
+                        .eqIfPresent(ErrorLog::getUserType, dto.getUserType())
                         .eqIfPresent(ErrorLog::getProcessStatus, dto.getProcessStatus())
                         .dateTimeBetween(ErrorLog::getCreateTime, dto.getStartDate(), dto.getEndDate())
                         .orderByDesc(ErrorLog::getId));
@@ -108,5 +117,22 @@ public class LogServiceImpl implements LogService {
             vo.setProcessUsername(userApi.getNickname(errorLog.getProcessUserId()));
         }
         return vo;
+    }
+
+    @Override
+    public void updateErrorProcessStatus(Long id, Integer processStatus) {
+        ErrorLog errorLog = errorLogMapper.selectById(id);
+        if (errorLog == null) {
+            throw new CustomException(ERROR_LOG_NOT_FOUND);
+        }
+        if (!ErrorLogProcessStatusEnum.INIT.getStatus().equals(errorLog.getProcessStatus())) {
+            throw new CustomException(ERROR_LOG_PROCESSED);
+        }
+        ErrorLog updateLog = new ErrorLog();
+        updateLog.setProcessStatus(processStatus)
+                .setProcessTime(LocalDateTime.now())
+                .setProcessUserId(AuthHelper.getUserId())
+                .setId(id);
+        errorLogMapper.updateById(updateLog);
     }
 }

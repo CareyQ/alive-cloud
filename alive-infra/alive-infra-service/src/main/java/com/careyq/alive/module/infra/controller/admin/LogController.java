@@ -27,32 +27,39 @@ public class LogController {
     private final LogService logService;
 
     @PostMapping("/login-log")
-    @Operation(summary = "登录日志")
+    @Operation(summary = "查询登录日志分页")
     public Result<IPage<LoginLogPageVO>> getLoginLogPage(@Validated @RequestBody LoginLogPageDTO dto) {
         return Result.ok(logService.getLoginLogPage(dto));
     }
 
     @PostMapping("/operate-log")
-    @Operation(summary = "操作日志")
+    @Operation(summary = "查询操作日志分页")
     public Result<IPage<OperateLogPageVO>> getOperateLogPage(@Validated @RequestBody OperateLogPageDTO dto) {
         return Result.ok(logService.getOperateLogPage(dto));
     }
 
-    @PostMapping("/operate-log/detail")
-    @Operation(summary = "操作日志详情")
+    @GetMapping("/operate-log/detail")
+    @Operation(summary = "查询操作日志详情")
     public Result<OperateLogVO> getOperateLogDetail(@RequestParam Long id) {
         return Result.ok(logService.getOperateLogDetail(id));
     }
 
     @PostMapping("/error-log")
-    @Operation(summary = "错误日志")
+    @Operation(summary = "查询错误日志分页")
     public Result<IPage<ErrorLogPageVO>> getErrorLogPage(@Validated @RequestBody ErrorLogPageDTO dto) {
         return Result.ok(logService.getErrorLogPage(dto));
     }
 
-    @PostMapping("/error-log/detail")
-    @Operation(summary = "错误日志详情")
+    @GetMapping("/error-log/detail")
+    @Operation(summary = "查询错误日志详情")
     public Result<ErrorLogVO> getErrorLogDetail(@RequestParam Long id) {
         return Result.ok(logService.getErrorLogDetail(id));
+    }
+
+    @PutMapping("/error-log/process-status")
+    @Operation(summary = "更新错误日志处理状态")
+    public Result<Boolean> updateErrorProcessStatus(@RequestParam Long id, @RequestParam Integer processStatus) {
+        logService.updateErrorProcessStatus(id, processStatus);
+        return Result.ok(true);
     }
 }

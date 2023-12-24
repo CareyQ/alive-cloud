@@ -8,6 +8,7 @@ import com.careyq.alive.module.system.service.AuthService;
 import com.careyq.alive.module.system.service.MenuService;
 import com.careyq.alive.module.system.service.UserService;
 import com.careyq.alive.module.system.vo.LoginVO;
+import com.careyq.alive.operatelog.core.annotations.OperateLog;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
@@ -32,6 +33,7 @@ public class AuthController {
 
     @SaIgnore
     @GetMapping("/check-mobile")
+    @OperateLog(enable = false)
     @Operation(summary = "检查手机号是否已存在")
     public Result<Boolean> checkMobile(@RequestParam String mobile) {
         return Result.ok(userService.mobileIsExist(mobile, null));
@@ -39,12 +41,14 @@ public class AuthController {
 
     @SaIgnore
     @PostMapping("/login")
+    @OperateLog(enable = false)
     @Operation(summary = "账号密码登录")
     public Result<LoginVO> login(@RequestBody LoginDTO dto) {
         return Result.ok(authService.login(dto));
     }
 
     @PostMapping("/logout")
+    @OperateLog(enable = false)
     @Operation(summary = "退出登录")
     public Result<Boolean> logout() {
         authService.logout();
@@ -52,6 +56,7 @@ public class AuthController {
     }
 
     @GetMapping("/router")
+    @OperateLog(enable = false)
     @Operation(summary = "获取用户菜单路由")
     public Result<List<Tree<Long>>> getUserMenus() {
         return Result.ok(menuService.getMenuTree(true));

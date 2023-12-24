@@ -88,16 +88,16 @@ public class AuthServiceImpl implements AuthService {
      * 创建登录日志
      *
      * @param userId       用户 ID
-     * @param username     用户名
+     * @param nickname     用户昵称
      * @param loginLogType 登录类型
      * @param loginResult  登录结果
      */
-    private void createLoginLog(Long userId, String username, LoginLogTypeEnum loginLogType, LoginResultEnum loginResult) {
+    private void createLoginLog(Long userId, String nickname, LoginLogTypeEnum loginLogType, LoginResultEnum loginResult) {
         String clientIp = ServletUtils.getClientIp();
         LoginLogDTO loginLog = new LoginLogDTO();
         loginLog.setType(loginLogType.getType())
                 .setTraceId(TraceUtils.getTraceId())
-                .setUsername(username)
+                .setUsername(nickname)
                 .setResult(loginResult.getType())
                 .setIp(clientIp)
                 .setIpInfo(ServletUtils.getIpInfo(clientIp))

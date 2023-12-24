@@ -29,9 +29,9 @@ public class LoginLog extends BaseEntity {
     private String traceId;
 
     /**
-     * 用户昵称
+     * 用户名
      */
-    private String nickname;
+    private String username;
 
     /**
      * 登录结果 {@link LoginResultEnum}

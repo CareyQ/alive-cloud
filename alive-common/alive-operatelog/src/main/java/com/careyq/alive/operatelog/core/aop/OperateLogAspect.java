@@ -88,7 +88,7 @@ public class OperateLogAspect {
 
     private void log(ProceedingJoinPoint joinPoint, OperateLog operateLog, Operation operation, LocalDateTime startTime, Object result, Throwable ex) {
         try {
-            if (!enableLog(joinPoint, operateLog)) {
+            if (!enableLog(joinPoint, operateLog, operation)) {
                 return;
             }
 
@@ -129,7 +129,7 @@ public class OperateLogAspect {
             }
             if (record.getType() == null) {
                 RequestMethod requestMethod = obtainFirstMatchRequestMethod(obtainRequestMethod(joinPoint));
-                OperateTypeEnum operateLogType = convertOperateLogType(requestMethod);
+                OperateTypeEnum operateLogType = convertOperateLogType(record.getName(), requestMethod);
                 record.setType(operateLogType != null ? operateLogType.getType() : null);
             }
 
@@ -172,9 +172,10 @@ public class OperateLogAspect {
      *
      * @param joinPoint  切点
      * @param operateLog 注解
+     * @param operation  Operation
      * @return 结果
      */
-    private static boolean enableLog(ProceedingJoinPoint joinPoint, OperateLog operateLog) {
+    private static boolean enableLog(ProceedingJoinPoint joinPoint, OperateLog operateLog, Operation operation) {
         if (operateLog != null) {
             return operateLog.enable();
         }
@@ -184,7 +185,15 @@ public class OperateLogAspect {
             return false;
         }
 
-        return obtainFirstLogRequestMethod(obtainRequestMethod(joinPoint)) != null;
+        RequestMethod requestMethod = obtainFirstLogRequestMethod(obtainRequestMethod(joinPoint));
+        if (requestMethod == null) {
+            return false;
+        }
+
+        if (RequestMethod.POST.equals(requestMethod)) {
+            return obtainFirstLogRequestPostQuery(operation);
+        }
+        return true;
     }
 
     private static RequestMethod obtainFirstMatchRequestMethod(RequestMethod[] requestMethods) {
@@ -225,6 +234,20 @@ public class OperateLogAspect {
     }
 
     /**
+     * 过滤 POST 请求，查询、获取类的去除
+     *
+     * @param operation Operation
+     * @return 结果
+     */
+    private static boolean obtainFirstLogRequestPostQuery(Operation operation) {
+        if (operation == null) {
+            return true;
+        }
+        String summary = operation.summary();
+        return !StrUtil.startWithAny(summary, OperateTypeEnum.QUERY.getPrefix());
+    }
+
+    /**
      * 获取切点处的方法
      *
      * @param joinPoint 切点
@@ -257,13 +280,23 @@ public class OperateLogAspect {
         return JsonUtils.toJsonString(result);
     }
 
-    private static OperateTypeEnum convertOperateLogType(RequestMethod requestMethod) {
+    private static OperateTypeEnum convertOperateLogType(String name, RequestMethod requestMethod) {
         if (requestMethod == null) {
             return null;
         }
         return switch (requestMethod) {
             case GET -> OperateTypeEnum.QUERY;
-            case POST -> OperateTypeEnum.CREATE;
+            case POST -> {
+                if (StrUtil.isNotEmpty(name)) {
+                    if (StrUtil.startWithAny(name, OperateTypeEnum.QUERY.getPrefix())) {
+                        yield OperateTypeEnum.QUERY;
+                    }
+                    if (StrUtil.startWithAny(name, OperateTypeEnum.UPDATE.getPrefix())) {
+                        yield OperateTypeEnum.UPDATE;
+                    }
+                }
+                yield OperateTypeEnum.CREATE;
+            }
             case PUT -> OperateTypeEnum.UPDATE;
             case DELETE -> OperateTypeEnum.DELETE;
             default -> OperateTypeEnum.OTHER;

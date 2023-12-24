@@ -22,6 +22,9 @@ public class ErrorLogPageDTO extends PageDTO {
     @Schema(description = "操作人员")
     private String nickname;
 
+    @Schema(description = "用户类型")
+    private Integer userType;
+
     @Schema(description = "请求地址")
     private String requestUrl;
 

@@ -33,7 +33,7 @@ public class DictDataVO {
     @Schema(description = "字典键值")
     private String value;
 
-    @Length(max = 20, message = "字典类型长度不能超过{max}位")
+    @Length(max = 50, message = "字典类型长度不能超过{max}位")
     @NotBlank(message = "字典类型不能为空")
     @Schema(description = "字典类型")
     private String dictType;
