@@ -17,7 +17,7 @@ import com.careyq.alive.module.infra.mapper.OperateLogMapper;
 import com.careyq.alive.module.infra.service.LogService;
 import com.careyq.alive.module.infra.vo.*;
 import com.careyq.alive.module.system.api.UserApi;
-import com.careyq.alive.mybatis.core.mapper.LambdaQueryWrapperX;
+import com.careyq.alive.mybatis.core.query.LambdaQueryWrapperX;
 import com.careyq.alive.satoken.AuthHelper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

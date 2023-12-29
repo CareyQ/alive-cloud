@@ -1,4 +1,4 @@
-package com.careyq.alive.mybatis.core.mapper;
+package com.careyq.alive.mybatis.core.query;
 
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ObjectUtil;

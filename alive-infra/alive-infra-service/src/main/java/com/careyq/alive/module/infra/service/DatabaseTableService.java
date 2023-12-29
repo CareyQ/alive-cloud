@@ -21,4 +21,12 @@ public interface DatabaseTableService {
      */
     List<TableInfo> getTableList(Long dataSourceConfigId, String name, String comment);
 
+    /**
+     * 获取表列表
+     *
+     * @param dataSourceConfigId 数据源配置编号
+     * @param name               表名称
+     * @return 表列表
+     */
+    List<TableInfo> getTableList(Long dataSourceConfigId, String... name);
 }

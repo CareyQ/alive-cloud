@@ -1,6 +1,7 @@
 package com.careyq.alive.module.infra.service.impl;
 
 import cn.hutool.core.lang.Assert;
+import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 
 import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
@@ -31,19 +32,20 @@ public class DatabaseTableServiceImpl implements DatabaseTableService {
 
     @Override
     public List<TableInfo> getTableList(Long dataSourceConfigId, String name, String comment) {
-        List<TableInfo> tables = this.getTableList(dataSourceConfigId, null);
+        List<TableInfo> tables = this.getTableList(dataSourceConfigId);
         return tables.stream()
                 .filter(e -> (StrUtil.isEmpty(name) || e.getName().contains(name)) && (StrUtil.isEmpty(comment) || e.getComment().contains(comment)))
                 .toList();
     }
 
-    private List<TableInfo> getTableList(Long dataSourceConfigId, String name) {
+    @Override
+    public List<TableInfo> getTableList(Long dataSourceConfigId, String... name) {
         DataSourceConfigDTO config = configService.getDataSourceConfigDetail(dataSourceConfigId);
         Assert.notNull(config, "数据源({})不存在！", dataSourceConfigId);
 
         DataSourceConfig dataSourceConfig = new DataSourceConfig.Builder(config.getUrl(), config.getUsername(), config.getPassword()).build();
         StrategyConfig.Builder strategyConfig = new StrategyConfig.Builder();
-        if (StrUtil.isNotEmpty(name)) {
+        if (ArrayUtil.isNotEmpty(name)) {
             strategyConfig.addInclude(name);
         }
 

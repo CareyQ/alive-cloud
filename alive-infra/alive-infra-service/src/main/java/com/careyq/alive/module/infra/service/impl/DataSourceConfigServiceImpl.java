@@ -2,6 +2,7 @@ package com.careyq.alive.module.infra.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.careyq.alive.core.exception.CustomException;
+import com.careyq.alive.core.util.CollUtils;
 import com.careyq.alive.module.infra.convert.DataSourceConfigConvert;
 import com.careyq.alive.module.infra.dto.DataSourceConfigDTO;
 import com.careyq.alive.module.infra.entity.DataSourceConfig;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 import static com.careyq.alive.module.infra.constants.InfraResultCode.DB_CONFIG_NAME_DUPLICATE;
 import static com.careyq.alive.module.infra.constants.InfraResultCode.DB_CONFIG_NOT_FOUND;
@@ -60,6 +62,11 @@ public class DataSourceConfigServiceImpl extends ServiceImplX<DataSourceConfigMa
     public void delDataSourceConfig(Long id) {
         this.checkConfigExists(id);
         this.removeById(id);
+    }
+
+    @Override
+    public Map<Long, String> getDataSourceConfigMap(List<Long> ids) {
+        return CollUtils.convertMap(this.listByIds(ids), DataSourceConfig::getId, DataSourceConfig::getName);
     }
 
     /**

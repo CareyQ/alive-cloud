@@ -5,6 +5,7 @@ import com.careyq.alive.module.infra.entity.DataSourceConfig;
 import com.careyq.alive.mybatis.core.service.IServiceX;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 日数据源配置服务
@@ -43,4 +44,11 @@ public interface DataSourceConfigService extends IServiceX<DataSourceConfig> {
      */
     void delDataSourceConfig(Long id);
 
+    /**
+     * 获取数据源配置 map
+     *
+     * @param ids 数据源配置 ID
+     * @return 数据源配置 map
+     */
+    Map<Long, String> getDataSourceConfigMap(List<Long> ids);
 }

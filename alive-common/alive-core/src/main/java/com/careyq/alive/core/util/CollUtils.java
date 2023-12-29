@@ -48,12 +48,27 @@ public class CollUtils extends CollUtil {
      *
      * @param coll 列表
      * @param func 获取字段
-     * @return List
+     * @return map
      */
     public static <T, K> Map<K, T> convertMap(Collection<T> coll, Function<T, K> func) {
         if (isEmpty(coll)) {
             return MapUtil.newHashMap();
         }
         return coll.stream().collect(Collectors.toMap(func, Function.identity(), (k1, k2) -> k1));
+    }
+
+    /**
+     * 获取列表为 MAP
+     *
+     * @param coll      列表
+     * @param keyFunc   键
+     * @param valueFunc 值
+     * @return map
+     */
+    public static <T, K, V> Map<K, V> convertMap(Collection<T> coll, Function<T, K> keyFunc, Function<T, V> valueFunc) {
+        if (isEmpty(coll)) {
+            return MapUtil.newHashMap();
+        }
+        return coll.stream().collect(Collectors.toMap(keyFunc, valueFunc, (v1, v2) -> v1));
     }
 }

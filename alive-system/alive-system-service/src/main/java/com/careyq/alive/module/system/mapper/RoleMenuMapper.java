@@ -3,7 +3,7 @@ package com.careyq.alive.module.system.mapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.careyq.alive.core.util.CollUtils;
-import com.careyq.alive.mybatis.core.mapper.LambdaQueryWrapperX;
+import com.careyq.alive.mybatis.core.query.LambdaQueryWrapperX;
 import com.careyq.alive.module.system.entity.RoleMenu;
 import org.apache.ibatis.annotations.Mapper;
 

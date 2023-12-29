@@ -220,14 +220,58 @@ create table if not exists infra_error_log
 
 create table if not exists infra_data_source_config
 (
-    id                    bigint        not null auto_increment primary key comment '主键',
-    name                  varchar(64)   not null default '' comment '数据源名称',
-    url                   varchar(1024) not null default '' comment '数据源地址',
-    username              varchar(255)  not null default '' comment '用户名',
-    password              varchar(255)  not null default '' comment '密码',
-    is_del                tinyint       not null default 0 comment '是否删除',
-    creator               bigint        null     default null comment '创建者',
-    create_time           datetime      not null default current_timestamp comment '创建时间',
-    updater               bigint        null     default null comment '更新者',
-    update_time           datetime      not null default current_timestamp on update current_timestamp comment '更新时间'
+    id          bigint        not null auto_increment primary key comment '主键',
+    name        varchar(64)   not null default '' comment '数据源名称',
+    url         varchar(1024) not null default '' comment '数据源地址',
+    username    varchar(255)  not null default '' comment '用户名',
+    password    varchar(255)  not null default '' comment '密码',
+    is_del      tinyint       not null default 0 comment '是否删除',
+    creator     bigint        null     default null comment '创建者',
+    create_time datetime      not null default current_timestamp comment '创建时间',
+    updater     bigint        null     default null comment '更新者',
+    update_time datetime      not null default current_timestamp on update current_timestamp comment '更新时间'
 ) comment '数据源配置';
+
+create table if not exists infra_codegen_table
+(
+    id                    bigint       not null auto_increment primary key comment '主键',
+    data_source_config_id bigint       not null comment '数据源配置 ID',
+    table_name            varchar(200) not null default '' comment '表名称',
+    table_comment         varchar(200) not null default '' comment '表描述',
+    module_name           varchar(30)  not null default '' comment '模块名',
+    business_name         varchar(30)  not null default '' comment '业务名',
+    class_name            varchar(100) not null default '' comment '类名称',
+    class_comment         varchar(30)  not null default '' comment '类描述',
+    author                varchar(50)  not null default '' comment '作者',
+    is_del                tinyint      not null default 0 comment '是否删除',
+    creator               bigint       null     default null comment '创建者',
+    create_time           datetime     not null default current_timestamp comment '创建时间',
+    updater               bigint       null     default null comment '更新者',
+    update_time           datetime     not null default current_timestamp on update current_timestamp comment '更新时间'
+) comment '代码生成表定义';
+
+create table if not exists infra_codegen_column
+(
+    id               bigint       not null auto_increment primary key comment '主键',
+    table_id         bigint       not null comment '表 ID',
+    column_name      varchar(200) not null default '' comment '字段名称',
+    data_type        varchar(100) not null default '' comment '字段类型',
+    column_comment   varchar(200) not null default '' comment '字段描述',
+    nullable         tinyint      not null comment '是否可以为空',
+    primary_key      tinyint      not null comment '是否主键',
+    auto_increment   tinyint      not null comment '是否自增',
+    java_type        varchar(32)  not null default '' comment 'Java 属性类型',
+    java_field       varchar(64)  not null default '' comment 'Java 属性名',
+    dict_type        varchar(200) not null default '' comment '字典类型',
+    create_operation tinyint      not null default 0 comment '是否是创建操作字段',
+    update_operation tinyint      not null default 0 comment '是否是更新操作字段',
+    query_result     tinyint      not null default 0 comment '是否是查询结果字段',
+    query_condition  tinyint      not null default 0 comment '是否是查询条件字段',
+    query_type       varchar(32)  not null comment '查询时作为条件的类型',
+    html_type        varchar(32)  not null comment '前端显示类型',
+    is_del           tinyint      not null default 0 comment '是否删除',
+    creator          bigint       null     default null comment '创建者',
+    create_time      datetime     not null default current_timestamp comment '创建时间',
+    updater          bigint       null     default null comment '更新者',
+    update_time      datetime     not null default current_timestamp on update current_timestamp comment '更新时间'
+) comment '代码生成表字段';
