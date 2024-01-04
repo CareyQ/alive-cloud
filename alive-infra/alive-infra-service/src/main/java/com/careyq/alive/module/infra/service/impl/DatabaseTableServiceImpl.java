@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 数据库服务实现
@@ -35,7 +36,7 @@ public class DatabaseTableServiceImpl implements DatabaseTableService {
         List<TableInfo> tables = this.getTableList(dataSourceConfigId);
         return tables.stream()
                 .filter(e -> (StrUtil.isEmpty(name) || e.getName().contains(name)) && (StrUtil.isEmpty(comment) || e.getComment().contains(comment)))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     @Override

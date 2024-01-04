@@ -29,7 +29,7 @@ public class CodegenController {
 
     @GetMapping("/db/table/list")
     @Operation(summary = "获取数据库表列表")
-    public Result<List<DbTableVO>> getDbTableList(@RequestParam Long dataSourceConfigId, @RequestParam String name, @RequestParam String comment) {
+    public Result<List<DbTableVO>> getDbTableList(@RequestParam Long dataSourceConfigId, @RequestParam(required = false) String name, @RequestParam(required = false) String comment) {
         return Result.ok(codegenService.getDbTableList(dataSourceConfigId, name, comment));
     }
 
