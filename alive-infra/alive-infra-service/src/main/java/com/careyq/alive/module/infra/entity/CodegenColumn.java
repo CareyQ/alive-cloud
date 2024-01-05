@@ -1,5 +1,6 @@
 package com.careyq.alive.module.infra.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.careyq.alive.core.domain.BaseEntity;
 import lombok.Data;
@@ -96,5 +97,11 @@ public class CodegenColumn extends BaseEntity {
      * 前端显示类型
      */
     private String htmlType;
+
+    /**
+     * 表名称，用于导入时匹配表
+     */
+    @TableField(exist = false)
+    private String tableName;
 
 }

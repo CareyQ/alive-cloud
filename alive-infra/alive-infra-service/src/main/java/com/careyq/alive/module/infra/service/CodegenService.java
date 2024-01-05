@@ -1,6 +1,7 @@
 package com.careyq.alive.module.infra.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.careyq.alive.module.infra.dto.CodegenImportDTO;
 import com.careyq.alive.module.infra.dto.CodegenTablePageDTO;
 import com.careyq.alive.module.infra.vo.CodegenTablePageVO;
 import com.careyq.alive.module.infra.vo.DbTableVO;
@@ -31,4 +32,12 @@ public interface CodegenService {
      * @return 表定义分页
      */
     IPage<CodegenTablePageVO> getCodegenTablePage(CodegenTablePageDTO dto);
+
+    /**
+     * 导入数据库表结构
+     *
+     * @param dto 导入参数
+     * @return 表编号列表
+     */
+    List<Long> importCodegenTable(CodegenImportDTO dto);
 }

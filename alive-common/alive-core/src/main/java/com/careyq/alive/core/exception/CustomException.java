@@ -1,5 +1,6 @@
 package com.careyq.alive.core.exception;
 
+import cn.hutool.core.util.StrUtil;
 import com.careyq.alive.core.domain.ResultCode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,5 +25,10 @@ public class CustomException extends RuntimeException {
     public CustomException(ResultCode resultCode) {
         this.code = resultCode.code();
         this.message = resultCode.msg();
+    }
+
+    public CustomException(ResultCode resultCode, Object... params) {
+        this.code = resultCode.code();
+        this.message = StrUtil.format(resultCode.msg(), params);
     }
 }

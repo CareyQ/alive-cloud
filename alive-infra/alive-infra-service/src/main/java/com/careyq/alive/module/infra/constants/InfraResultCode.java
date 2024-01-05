@@ -22,14 +22,14 @@ public interface InfraResultCode {
     ResultCode DB_CONFIG_NAME_DUPLICATE = new ResultCode(2_20002, "数据源配置名称已存在");
 
     /**
-     * DICT
+     * CODEGEN
      */
-    ResultCode DICT_TYPE_NAME_DUPLICATE = new ResultCode(1_30001, "已存在相同名称的字典类型");
-    ResultCode DICT_TYPE_TYPE_DUPLICATE = new ResultCode(1_30001, "已存在相同类型的字典类型");
-    ResultCode DICT_TYPE_NOT_EXISTS = new ResultCode(1_30003, "字典类型不存在");
-    ResultCode DICT_TYPE_EXISTS_CHILDREN = new ResultCode(1_30004, "该字典类型还存在字典数据，无法删除");
-    ResultCode DICT_DATA_NOT_EXISTS = new ResultCode(1_30005, "该字典数据不存在");
-    ResultCode DICT_DATA_LABEL_DUPLICATE = new ResultCode(1_30006, "已存在相同名称的字典数据");
+    ResultCode CODEGEN_IMPORT_TABLE_NULL = new ResultCode(3_30001, "导入的表不存在");
+    ResultCode CODEGEN_TABLE_COMMENT_IS_NULL = new ResultCode(3_30002, "数据库的表注释未填写");
+    ResultCode CODEGEN_IMPORT_COLUMNS_NULL = new ResultCode(3_30003, "导入的字段不存在");
+    ResultCode CODEGEN_COLUMN_COMMENT_IS_NULL = new ResultCode(1_30004, "数据库的表字段({})注释未填写");
+    ResultCode CODEGEN_DB_TABLE_NOT_EXIST = new ResultCode(1_30005, "数据库的表({})不存在");
+    ResultCode CODEGEN_TABLE_IS_EXIST = new ResultCode(1_30006, "数据库的表({})已存在");
 
     /**
      * DEPT
