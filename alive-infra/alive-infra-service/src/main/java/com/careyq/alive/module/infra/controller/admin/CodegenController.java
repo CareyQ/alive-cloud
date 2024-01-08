@@ -5,6 +5,7 @@ import com.careyq.alive.core.domain.Result;
 import com.careyq.alive.module.infra.dto.CodegenImportDTO;
 import com.careyq.alive.module.infra.dto.CodegenTablePageDTO;
 import com.careyq.alive.module.infra.service.CodegenService;
+import com.careyq.alive.module.infra.vo.CodegenDetailVO;
 import com.careyq.alive.module.infra.vo.CodegenTablePageVO;
 import com.careyq.alive.module.infra.vo.DbTableVO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -44,5 +45,11 @@ public class CodegenController {
     @Operation(summary = "导入数据库表结构")
     public Result<List<Long>> importCodegenTable(@Validated @RequestBody CodegenImportDTO dto) {
         return Result.ok(codegenService.importCodegenTable(dto));
+    }
+
+    @GetMapping("/detail")
+    @Operation(summary = "获取表详情")
+    public Result<CodegenDetailVO> getCodegenDetail(@RequestParam Long tableId) {
+        return Result.ok(codegenService.getCodegenDetail(tableId));
     }
 }

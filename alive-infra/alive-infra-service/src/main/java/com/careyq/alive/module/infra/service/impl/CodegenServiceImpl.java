@@ -17,6 +17,7 @@ import com.careyq.alive.module.infra.service.CodegenService;
 import com.careyq.alive.module.infra.service.DataSourceConfigService;
 import com.careyq.alive.module.infra.service.DatabaseTableService;
 import com.careyq.alive.module.infra.util.CodegenUtil;
+import com.careyq.alive.module.infra.vo.CodegenDetailVO;
 import com.careyq.alive.module.infra.vo.CodegenTablePageVO;
 import com.careyq.alive.module.infra.vo.DbTableVO;
 import com.careyq.alive.mybatis.core.query.LambdaQueryWrapperX;
@@ -112,5 +113,40 @@ public class CodegenServiceImpl implements CodegenService {
                 throw new CustomException(CODEGEN_COLUMN_COMMENT_IS_NULL, e.getName());
             }
         });
+    }
+
+    @Override
+    public CodegenDetailVO getCodegenDetail(Long tableId) {
+        CodegenTable table = this.validTable(tableId);
+        List<CodegenColumn> columns = this.validColumns(tableId);
+        return CodegenConvert.INSTANCE.convert(table, columns);
+    }
+
+    /**
+     * 校验表定义
+     *
+     * @param tableId 表编号
+     * @return 表定义
+     */
+    private CodegenTable validTable(Long tableId) {
+        CodegenTable table = codegenTableMapper.selectById(tableId);
+        if (table == null) {
+            throw new CustomException(CODEGEN_TABLE_NOT_EXISTS);
+        }
+        return table;
+    }
+
+    /**
+     * 校验表字段
+     *
+     * @param tableId 表编号
+     * @return 表字段列表
+     */
+    private List<CodegenColumn> validColumns(Long tableId) {
+        List<CodegenColumn> columns = codegenColumnMapper.selectList(CodegenColumn::getTableId, tableId);
+        if (columns.isEmpty()) {
+            throw new CustomException(CODEGEN_COLUMN_NOT_EXISTS);
+        }
+        return columns;
     }
 }
