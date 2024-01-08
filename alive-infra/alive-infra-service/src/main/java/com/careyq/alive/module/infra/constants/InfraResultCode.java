@@ -27,11 +27,11 @@ public interface InfraResultCode {
     ResultCode CODEGEN_IMPORT_TABLE_NULL = new ResultCode(3_30001, "导入的表不存在");
     ResultCode CODEGEN_TABLE_COMMENT_IS_NULL = new ResultCode(3_30002, "数据库的表注释未填写");
     ResultCode CODEGEN_IMPORT_COLUMNS_NULL = new ResultCode(3_30003, "导入的字段不存在");
-    ResultCode CODEGEN_COLUMN_COMMENT_IS_NULL = new ResultCode(1_30004, "数据库的表字段({})注释未填写");
-    ResultCode CODEGEN_DB_TABLE_NOT_EXIST = new ResultCode(1_30005, "数据库的表({})不存在");
-    ResultCode CODEGEN_TABLE_IS_EXIST = new ResultCode(1_30006, "数据库的表({})已存在");
-    ResultCode CODEGEN_TABLE_NOT_EXISTS = new ResultCode(1_30007, "表定义不存在");
-    ResultCode CODEGEN_COLUMN_NOT_EXISTS = new ResultCode(1_30008, "表字段不存在");
+    ResultCode CODEGEN_COLUMN_COMMENT_IS_NULL = new ResultCode(3_30004, "数据库的表字段({})注释未填写");
+    ResultCode CODEGEN_DB_TABLE_NOT_EXIST = new ResultCode(3_30005, "数据库的表({})不存在");
+    ResultCode CODEGEN_TABLE_IS_EXIST = new ResultCode(3_30006, "数据库的表({})已存在");
+    ResultCode CODEGEN_TABLE_NOT_EXISTS = new ResultCode(3_30007, "表定义不存在");
+    ResultCode CODEGEN_COLUMN_NOT_EXISTS = new ResultCode(3_30008, "表字段不存在");
 
     /**
      * DEPT
