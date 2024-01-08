@@ -3,7 +3,9 @@ package com.careyq.alive.mybatis.core.mapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
+import com.baomidou.mybatisplus.extension.toolkit.Db;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -22,5 +24,14 @@ public interface BaseMapperX<T> extends BaseMapper<T> {
      */
     default List<T> selectList(SFunction<T, ?> field, Object value) {
         return selectList(new LambdaQueryWrapper<T>().eq(field, value));
+    }
+
+    /**
+     * 批量插入
+     *
+     * @param entities 实体列表
+     */
+    default void insertBatch(Collection<T> entities) {
+        Db.saveBatch(entities);
     }
 }

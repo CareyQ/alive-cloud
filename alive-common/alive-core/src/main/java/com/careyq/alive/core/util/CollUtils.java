@@ -7,6 +7,7 @@ import cn.hutool.core.util.StrUtil;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * 集合工具类扩展
@@ -41,6 +42,20 @@ public class CollUtils extends CollUtil {
             return new ArrayList<>();
         }
         return coll.stream().map(func).filter(e -> Objects.nonNull(e) && StrUtil.isEmptyIfStr(e)).collect(Collectors.toList());
+    }
+
+    /**
+     * 转换为指定内容的 List
+     *
+     * @param coll 列表
+     * @param func 转换逻辑
+     * @return List
+     */
+    public static <T, U, R> List<R> convertFlatList(Collection<T> coll, Function<? super T, ? extends U> mapper, Function<U, ? extends Stream<? extends R>> func) {
+        if (isEmpty(coll)) {
+            return new ArrayList<>();
+        }
+        return coll.stream().map(mapper).flatMap(func).filter(e -> Objects.nonNull(e) && StrUtil.isEmptyIfStr(e)).collect(Collectors.toList());
     }
 
     /**

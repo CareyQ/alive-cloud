@@ -1,7 +1,7 @@
 package com.careyq.alive.module.infra.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.careyq.alive.module.infra.entity.CodegenColumn;
+import com.careyq.alive.mybatis.core.mapper.BaseMapperX;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -10,5 +10,5 @@ import org.apache.ibatis.annotations.Mapper;
  * @author CareyQ
  */
 @Mapper
-public interface CodegenColumnMapper extends BaseMapper<CodegenColumn> {
+public interface CodegenColumnMapper extends BaseMapperX<CodegenColumn> {
 }

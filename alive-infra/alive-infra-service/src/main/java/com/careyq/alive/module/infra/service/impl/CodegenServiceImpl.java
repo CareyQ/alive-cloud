@@ -9,7 +9,9 @@ import com.careyq.alive.core.util.CollUtils;
 import com.careyq.alive.module.infra.convert.CodegenConvert;
 import com.careyq.alive.module.infra.dto.CodegenImportDTO;
 import com.careyq.alive.module.infra.dto.CodegenTablePageDTO;
+import com.careyq.alive.module.infra.entity.CodegenColumn;
 import com.careyq.alive.module.infra.entity.CodegenTable;
+import com.careyq.alive.module.infra.mapper.CodegenColumnMapper;
 import com.careyq.alive.module.infra.mapper.CodegenTableMapper;
 import com.careyq.alive.module.infra.service.CodegenService;
 import com.careyq.alive.module.infra.service.DataSourceConfigService;
@@ -21,6 +23,7 @@ import com.careyq.alive.mybatis.core.query.LambdaQueryWrapperX;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -39,6 +42,7 @@ public class CodegenServiceImpl implements CodegenService {
     private final DataSourceConfigService dataSourceConfigService;
     private final DatabaseTableService databaseTableService;
     private final CodegenTableMapper codegenTableMapper;
+    private final CodegenColumnMapper codegenColumnMapper;
 
     @Override
     public List<DbTableVO> getDbTableList(Long dataSourceConfigId, String name, String comment) {
@@ -74,9 +78,18 @@ public class CodegenServiceImpl implements CodegenService {
             throw new CustomException(CODEGEN_TABLE_IS_EXIST, CollUtils.join(existTableNames, StrUtil.COMMA));
         }
 
-        List<CodegenTable> tables = tableList.stream().map(CodegenUtil::buildTable).toList();
-
-        return null;
+        List<CodegenTable> tables = new ArrayList<>();
+        for (TableInfo tableInfo : tableList) {
+            validTableInfo(tableInfo);
+            tables.add(CodegenUtil.buildTable(tableInfo));
+        }
+        codegenTableMapper.insertBatch(tables);
+        // 表字段设置表编号
+        Map<String, Long> tableMap = CollUtils.convertMap(tables, CodegenTable::getTableName, CodegenTable::getId);
+        List<CodegenColumn> columns = CollUtils.convertFlatList(tables, CodegenTable::getColumns, List::stream);
+        columns.forEach(e -> e.setTableId(tableMap.get(e.getTableName())));
+        codegenColumnMapper.insertBatch(columns);
+        return CollUtils.convertList(tables, CodegenTable::getId);
     }
 
     /**

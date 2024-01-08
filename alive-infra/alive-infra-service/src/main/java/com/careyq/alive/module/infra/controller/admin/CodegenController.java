@@ -2,6 +2,7 @@ package com.careyq.alive.module.infra.controller.admin;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.careyq.alive.core.domain.Result;
+import com.careyq.alive.module.infra.dto.CodegenImportDTO;
 import com.careyq.alive.module.infra.dto.CodegenTablePageDTO;
 import com.careyq.alive.module.infra.service.CodegenService;
 import com.careyq.alive.module.infra.vo.CodegenTablePageVO;
@@ -37,5 +38,11 @@ public class CodegenController {
     @Operation(summary = "获取表定义")
     public Result<IPage<CodegenTablePageVO>> getCodegenTablePage(@Validated @RequestBody CodegenTablePageDTO dto) {
         return Result.ok(codegenService.getCodegenTablePage(dto));
+    }
+
+    @PostMapping("/import")
+    @Operation(summary = "导入数据库表结构")
+    public Result<List<Long>> importCodegenTable(@Validated @RequestBody CodegenImportDTO dto) {
+        return Result.ok(codegenService.importCodegenTable(dto));
     }
 }

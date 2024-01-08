@@ -1,10 +1,13 @@
 package com.careyq.alive.module.infra.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.careyq.alive.core.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import java.util.List;
 
 /**
  * 代码生成表定义
@@ -56,5 +59,11 @@ public class CodegenTable extends BaseEntity {
      * 作者
      */
     private String author;
+
+    /**
+     * 表字段
+     */
+    @TableField(exist = false)
+    private List<CodegenColumn> columns;
 
 }
