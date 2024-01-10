@@ -12,7 +12,6 @@ import lombok.experimental.Accessors;
  * @author CareyQ
  */
 @Data
-@Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
 @Schema(description = "管理后台 - 角色分页 DTO")
 public class RolePageDTO extends PageDTO {

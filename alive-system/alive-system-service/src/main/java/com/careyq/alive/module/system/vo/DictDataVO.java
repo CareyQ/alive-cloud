@@ -16,7 +16,6 @@ import org.hibernate.validator.constraints.Length;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor(staticName = "of")
-@Accessors(chain = true)
 @Schema(description = "管理后台 - 字典数据 VO")
 public class DictDataVO {
 

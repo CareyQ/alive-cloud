@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
  * @author CareyQ
  */
 @Data
-@Accessors(chain = true)
 @Schema(description = "管理后台 - 错误日志分页 VO")
 public class ErrorLogPageVO {
 

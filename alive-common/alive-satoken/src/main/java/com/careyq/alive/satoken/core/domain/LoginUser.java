@@ -1,7 +1,6 @@
 package com.careyq.alive.satoken.core.domain;
 
 import lombok.Data;
-import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,7 +11,6 @@ import java.util.List;
  * @author CareyQ
  */
 @Data
-@Accessors(chain = true)
 public class LoginUser {
 
     /**

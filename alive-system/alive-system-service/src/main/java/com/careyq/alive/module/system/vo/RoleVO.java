@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
  */
 @Data
 @NoArgsConstructor
-@Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
 @Schema(description = "管理后台 - 角色 VO")
 public class RoleVO extends RoleDTO {

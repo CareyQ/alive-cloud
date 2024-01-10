@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
  * @author CareyQ
  */
 @Data
-@Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
 @TableName("infra_error_log")
 public class ErrorLog extends BaseEntity {

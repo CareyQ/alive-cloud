@@ -13,7 +13,6 @@ import java.util.Set;
  * @author CareyQ
  */
 @Data
-@Accessors(chain = true)
 @Schema(description = "管理后台 - 权限绑定 DTO")
 public class PermissionAssignDTO {
 

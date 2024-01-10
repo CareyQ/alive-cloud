@@ -11,7 +11,6 @@ import java.util.List;
  * @author CareyQ
  */
 @Data
-@Accessors(chain = true)
 @Schema(description = "管理后台 - 菜单列表 VO")
 public class RouterVO {
 

@@ -11,7 +11,6 @@ import org.hibernate.validator.constraints.Length;
  * @author CareyQ
  */
 @Data
-@Accessors(chain = true)
 @Schema(description = "管理后台 - 菜单详情 VO")
 public class MenuVO {
 

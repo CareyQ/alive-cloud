@@ -12,7 +12,6 @@ import lombok.experimental.Accessors;
  */
 @Data
 @AllArgsConstructor
-@Accessors(chain = true)
 @Schema(description = "管理后台 - 数据库的表定义 VO")
 public class DbTableVO {
 

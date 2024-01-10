@@ -12,7 +12,6 @@ import lombok.experimental.Accessors;
  * @author CareyQ
  */
 @Data
-@Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
 @TableName("infra_data_source_config")
 public class DataSourceConfig extends BaseEntity {

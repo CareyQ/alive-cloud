@@ -9,7 +9,6 @@ import lombok.experimental.Accessors;
  * @author CareyQ
  */
 @Data
-@Accessors(chain = true)
 public class ErrorLogDTO {
 
     /**

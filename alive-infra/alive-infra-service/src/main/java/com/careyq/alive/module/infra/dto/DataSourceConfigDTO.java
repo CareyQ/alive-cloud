@@ -11,7 +11,6 @@ import lombok.experimental.Accessors;
  * @author CareyQ
  */
 @Data
-@Accessors(chain = true)
 @Schema(description = "管理后台 - 数据源配置 DTO")
 public class DataSourceConfigDTO {
 

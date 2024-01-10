@@ -14,7 +14,6 @@ import java.util.Set;
  * @author CareyQ
  */
 @Data
-@Accessors(chain = true)
 @Schema(description = "管理后台 - 用户信息 DTO")
 public class UserDTO {
 

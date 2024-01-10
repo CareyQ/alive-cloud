@@ -14,7 +14,6 @@ import java.util.List;
  * @author CareyQ
  */
 @Data
-@Accessors(chain = true)
 @Schema(description = "管理后台 - 导入数据库表结构 DTO")
 public class CodegenImportDTO {
 

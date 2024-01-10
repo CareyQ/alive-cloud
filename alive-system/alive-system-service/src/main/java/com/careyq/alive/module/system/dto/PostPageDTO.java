@@ -12,7 +12,6 @@ import lombok.experimental.Accessors;
  * @author CareyQ
  */
 @Data
-@Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
 @Schema(description = "管理后台 - 岗位分页 DTO")
 public class PostPageDTO extends PageDTO {

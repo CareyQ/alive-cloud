@@ -14,7 +14,6 @@ import org.hibernate.validator.constraints.Length;
  */
 @Data
 @Builder
-@Accessors(chain = true)
 @Schema(description = "管理后台 - 字典类型 VO")
 public class DictTypeVO {
 

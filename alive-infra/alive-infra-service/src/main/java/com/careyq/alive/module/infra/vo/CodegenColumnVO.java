@@ -10,7 +10,6 @@ import lombok.experimental.Accessors;
  * @author CareyQ
  */
 @Data
-@Accessors(chain = true)
 @Schema(description = "管理后台 - 代码生成表字段 VO")
 public class CodegenColumnVO {
 

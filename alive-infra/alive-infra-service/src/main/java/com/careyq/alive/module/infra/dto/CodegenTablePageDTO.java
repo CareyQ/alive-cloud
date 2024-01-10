@@ -14,7 +14,6 @@ import java.time.LocalDate;
  * @author CareyQ
  */
 @Data
-@Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
 @Schema(description = "管理后台 - 代码生成表定义分页 DTO")
 public class CodegenTablePageDTO extends PageDTO {

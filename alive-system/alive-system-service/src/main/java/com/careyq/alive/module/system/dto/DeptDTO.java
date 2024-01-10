@@ -12,7 +12,6 @@ import org.hibernate.validator.constraints.Length;
  * @author CareyQ
  */
 @Data
-@Accessors(chain = true)
 @Schema(description = "管理后台 - 部门 DTO")
 public class DeptDTO {
 

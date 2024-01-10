@@ -12,7 +12,6 @@ import java.util.Map;
  * @author CareyQ
  */
 @Data
-@Accessors(chain = true)
 public class OperateLogDTO {
 
     /**

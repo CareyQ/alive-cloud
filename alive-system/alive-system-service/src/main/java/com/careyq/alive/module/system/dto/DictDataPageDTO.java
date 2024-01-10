@@ -12,7 +12,6 @@ import lombok.experimental.Accessors;
  * @author CareyQ
  */
 @Data
-@Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
 @Schema(description = "管理后台 - 字典数据分页 DTO")
 public class DictDataPageDTO extends PageDTO {

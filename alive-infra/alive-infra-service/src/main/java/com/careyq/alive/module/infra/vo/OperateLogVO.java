@@ -13,7 +13,6 @@ import java.util.Map;
  * @author CareyQ
  */
 @Data
-@Accessors(chain = true)
 @Schema(description = "管理后台 - 操作日志 VO")
 public class OperateLogVO {
 

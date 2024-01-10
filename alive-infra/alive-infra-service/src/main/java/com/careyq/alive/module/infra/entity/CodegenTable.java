@@ -15,7 +15,6 @@ import java.util.List;
  * @author CareyQ
  */
 @Data
-@Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
 @TableName("infra_codegen_table")
 public class CodegenTable extends BaseEntity {

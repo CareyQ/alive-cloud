@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
  * @author CareyQ
  */
 @Data
-@Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor(staticName = "of")
 @Schema(description = "管理后台 - 岗位 VO")

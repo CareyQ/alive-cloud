@@ -14,7 +14,6 @@ import java.time.LocalDate;
  * @author CareyQ
  */
 @Data
-@Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
 @Schema(description = "管理后台 - 操作日志分页 DTO")
 public class OperateLogPageDTO extends PageDTO {

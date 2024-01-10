@@ -12,7 +12,6 @@ import java.util.List;
  * @author CareyQ
  */
 @Data
-@Accessors(chain = true)
 @Schema(description = "管理后台 - 代码生成表详情 VO")
 public class CodegenDetailVO {
 
