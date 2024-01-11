@@ -13,7 +13,6 @@ import lombok.experimental.Accessors;
  * @author CareyQ
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @TableName("infra_login_log")
 public class LoginLog extends BaseEntity {
 

@@ -11,6 +11,7 @@ import com.careyq.alive.module.infra.dto.CodegenImportDTO;
 import com.careyq.alive.module.infra.dto.CodegenTablePageDTO;
 import com.careyq.alive.module.infra.entity.CodegenColumn;
 import com.careyq.alive.module.infra.entity.CodegenTable;
+import com.careyq.alive.module.infra.enums.CodegenSceneEnum;
 import com.careyq.alive.module.infra.mapper.CodegenColumnMapper;
 import com.careyq.alive.module.infra.mapper.CodegenTableMapper;
 import com.careyq.alive.module.infra.service.CodegenService;
@@ -82,6 +83,9 @@ public class CodegenServiceImpl implements CodegenService {
         List<CodegenTable> tables = new ArrayList<>();
         for (TableInfo tableInfo : tableList) {
             validTableInfo(tableInfo);
+            CodegenTable codegenTable = CodegenUtil.buildTable(tableInfo);
+            codegenTable.setDataSourceConfigId(dto.getDataSourceConfigId())
+                    .setScene(CodegenSceneEnum.ADMIN.getScene());
             tables.add(CodegenUtil.buildTable(tableInfo));
         }
         codegenTableMapper.insertBatch(tables);

@@ -17,7 +17,6 @@ import java.util.Map;
  * @author CareyQ
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @TableName("infra_operate_log")
 public class OperateLog extends BaseEntity {
 

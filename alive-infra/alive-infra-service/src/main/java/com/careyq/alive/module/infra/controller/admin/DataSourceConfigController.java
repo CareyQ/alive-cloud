@@ -44,7 +44,7 @@ public class DataSourceConfigController {
 
     @DeleteMapping("/del")
     @Operation(summary = "删除数据源配置")
-    public Result<Boolean> getOperateLogDetail(@RequestParam Long id) {
+    public Result<Boolean> delDataSourceConfig(@RequestParam Long id) {
         configService.delDataSourceConfig(id);
         return Result.ok(true);
     }

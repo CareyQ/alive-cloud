@@ -11,7 +11,6 @@ import lombok.EqualsAndHashCode;
  * @author CareyQ
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @TableName("system_dict_type")
 public class DictType extends BaseEntity {
 

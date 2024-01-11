@@ -11,7 +11,6 @@ import lombok.EqualsAndHashCode;
  * @author CareyQ
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @TableName("system_post")
 public class Post extends BaseEntity {
 

@@ -1,0 +1,53 @@
+package ${basePackage}.module.${table.moduleName}.controller.${sceneEnum.basePackage}.${table.businessName};
+
+import ${IPageClassName};
+import ${ResultClassName};
+import ${basePackage}.module.${table.moduleName}.dto.*;
+import ${basePackage}.module.${table.moduleName}.service.${table.className}Service;
+import ${basePackage}.module.${table.moduleName}.vo.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.AllArgsConstructor;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.*;
+
+/**
+* ${table.classComment}
+*
+* @author ${table.author}
+*/
+@Tag(name = "${sceneEnum.name} - ${table.classComment}")
+@RestController
+@AllArgsConstructor
+@RequestMapping("/${table.moduleName}/${simpleClassName_strikeCase}")
+public class ${sceneEnum.prefixClass}${table.className}Controller {
+
+    private final ${table.className}Service ${classNameVar}Service;
+
+    @PostMapping("/save")
+    @Operation(summary = "保存${table.classComment}")
+    public Result<${primaryColumn.javaType}> save${simpleClassName}(@Validated @RequestBody ${sceneEnum.prefixClass}${table.className}DTO dto) {
+        return Result.ok(${classNameVar}Service.save${simpleClassName}(dto));
+    }
+
+    @PostMapping("/page")
+    @Operation(summary = "获取${table.classComment}分页")
+    public Result<IPage<${sceneEnum.prefixClass}${table.className}PageVO>> get${simpleClassName}Page(@Validated @RequestBody ${sceneEnum.prefixClass}${table.className}PageDTO dto) {
+        return Result.ok(${classNameVar}Service.get${classNameVar}Page(dto));
+    }
+
+    @GetMapping("/detail")
+    @Operation(summary = "获取${table.classComment}详情")
+    public Result<${sceneEnum.prefixClass}${table.className}VO> get${simpleClassName}Detail(@RequestParam ${primaryColumn.javaType} id) {
+        return Result.ok(${classNameVar}Service.get${simpleClassName}Detail(id));
+    }
+
+    @DeleteMapping("/del")
+    @Operation(summary = "删除${table.classComment}")
+    public Result<Boolean> del${simpleClassName}(@RequestParam ${primaryColumn.javaType} id) {
+        ${classNameVar}Service.del${simpleClassName}(id);
+        return Result.ok(true);
+    }
+}

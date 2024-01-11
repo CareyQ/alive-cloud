@@ -13,7 +13,6 @@ import lombok.EqualsAndHashCode;
  * @author CareyQ
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @TableName("system_menu")
 public class Menu extends BaseEntity {
 

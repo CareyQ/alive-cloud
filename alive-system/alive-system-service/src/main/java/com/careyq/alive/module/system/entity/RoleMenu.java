@@ -11,7 +11,6 @@ import lombok.EqualsAndHashCode;
  * @author CareyQ
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @TableName("system_role_menu")
 public class RoleMenu extends BaseEntity {
 

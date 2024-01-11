@@ -3,9 +3,8 @@ package com.careyq.alive.module.infra.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.careyq.alive.core.domain.BaseEntity;
+import com.careyq.alive.module.infra.enums.CodegenSceneEnum;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
 
 import java.util.List;
 
@@ -15,7 +14,6 @@ import java.util.List;
  * @author CareyQ
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @TableName("infra_codegen_table")
 public class CodegenTable extends BaseEntity {
 
@@ -23,6 +21,11 @@ public class CodegenTable extends BaseEntity {
      * 数据源配置编号
      */
     private Long dataSourceConfigId;
+
+    /**
+     * 生成场景 {@link CodegenSceneEnum}
+     */
+    private Integer scene;
 
     /**
      * 表名称

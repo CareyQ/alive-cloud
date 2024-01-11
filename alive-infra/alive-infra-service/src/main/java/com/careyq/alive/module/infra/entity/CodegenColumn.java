@@ -13,7 +13,6 @@ import lombok.experimental.Accessors;
  * @author CareyQ
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @TableName("infra_codegen_column")
 public class CodegenColumn extends BaseEntity {
 

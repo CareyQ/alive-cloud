@@ -236,6 +236,7 @@ create table if not exists infra_codegen_table
 (
     id                    bigint       not null auto_increment primary key comment '主键',
     data_source_config_id bigint       not null comment '数据源配置 ID',
+    scene                 int          not null default 1 comment '场景',
     table_name            varchar(200) not null default '' comment '表名称',
     table_comment         varchar(200) not null default '' comment '表描述',
     module_name           varchar(30)  not null default '' comment '模块名',

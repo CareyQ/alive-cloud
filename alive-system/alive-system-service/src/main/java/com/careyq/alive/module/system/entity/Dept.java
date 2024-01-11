@@ -11,7 +11,6 @@ import lombok.EqualsAndHashCode;
  * @author CareyQ
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @TableName("system_dept")
 public class Dept extends BaseEntity {
 

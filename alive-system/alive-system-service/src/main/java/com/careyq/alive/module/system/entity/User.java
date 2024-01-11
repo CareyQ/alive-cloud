@@ -15,7 +15,6 @@ import java.util.Set;
  * @author CareyQ
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @TableName("system_user")
 public class User extends BaseEntity {
 
