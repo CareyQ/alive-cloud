@@ -1,0 +1,178 @@
+<script lang="ts" setup>
+import * as ${table.className}Api from '@/api/${table.moduleName}/${table.businessName}'
+
+const message = useMessage()
+const formLoading = ref(false)
+const dialogTitle = ref('')
+const dialogVisible = ref(false)
+
+const formRef = ref()
+
+const formData = ref({
+#foreach ($column in $columns)
+  #if ($column.createOperation || $column.updateOperation)
+    #if ($column.htmlType == "checkbox")
+  $column.javaField: [],
+    #else
+  $column.javaField: undefined,
+    #end
+  #end
+#end
+})
+
+const formRules = reactive({
+#foreach ($column in $columns)
+  #if (($column.createOperation || $column.updateOperation) && !$column.nullable && !${column.primaryKey})## 创建或者更新操作 && 要求非空 && 非主键
+    #set($comment=$column.columnComment)
+  $column.javaField: [{ required: true, message: '${comment}不能为空', trigger: #if($column.htmlType == 'select')'change'#else'blur'#end }],
+  #end
+#end
+})
+
+const open = async (id: number) => {
+  resetForm()
+  dialogVisible.value = true
+  if (id) {
+    dialogTitle.value = '编辑${table.classComment}'
+    formLoading.value = true
+    try {
+      formData.value = await ${table.className}Api.getDetail(id)
+    } finally {
+      formLoading.value = false
+    }
+  } else {
+    dialogTitle.value = '新增${table.classComment}'
+  }
+}
+defineExpose({ open })
+
+const resetForm = () => {
+  formData.value = {
+  #foreach ($column in $columns)
+    #if ($column.createOperation || $column.updateOperation)
+      #if ($column.htmlType == "checkbox")
+    $column.javaField: [],
+      #else
+     $column.javaField: undefined,
+      #end
+    #end
+  #end
+  }
+  formRef.value?.resetFields()
+}
+
+const emit = defineEmits(['success'])
+const submitForm = async () => {
+  const valid = await formRef.value?.validate()
+  if (!valid) {
+    return
+  }
+  formLoading.value = true
+  try {
+    const data = formData.value
+    await ${table.className}Api.save(data)
+    message.success('保存成功')
+    dialogVisible.value = false
+    emit('success')
+  } finally {
+    formLoading.value = false
+  }
+  dialogVisible.value = false
+}
+</script>
+
+<template>
+  <Dialog :title="dialogTitle" v-model="dialogVisible">
+    <el-form ref="formRef" :model="formData" :rules="formRules" label-width="80px" v-loading="formLoading">
+    #foreach($column in $columns)
+      #if ($column.createOperation || $column.updateOperation)
+        #set ($dictType = $column.dictType)
+        #set ($javaField = $column.javaField)
+        #set ($javaType = $column.javaType)
+        #set ($AttrName = $column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
+        #set ($comment = $column.columnComment)
+        #set ($dictMethod = "getDictOptions")## 计算使用哪个 dict 字典方法
+        #if ($javaType == "Integer" || $javaType == "Long" || $javaType == "Byte" || $javaType == "Short")
+            #set ($dictMethod = "getIntDictOptions")
+        #elseif ($javaType == "String")
+            #set ($dictMethod = "getStrDictOptions")
+        #elseif ($javaType == "Boolean")
+            #set ($dictMethod = "getBoolDictOptions")
+        #end
+        #if($column.htmlType == "input" && !$column.primaryKey)
+      <el-form-item label="${comment}" prop="${javaField}">
+        <el-input v-model="formData.${javaField}" placeholder="请输入${comment}" />
+      </el-form-item>
+        #elseif($column.htmlType == "select")
+      <el-form-item label="${comment}" prop="${javaField}">
+        <el-select v-model="formData.${javaField}" placeholder="请选择${comment}">
+        #if ("" != $dictType)## 有数据字典
+          <el-option
+            v-for="(item, index) in $dictMethod(DICT_TYPE.$dictType.toUpperCase())"
+            :key="index"
+            :label="item.label"
+            :value="item.value"
+          />
+        #else##没数据字典
+          <el-option label="请选择字典生成" value="" />
+        #end
+        </el-select>
+      </el-form-item>
+        #elseif($column.htmlType == "checkbox")
+      <el-form-item label="${comment}" prop="${javaField}">
+        <el-checkbox-group v-model="formData.${javaField}">
+        #if ("" != $dictType)## 有数据字典
+          <el-checkbox
+            v-for="dict in $dictMethod(DICT_TYPE.$dictType.toUpperCase())"
+            :key="dict.value"
+            :label="dict.value"
+          >
+            {{ dict.label }}
+          </el-checkbox>
+        #else##没数据字典
+          <el-checkbox>请选择字典生成</el-checkbox>
+        #end
+        </el-checkbox-group>
+      </el-form-item>
+        #elseif($column.htmlType == "radio")
+      <el-form-item label="${comment}" prop="${javaField}">
+        <el-radio-group v-model="formData.${javaField}">
+        #if ("" != $dictType)## 有数据字典
+          <el-radio
+            v-for="dict in $dictMethod(DICT_TYPE.$dictType.toUpperCase())"
+            :key="dict.value"
+            :label="dict.value"
+          >
+            {{ dict.label }}
+          </el-radio>
+        #else##没数据字典
+          <el-radio label="1">请选择字典生成</el-radio>
+        #end
+        </el-radio-group>
+      </el-form-item>
+        #elseif($column.htmlType == "datetime")## 时间框
+      <el-form-item label="${comment}" prop="${javaField}">
+        <el-date-picker
+          v-model="formData.${javaField}"
+          type="date"
+          value-format="x"
+          placeholder="选择${comment}"
+        />
+      </el-form-item>
+        #elseif($column.htmlType == "textarea")## 文本框
+      <el-form-item label="${comment}" prop="${javaField}">
+        <el-input v-model="formData.${javaField}" type="textarea" placeholder="请输入${comment}" />
+      </el-form-item>
+        #end
+      #end
+    #end
+    </el-form>
+
+    <template #footer>
+      <span>
+        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="submitForm">保存</el-button>
+      </span>
+    </template>
+  </Dialog>
+</template>

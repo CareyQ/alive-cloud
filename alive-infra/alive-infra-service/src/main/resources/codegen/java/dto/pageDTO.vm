@@ -1,0 +1,50 @@
+package ${basePackage}.module.${table.moduleName}.dto;
+
+import ${PageDtoClassName};
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.*;
+import lombok.Data;
+#foreach ($column in $columns)
+    #if (${column.queryCondition} && ${column.javaType} == "BigDecimal")
+import java.math.BigDecimal;
+        #break
+    #end
+#end
+#foreach ($column in $columns)
+    #if (${column.queryCondition} && ${column.queryType} == "BETWEEN_DATA")
+import java.time.LocalDate;
+        #break
+    #end
+#end
+#foreach ($column in $columns)
+    #if (${column.queryCondition} && ${column.queryType} == "BETWEEN" && ${column.javaType} == "LocalDateTime")
+import java.time.LocalDateTime;
+        #break
+    #end
+#end
+
+/**
+* ${table.classComment}分页 DTO
+*
+* @author ${table.author}
+*/
+@Data
+@Schema(description = "${sceneEnum.name} - ${table.classComment}分页 DTO")
+public class ${sceneEnum.prefixClass}${table.className}PageDTO extends PageDTO {
+
+#foreach($column in $columns)
+    #if(${column.queryCondition})
+        #if(${column.queryType} == "BETWEEN_DATA")
+    @Schema(description = "开始日期")
+    private LocalDate startDate;
+
+    @Schema(description = "结束日期")
+    private LocalDate endDate;
+        #else
+    @Schema(description = "${prefixStr}${column.columnComment}")
+    private ${column.javaType}#if ("$!prefix" != "") ${prefix}${JavaField}#else ${column.javaField}#end;
+        #end
+
+    #end
+#end
+}

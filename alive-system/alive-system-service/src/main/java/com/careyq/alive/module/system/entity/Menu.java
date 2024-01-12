@@ -5,7 +5,6 @@ import com.careyq.alive.core.domain.BaseEntity;
 import com.careyq.alive.core.enums.CommonStatusEnum;
 import com.careyq.alive.module.system.enums.MenuTypeEnum;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
  * 菜单权限

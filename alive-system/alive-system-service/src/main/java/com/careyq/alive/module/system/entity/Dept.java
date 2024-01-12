@@ -3,7 +3,6 @@ package com.careyq.alive.module.system.entity;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.careyq.alive.core.domain.BaseEntity;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
  * 部门管理

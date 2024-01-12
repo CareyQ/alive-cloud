@@ -4,8 +4,6 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.careyq.alive.core.domain.BaseEntity;
 import com.careyq.alive.module.system.enums.LoginResultEnum;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
 
 /**
  * 登录日志

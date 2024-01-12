@@ -3,8 +3,6 @@ package com.careyq.alive.module.system.dto;
 import com.careyq.alive.core.domain.PageDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
 
 /**
  * 字典数据分页 DTO

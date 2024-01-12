@@ -4,7 +4,6 @@ import cn.hutool.core.util.StrUtil;
 import com.careyq.alive.core.domain.ResultCode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**

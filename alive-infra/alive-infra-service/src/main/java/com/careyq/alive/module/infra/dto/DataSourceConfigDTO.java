@@ -3,7 +3,6 @@ package com.careyq.alive.module.infra.dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import lombok.experimental.Accessors;
 
 /**
  * 数据源配置 DTO

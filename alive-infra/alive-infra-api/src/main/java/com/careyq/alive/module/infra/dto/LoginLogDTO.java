@@ -1,7 +1,6 @@
 package com.careyq.alive.module.infra.dto;
 
 import lombok.Data;
-import lombok.experimental.Accessors;
 
 /**
  * 登录日志

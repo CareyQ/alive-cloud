@@ -3,9 +3,7 @@ package com.careyq.alive.module.system.vo;
 import com.careyq.alive.module.system.dto.RoleDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
 

@@ -1,0 +1,14 @@
+package ${basePackage}.module.${table.moduleName}.mapper;
+
+import ${BaseMapperClassName};
+import ${basePackage}.module.${table.moduleName}.entity.${table.className};
+import org.apache.ibatis.annotations.Mapper;
+
+/**
+* ${table.classComment} mapper
+*
+* @author ${table.author}
+*/
+@Mapper
+public interface ${table.className}Mapper extends BaseMapperX<${table.className}> {
+}

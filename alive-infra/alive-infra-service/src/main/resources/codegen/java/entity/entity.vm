@@ -1,0 +1,44 @@
+package ${basePackage}.module.${table.moduleName}.entity;
+
+import com.baomidou.mybatisplus.annotation.*;
+import ${BaseEntityClassName};
+import lombok.Data;
+#foreach ($column in $columns)
+    #if (${column.javaType} == "BigDecimal")
+import java.math.BigDecimal;
+        #break
+    #end
+#end
+#foreach ($column in $columns)
+    #if (${column.javaType} == "LocalDate")
+import java.time.LocalDate;
+        #break
+    #end
+#end
+#foreach ($column in $columns)
+    #if (${column.javaType} == "LocalDateTime")
+    import java.time.LocalDateTime;
+        #break
+    #end
+#end
+
+/**
+* ${table.classComment}
+*
+* @author ${table.author}
+*/
+@Data
+@TableName("${table.tableName.toLowerCase()}")
+public class ${table.className} extends BaseEntity {
+
+#foreach($column in $columns)
+    #if(!${baseDOFields.contains(${column.javaField})})
+    /**
+     * ${column.columnComment} #if ("$!column.dictType" != "") 枚举 {@link TODO ${column.dictType} 对应的类} #end
+     */
+    private ${column.javaType} ${column.javaField};
+
+    #end
+#end
+
+}

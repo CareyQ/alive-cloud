@@ -1,0 +1,54 @@
+import request from '@/utils/axios'
+#set ($baseURL = "/${table.moduleName}/${simpleClassName_strikeCase}")
+
+export interface ${table.className}DTO {
+  #foreach ($column in $columns)
+    #if ($column.createOperation || $column.updateOperation)
+      #if(${column.javaType.toLowerCase()} == "long" || ${column.javaType.toLowerCase()} == "integer" || ${column.javaType.toLowerCase()} == "short" || ${column.javaType.toLowerCase()} == "double" || ${column.javaType.toLowerCase()} == "bigdecimal")
+          ${column.javaField}?: number
+      #elseif(${column.javaType.toLowerCase()} == "date" || ${column.javaType.toLowerCase()} == "localdatetime")
+          ${column.javaField}?: Date
+      #else
+          ${column.javaField}?: ${column.javaType.toLowerCase()}
+      #end
+    #end
+  #end
+}
+
+export interface ${table.className}PageDTO {
+  #foreach ($column in $columns)
+    #if ($column.queryCondition)
+      #if(${column.javaType.toLowerCase()} == "long" || ${column.javaType.toLowerCase()} == "integer" || ${column.javaType.toLowerCase()} == "short" || ${column.javaType.toLowerCase()} == "double" || ${column.javaType.toLowerCase()} == "bigdecimal")
+          ${column.javaField}?: number
+      #elseif(${column.javaType.toLowerCase()} == "date" || ${column.javaType.toLowerCase()} == "localdatetime")
+          ${column.javaField}?: Date
+      #else
+          ${column.javaField}?: ${column.javaType.toLowerCase()}
+      #end
+    #end
+  #end
+  current: number
+  size: number
+}
+
+#if ( $table.templateType != 2 )
+// 查询${table.classComment}分页
+export const getPage = async (params: ${table.className}PageDTO) => {
+  return await request.post({ url: `${baseURL}/page`, params })
+}
+#end
+
+// 查询${table.classComment}详情
+export const getDetail = async (id: number) => {
+  return await request.get({ url: `${baseURL}/detail?id=` + id })
+}
+
+// 保存${table.classComment}
+export const save = async (data: ${table.className}DTO) => {
+  return await request.post({ url: `${baseURL}/save`, data })
+}
+
+// 删除${table.classComment}
+export const del = async (id: number) => {
+  return await request.delete({ url: `${baseURL}/del?id=` + id })
+}

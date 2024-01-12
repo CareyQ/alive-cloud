@@ -1,0 +1,126 @@
+package ${basePackage}.module.${table.moduleName}.service.impl;
+
+import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import ${basePackage}.core.enums.CommonStatusEnum;
+import ${basePackage}.core.exception.CustomException;
+
+import ${basePackage}.module.${table.moduleName}.dto.*;
+import ${basePackage}.module.${table.moduleName}.entity.${table.className};
+import ${basePackage}.module.${table.moduleName}.mapper.${table.className}Mapper;
+import ${basePackage}.module.${table.moduleName}.service.${table.className}Service;
+import ${basePackage}.module.${table.moduleName}.vo.*;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import static com.careyq.alive.module.system.constants.SystemResultCode.*;
+## 字段模板
+#macro(queryCondition)
+    #foreach ($column in $columns)
+        #if (${column.queryOperation})
+            #set ($JavaField = $column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})##首字母大写
+            #if (${column.queryType} == "=")##情况一，= 的时候
+            .eqIfPresent(${table.className}::get${JavaField}, dto.get${JavaField}())
+            #end
+            #if (${column.queryType} == "!=")##情况二，!= 的时候
+            .neIfPresent(${table.className}::get${JavaField}, dto.get${JavaField}())
+            #end
+            #if (${column.queryType} == ">")##情况三，> 的时候
+            .gtIfPresent(${table.className}::get${JavaField}, dto.get${JavaField}())
+            #end
+            #if (${column.queryType} == ">=")##情况四，>= 的时候
+            .geIfPresent(${table.className}::get${JavaField}, dto.get${JavaField}())
+            #end
+            #if (${column.queryType} == "<")##情况五，< 的时候
+            .ltIfPresent(${table.className}::get${JavaField}, dto.get${JavaField}())
+            #end
+            #if (${column.queryType} == "<=")##情况五，<= 的时候
+            .leIfPresent(${table.className}::get${JavaField}, dto.get${JavaField}())
+            #end
+            #if (${column.queryType} == "LIKE")##情况七，Like 的时候
+            .likeIfPresent(${table.className}::get${JavaField}, dto.get${JavaField}())
+            #end
+            #if (${column.queryType} == "BETWEEN")##情况八，Between 的时候
+            .betweenIfPresent(${table.className}::get${JavaField}, dto.get${JavaField}())
+            #end
+        #end
+    #end
+#end
+/**
+* ${table.classComment} 服务实现
+*
+* @author ${table.author}
+*/
+@Service
+@AllArgsConstructor
+public class ${table.className}ServiceImpl extends ServiceImpl<${table.className}Mapper, ${table.className}> implements ${table.className}Service {
+
+    private final ${table.className}Mapper ${classNameVar}Mapper;
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Long save${simpleClassName}(${sceneEnum.prefixClass}${table.className}DTO dto) {
+        boolean exists = this.lambdaQueryX()
+                .neIfPresent(${table.className}::getId, dto.getId())
+                // TODO
+                .exists();
+        if (exists) {
+            throw new CustomException();
+        }
+        if (dto.getId() != null) {
+            this.checkDataExists(dto.getId());
+        }
+        ${table.className} ${classNameVar} = BeanUtil.copyProperties(dto, ${table.className}.class);
+        this.saveOrUpdate(${classNameVar});
+        return ${classNameVar}.getId();
+    }
+
+    @Override
+    public IPage<${table.className}PageVO> get${simpleClassName}Page(${sceneEnum.prefixClass}${table.className}PageDTO dto) {
+        IPage<${table.className}> page = this.lambdaQueryX()
+            #queryCondition()
+            .orderByDesc(DictData::getId)
+            .page(new Page<>(dto.getCurrent(), dto.getSize()));
+        if (page.getRecords().isEmpty()) {
+            return new Page<>();
+        }
+        return page.convert(${table.className}Convert.INSTANCE::convert);
+    }
+
+    @Override
+    public ${sceneEnum.prefixClass}${table.className}VO get${simpleClassName}Detail(${primaryColumn.javaType} id) {
+        ${table.className} data = this.checkDataExists(id);
+        return BeanUtil.copyProperties(data, ${sceneEnum.prefixClass}${table.className}VO.class);;
+    }
+
+    @Override
+    public void del${table.className}(${primaryColumn.javaType} id) {
+        this.checkDataExists(id);
+        this.removeById(id);
+    }
+
+    /**
+    * 校验${table.classComment}是否存在
+    *
+    * @param id 编号
+    * @return ${table.classComment}
+    */
+    private ${table.className} checkDataExists(Long id) {
+        if (id == null) {
+            return null;
+        }
+        ${table.className} data = this.getById(id);
+        if (data == null) {
+            throw new CustomException(${simpleClassNameUnderlineCase.toUpperCase()}_NOT_EXISTS);
+        }
+        return data;
+    }
+
+}

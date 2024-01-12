@@ -1,0 +1,40 @@
+package ${basePackage}.module.${table.moduleName}.vo;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+#foreach ($column in $columns)
+    #if (${column.queryResult} && ${column.javaType} == "BigDecimal")
+import java.math.BigDecimal;
+        #break
+    #end
+#end
+#foreach ($column in $columns)
+    #if (${column.queryResult} && ${column.javaType} == "LocalDate")
+import java.time.LocalDate;
+        #break
+    #end
+#end
+#foreach ($column in $columns)
+    #if (${column.queryResult} && ${column.javaType} == "LocalDateTime")
+    import java.time.LocalDateTime;
+        #break
+    #end
+#end
+
+/**
+* ${table.classComment}分页 VO
+*
+* @author ${table.author}
+*/
+@Data
+@Schema(description = "${sceneEnum.name} - ${table.classComment}分页 VO")
+public class ${sceneEnum.prefixClass}${table.className}PageVO {
+
+#foreach($column in $columns)
+    #if(${column.queryResult})
+    @Schema(description = "${column.columnComment}")
+    private ${column.javaType} ${column.javaField};
+    #end
+
+#end
+}

@@ -1,6 +1,6 @@
 package ${basePackage}.module.${table.moduleName}.controller.${sceneEnum.basePackage}.${table.businessName};
 
-import ${IPageClassName};
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import ${ResultClassName};
 import ${basePackage}.module.${table.moduleName}.dto.*;
 import ${basePackage}.module.${table.moduleName}.service.${table.className}Service;

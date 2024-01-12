@@ -3,7 +3,6 @@ package com.careyq.alive.module.system.vo;
 import com.careyq.alive.module.system.enums.MenuTypeEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import lombok.experimental.Accessors;
 
 import java.util.List;
 
