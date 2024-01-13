@@ -6,6 +6,7 @@ import cn.hutool.core.util.StrUtil;
 
 import java.util.*;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -41,7 +42,7 @@ public class CollUtils extends CollUtil {
         if (isEmpty(coll)) {
             return new ArrayList<>();
         }
-        return coll.stream().map(func).filter(e -> Objects.nonNull(e) && StrUtil.isEmptyIfStr(e)).collect(Collectors.toList());
+        return coll.stream().map(func).filter(e -> Objects.nonNull(e) && !StrUtil.isEmptyIfStr(e)).collect(Collectors.toList());
     }
 
     /**
@@ -55,7 +56,7 @@ public class CollUtils extends CollUtil {
         if (isEmpty(coll)) {
             return new ArrayList<>();
         }
-        return coll.stream().map(mapper).flatMap(func).filter(e -> Objects.nonNull(e) && StrUtil.isEmptyIfStr(e)).collect(Collectors.toList());
+        return coll.stream().map(mapper).flatMap(func).filter(e -> Objects.nonNull(e) && !StrUtil.isEmptyIfStr(e)).collect(Collectors.toList());
     }
 
     /**
@@ -85,5 +86,33 @@ public class CollUtils extends CollUtil {
             return MapUtil.newHashMap();
         }
         return coll.stream().collect(Collectors.toMap(keyFunc, valueFunc, (v1, v2) -> v1));
+    }
+
+    /**
+     * 获取指定条件第一个元素
+     *
+     * @param coll      列表
+     * @param predicate 条件
+     * @param <T>       T
+     * @return T
+     */
+    public static <T> T findFirst(List<T> coll, Predicate<T> predicate) {
+        return findFirst(coll, predicate, Function.identity());
+    }
+
+    /**
+     * 获取指定条件第一个元素
+     *
+     * @param coll      列表
+     * @param predicate 条件
+     * @param func      转换逻辑
+     * @param <T>       T
+     * @return T
+     */
+    public static <T, U> U findFirst(List<T> coll, Predicate<T> predicate, Function<T, U> func) {
+        if (CollUtil.isEmpty(coll)) {
+            return null;
+        }
+        return coll.stream().filter(predicate).findFirst().map(func).orElse(null);
     }
 }

@@ -1,6 +1,5 @@
 package com.careyq.alive.module.infra.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -25,7 +24,6 @@ public class DataSourceConfigDTO {
     @Schema(description = "用户名")
     private String username;
 
-    @JsonIgnore
     @Schema(description = "密码")
     private String password;
 }

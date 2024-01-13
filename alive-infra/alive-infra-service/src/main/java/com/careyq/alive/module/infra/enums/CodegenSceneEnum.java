@@ -1,5 +1,6 @@
 package com.careyq.alive.module.infra.enums;
 
+import cn.hutool.core.util.ArrayUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -38,4 +39,8 @@ public enum CodegenSceneEnum {
      * 类前缀
      */
     private final String prefixClass;
+
+    public static CodegenSceneEnum valueOf(Integer scene) {
+        return ArrayUtil.firstMatch(sceneEnum -> sceneEnum.getScene().equals(scene), values());
+    }
 }

@@ -39,7 +39,9 @@ public class DataSourceConfigController {
     @GetMapping("/detail")
     @Operation(summary = "获取数据源配置详情")
     public Result<DataSourceConfigDTO> getDataSourceConfigDetail(@RequestParam Long id) {
-        return Result.ok(configService.getDataSourceConfigDetail(id));
+        DataSourceConfigDTO res = configService.getDataSourceConfigDetail(id);
+        res.setPassword(null);
+        return Result.ok(res);
     }
 
     @DeleteMapping("/del")

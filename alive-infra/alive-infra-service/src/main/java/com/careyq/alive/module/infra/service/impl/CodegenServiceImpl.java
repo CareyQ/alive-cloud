@@ -17,6 +17,7 @@ import com.careyq.alive.module.infra.mapper.CodegenTableMapper;
 import com.careyq.alive.module.infra.service.CodegenService;
 import com.careyq.alive.module.infra.service.DataSourceConfigService;
 import com.careyq.alive.module.infra.service.DatabaseTableService;
+import com.careyq.alive.module.infra.util.CodegenEngine;
 import com.careyq.alive.module.infra.util.CodegenUtil;
 import com.careyq.alive.module.infra.vo.CodegenDetailVO;
 import com.careyq.alive.module.infra.vo.CodegenTablePageVO;
@@ -45,6 +46,7 @@ public class CodegenServiceImpl implements CodegenService {
     private final DatabaseTableService databaseTableService;
     private final CodegenTableMapper codegenTableMapper;
     private final CodegenColumnMapper codegenColumnMapper;
+    private final CodegenEngine codegenEngine;
 
     @Override
     public List<DbTableVO> getDbTableList(Long dataSourceConfigId, String name, String comment) {
@@ -86,7 +88,7 @@ public class CodegenServiceImpl implements CodegenService {
             CodegenTable codegenTable = CodegenUtil.buildTable(tableInfo);
             codegenTable.setDataSourceConfigId(dto.getDataSourceConfigId())
                     .setScene(CodegenSceneEnum.ADMIN.getScene());
-            tables.add(CodegenUtil.buildTable(tableInfo));
+            tables.add(codegenTable);
         }
         codegenTableMapper.insertBatch(tables);
         // 表字段设置表编号
@@ -152,5 +154,12 @@ public class CodegenServiceImpl implements CodegenService {
             throw new CustomException(CODEGEN_COLUMN_NOT_EXISTS);
         }
         return columns;
+    }
+
+    @Override
+    public Map<String, String> generationCode(Long tableId) {
+        CodegenTable table = this.validTable(tableId);
+        List<CodegenColumn> columns = this.validColumns(tableId);
+        return codegenEngine.execute(table, columns);
     }
 }

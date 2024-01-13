@@ -49,7 +49,7 @@ public class DataSourceConfigServiceImpl extends ServiceImplX<DataSourceConfigMa
 
     @Override
     public List<DataSourceConfigDTO> getDataSourceConfigList() {
-        return this.list().stream().map(DataSourceConfigConvert.INSTANCE::convert).toList();
+        return this.list().stream().map(DataSourceConfigConvert.INSTANCE::convert).peek(e -> e.setPassword(null)).toList();
     }
 
     @Override

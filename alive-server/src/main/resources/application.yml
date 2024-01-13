@@ -55,3 +55,6 @@ alive:
     title: ALIVE 管理系统
     description: ALIVE 系统后台管理功能
     version: ${alive.info.version}
+  codegen:
+    base-package: ${alive.info.base-package}
+    

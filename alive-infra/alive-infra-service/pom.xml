@@ -49,6 +49,11 @@
             <groupId>com.careyq</groupId>
             <artifactId>alive-operatelog</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity-engine-core</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

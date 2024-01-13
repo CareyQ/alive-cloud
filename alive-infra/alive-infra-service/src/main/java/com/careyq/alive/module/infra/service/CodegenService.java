@@ -8,6 +8,7 @@ import com.careyq.alive.module.infra.vo.CodegenTablePageVO;
 import com.careyq.alive.module.infra.vo.DbTableVO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 代码生成服务
@@ -49,4 +50,12 @@ public interface CodegenService {
      * @return 表详情
      */
     CodegenDetailVO getCodegenDetail(Long tableId);
+
+    /**
+     * 生成代码
+     *
+     * @param tableId 表编号
+     * @return 代码
+     */
+    Map<String, String> generationCode(Long tableId);
 }
