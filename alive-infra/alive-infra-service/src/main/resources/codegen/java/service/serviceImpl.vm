@@ -53,11 +53,12 @@ import static com.careyq.alive.module.system.constants.SystemResultCode.*;
         #end
     #end
 #end
+
 /**
-* ${table.classComment} 服务实现
-*
-* @author ${table.author}
-*/
+ * ${table.classComment} 服务实现
+ *
+ * @author ${table.author}
+ */
 @Service
 @AllArgsConstructor
 public class ${table.className}ServiceImpl extends ServiceImpl<${table.className}Mapper, ${table.className}> implements ${table.className}Service {
@@ -107,11 +108,11 @@ public class ${table.className}ServiceImpl extends ServiceImpl<${table.className
     }
 
     /**
-    * 校验${table.classComment}是否存在
-    *
-    * @param id 编号
-    * @return ${table.classComment}
-    */
+     * 校验${table.classComment}是否存在
+     *
+     * @param id 编号
+     * @return ${table.classComment}
+     */
     private ${table.className} checkDataExists(Long id) {
         if (id == null) {
             return null;

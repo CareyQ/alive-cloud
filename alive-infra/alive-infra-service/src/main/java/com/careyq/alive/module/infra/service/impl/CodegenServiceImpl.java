@@ -1,5 +1,6 @@
 package com.careyq.alive.module.infra.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -25,6 +26,7 @@ import com.careyq.alive.module.infra.vo.DbTableVO;
 import com.careyq.alive.mybatis.core.query.LambdaQueryWrapperX;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -161,5 +163,22 @@ public class CodegenServiceImpl implements CodegenService {
         CodegenTable table = this.validTable(tableId);
         List<CodegenColumn> columns = this.validColumns(tableId);
         return codegenEngine.execute(table, columns);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void delCodegen(Long tableId) {
+        this.validTable(tableId);
+        codegenTableMapper.deleteById(tableId);
+        codegenColumnMapper.delete(new LambdaQueryWrapperX<CodegenColumn>().eq(CodegenColumn::getTableId, tableId));
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateCodegen(CodegenDetailVO codegen) {
+        this.validTable(codegen.getTable().getId());
+        CodegenTable codegenTable = BeanUtil.copyProperties(codegen.getTable(), CodegenTable.class);
+        codegenTableMapper.updateById(codegenTable);
+        codegen.getColumns().forEach(e -> codegenColumnMapper.updateById(BeanUtil.copyProperties(e, CodegenColumn.class)));
     }
 }

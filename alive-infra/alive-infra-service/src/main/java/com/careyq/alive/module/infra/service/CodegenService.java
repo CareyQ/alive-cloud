@@ -58,4 +58,18 @@ public interface CodegenService {
      * @return 代码
      */
     Map<String, String> generationCode(Long tableId);
+
+    /**
+     * 删除数据库表定义和字段
+     *
+     * @param tableId 表编号
+     */
+    void delCodegen(Long tableId);
+
+    /**
+     * 更新表定义和字段
+     *
+     * @param codegen 表定义和字段
+     */
+    void updateCodegen(CodegenDetailVO codegen);
 }

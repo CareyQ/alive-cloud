@@ -16,16 +16,16 @@ import java.time.LocalDate;
 #end
 #foreach ($column in $columns)
     #if (${column.javaType} == "LocalDateTime")
-    import java.time.LocalDateTime;
+import java.time.LocalDateTime;
         #break
     #end
 #end
 
 /**
-* ${table.classComment} VO
-*
-* @author ${table.author}
-*/
+ * ${table.classComment} VO
+ *
+ * @author ${table.author}
+ */
 @Data
 @Schema(description = "${sceneEnum.name} - ${table.classComment} VO")
 public class ${sceneEnum.prefixClass}${table.className}VO {
@@ -34,7 +34,7 @@ public class ${sceneEnum.prefixClass}${table.className}VO {
     #if(${column.createOperation} || ${column.updateOperation})
     @Schema(description = "${column.columnComment}")
     private ${column.javaType} ${column.javaField};
-    #end
 
+    #end
 #end
 }

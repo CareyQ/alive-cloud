@@ -168,7 +168,7 @@ public class CodegenEngine {
     }
 
     private static String vueTemplatePath(String path) {
-        return "codegen/vue3/" + path + ".vm";
+        return "codegen/vue/" + path + ".vm";
     }
 
     private static String vueFilePath(String path) {

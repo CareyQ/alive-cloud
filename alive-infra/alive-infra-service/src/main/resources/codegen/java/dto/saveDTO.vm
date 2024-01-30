@@ -17,10 +17,10 @@ import java.time.LocalDateTime;
 #end
 
 /**
-* ${table.classComment} DTO
-*
-* @author ${table.author}
-*/
+ * ${table.classComment} DTO
+ *
+ * @author ${table.author}
+ */
 @Data
 @Schema(description = "${sceneEnum.name} - ${table.classComment} DTO")
 public class ${sceneEnum.prefixClass}${table.className}DTO {
@@ -36,6 +36,7 @@ public class ${sceneEnum.prefixClass}${table.className}DTO {
         #end
     @Schema(description = "${column.columnComment}"#if (!${column.nullable}), requiredMode = Schema.RequiredMode.REQUIRED#end)
     private ${column.javaType} ${column.javaField};
+
     #end
 #end
 }

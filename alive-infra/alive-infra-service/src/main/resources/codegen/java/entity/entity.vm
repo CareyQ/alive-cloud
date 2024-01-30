@@ -17,16 +17,16 @@ import java.time.LocalDate;
 #end
 #foreach ($column in $columns)
     #if (${column.javaType} == "LocalDateTime")
-    import java.time.LocalDateTime;
+import java.time.LocalDateTime;
         #break
     #end
 #end
 
 /**
-* ${table.classComment}
-*
-* @author ${table.author}
-*/
+ * ${table.classComment}
+ *
+ * @author ${table.author}
+ */
 @Data
 @TableName("${table.tableName.toLowerCase()}")
 public class ${table.className} extends BaseEntity {

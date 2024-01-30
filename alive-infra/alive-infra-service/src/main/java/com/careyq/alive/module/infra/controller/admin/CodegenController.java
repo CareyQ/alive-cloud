@@ -62,4 +62,18 @@ public class CodegenController {
         Map<String, String> codes = codegenService.generationCode(tableId);
         return Result.ok(CollUtils.convertList(codes.entrySet(), e -> new CodegenPreviewVO().setFilePath(e.getKey()).setCode(e.getValue())));
     }
+
+    @DeleteMapping("/del")
+    @Operation(summary = "删除数据库表")
+    public Result<Boolean> delCodegen(@RequestParam Long tableId) {
+        codegenService.delCodegen(tableId);
+        return Result.ok(true);
+    }
+
+    @PostMapping("/update")
+    @Operation(summary = "更新表详情")
+    public Result<Boolean> updateCodegen(@Validated @RequestBody CodegenDetailVO codegen) {
+        codegenService.updateCodegen(codegen);
+        return Result.ok(true);
+    }
 }

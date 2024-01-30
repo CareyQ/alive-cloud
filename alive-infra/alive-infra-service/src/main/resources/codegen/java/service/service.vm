@@ -7,40 +7,40 @@ import ${basePackage}.module.${table.moduleName}.dto.*;
 import ${basePackage}.module.${table.moduleName}.vo.*;
 
 /**
-* ${table.classComment} 服务
-*
-* @author ${table.author}
-*/
+ * ${table.classComment} 服务
+ *
+ * @author ${table.author}
+ */
 public interface ${table.className}Service extends IServiceX<${table.className}> {
 
     /**
-    * 保存${table.classComment}
-    *
-    * @param dto ${table.classComment}
-    * @return 编号
-    */
+     * 保存${table.classComment}
+     *
+     * @param dto ${table.classComment}
+     * @return 编号
+     */
     Long save${simpleClassName}(${sceneEnum.prefixClass}${table.className}DTO dto);
 
     /**
-    * 获取${table.classComment}分页
-    *
-    * @param dto 分页筛选项
-    * @return 分页
-    */
+     * 获取${table.classComment}分页
+     *
+     * @param dto 分页筛选项
+     * @return 分页
+     */
     IPage<${sceneEnum.prefixClass}${table.className}PageVO> get${simpleClassName}Page(${sceneEnum.prefixClass}${table.className}PageDTO dto);
 
     /**
-    * 获取${table.classComment}详情
-    *
-    * @param id 编号
-    * @return ${table.classComment}
-    */
+     * 获取${table.classComment}详情
+     *
+     * @param id 编号
+     * @return ${table.classComment}
+     */
     ${sceneEnum.prefixClass}${table.className}VO get${simpleClassName}Detail(Long id);
 
     /**
-    * 删除${table.classComment}
-    *
-    * @param id 编号
-    */
+     * 删除${table.classComment}
+     *
+     * @param id 编号
+     */
     void del${simpleClassName}(Long id);
 }

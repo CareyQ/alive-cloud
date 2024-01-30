@@ -10,6 +10,7 @@ import com.careyq.alive.module.infra.entity.CodegenColumn;
 import com.careyq.alive.module.infra.entity.CodegenTable;
 import com.careyq.alive.module.infra.enums.CodegenColumnHtmlTypeEnum;
 import com.careyq.alive.module.infra.enums.CodegenColumnQueryTypeEnum;
+import com.careyq.alive.module.infra.enums.CodegenSceneEnum;
 import com.careyq.alive.satoken.AuthHelper;
 
 import java.time.LocalDateTime;
@@ -102,8 +103,9 @@ public class CodegenUtil {
         codegenTable.setTableName(tableName)
                 .setTableComment(tableInfo.getComment())
                 .setModuleName(prefix)
+                .setScene(CodegenSceneEnum.ADMIN.getScene())
                 .setBusinessName(suffix)
-                .setClassName(StrUtil.toCamelCase(suffix))
+                .setClassName(StrUtil.upperFirst(StrUtil.toCamelCase(suffix)))
                 .setClassComment(tableInfo.getComment())
                 .setAuthor(AuthHelper.getLoginUser().getNickname())
                 .setColumns(buildColumn(tableInfo));
@@ -129,8 +131,8 @@ public class CodegenUtil {
                     .setPrimaryKey(field.isKeyFlag())
                     .setAutoIncrement(field.isKeyIdentityFlag())
                     .setJavaField(field.getPropertyName())
-                    .setCreateOperation(CREATE_OPERATION_EXCLUDE_COLUMN.contains(field.getPropertyName()) && !field.isKeyFlag())
-                    .setUpdateOperation(UPDATE_OPERATION_EXCLUDE_COLUMN.contains(field.getPropertyName()) || field.isKeyFlag())
+                    .setCreateOperation(!CREATE_OPERATION_EXCLUDE_COLUMN.contains(field.getPropertyName()) && !field.isKeyFlag())
+                    .setUpdateOperation(!UPDATE_OPERATION_EXCLUDE_COLUMN.contains(field.getPropertyName()) || field.isKeyFlag())
                     .setQueryCondition(!QUERY_CONDITION_EXCLUDE_COLUMN.contains(field.getPropertyName()) && !field.isKeyFlag());
             // 设置 JavaType
             String javaType = field.getColumnType().getType();

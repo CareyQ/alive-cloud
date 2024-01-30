@@ -24,10 +24,10 @@ import java.time.LocalDateTime;
 #end
 
 /**
-* ${table.classComment}分页 DTO
-*
-* @author ${table.author}
-*/
+ * ${table.classComment}分页 DTO
+ *
+ * @author ${table.author}
+ */
 @Data
 @Schema(description = "${sceneEnum.name} - ${table.classComment}分页 DTO")
 public class ${sceneEnum.prefixClass}${table.className}PageDTO extends PageDTO {
@@ -41,7 +41,7 @@ public class ${sceneEnum.prefixClass}${table.className}PageDTO extends PageDTO {
     @Schema(description = "结束日期")
     private LocalDate endDate;
         #else
-    @Schema(description = "${prefixStr}${column.columnComment}")
+    @Schema(description = "${column.columnComment}")
     private ${column.javaType}#if ("$!prefix" != "") ${prefix}${JavaField}#else ${column.javaField}#end;
         #end
 

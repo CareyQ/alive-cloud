@@ -172,4 +172,4 @@ onMounted(() => {
   <PostForm ref="formRef" @success="get${table.className}Page()" />
 </template>
 
-<style scoped></style>
+<style lang="scss" scoped></style>
