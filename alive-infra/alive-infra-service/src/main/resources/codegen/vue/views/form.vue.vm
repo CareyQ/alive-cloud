@@ -53,7 +53,7 @@ const resetForm = () => {
       #if ($column.htmlType == "checkbox")
     $column.javaField: [],
       #else
-     $column.javaField: undefined,
+    $column.javaField: undefined,
       #end
     #end
   #end

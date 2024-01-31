@@ -14,11 +14,11 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static ${basePackage}.module.${table.moduleName}.constants.${table.moduleName.toUpperCase()}ResultCode}.*;
+import static ${basePackage}.module.${table.moduleName}.constants.${table.moduleName.toUpperCase()}ResultCode.*;
 ## 字段模板
 #macro(queryCondition)
     #foreach ($column in $columns)
-        #if (${column.queryOperation})
+        #if (${column.queryCondition})
             #set ($JavaField = $column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})##首字母大写
             #if (${column.queryType} == "=")##情况一，= 的时候
             .eqIfPresent(${table.className}::get${JavaField}, dto.get${JavaField}())
@@ -96,7 +96,7 @@ public class ${table.className}ServiceImpl extends ServiceImpl<${table.className
     }
 
     @Override
-    public void del${table.className}(${primaryColumn.javaType} id) {
+    public void del${simpleClassName}(${primaryColumn.javaType} id) {
         this.checkDataExists(id);
         this.removeById(id);
     }

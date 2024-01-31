@@ -90,6 +90,7 @@ public class CodegenEngine {
         GLOBAL_BINDING_MAP.put("BaseEntityClassName", BaseEntity.class.getName());
         GLOBAL_BINDING_MAP.put("BaseMapperClassName", BaseMapperX.class.getName());
         GLOBAL_BINDING_MAP.put("BaseServiceClassName", IServiceX.class.getName());
+        GLOBAL_BINDING_MAP.put("baseEntityFields", CodegenUtil.BASE_ENTITY_FIELDS);
     }
 
     /**

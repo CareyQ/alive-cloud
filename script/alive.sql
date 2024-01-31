@@ -283,7 +283,6 @@ create table if not exists product_category
     id          bigint       not null auto_increment primary key comment '主键',
     parent_id   bigint       not null default 0 comment '父级分类 ID',
     name        varchar(255) not null comment '分类名称',
-    level       int          not null default 0 comment '分类级别',
     sort        int          not null default 0 comment '排序',
     icon        varchar(255) null     default '' comment '图标',
     status      tinyint      not null default 1 comment '状态，0停用 1正常',

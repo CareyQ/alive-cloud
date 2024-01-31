@@ -32,7 +32,7 @@ import java.time.LocalDateTime;
 public class ${table.className} extends BaseEntity {
 
 #foreach($column in $columns)
-    #if(!${baseDOFields.contains(${column.javaField})})
+    #if(!${baseEntityFields.contains(${column.javaField})})
     /**
      * ${column.columnComment} #if ("$!column.dictType" != "") 枚举 {@link TODO ${column.dictType} 对应的类} #end
      */

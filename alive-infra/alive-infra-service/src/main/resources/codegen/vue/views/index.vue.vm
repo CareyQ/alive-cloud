@@ -15,15 +15,16 @@ const formRef = ref()
 const queryFormRef = ref()
 const total = ref(0)
 #foreach ($column in $columns)
-    #if ($column.queryOperation && $column.queryType != 'BETWEEN_DATA')
+    #if ($column.queryCondition && $column.queryType != 'BETWEEN_DATA')
 const createDate = ref<ElDate>([undefined, undefined])
+        #break
     #end
 #end
 const queryParams = reactive({
   current: 1,
   size: 10,
   #foreach ($column in $columns)
-    #if ($column.queryOperation)
+    #if ($column.queryCondition)
       #if ($column.queryType != 'BETWEEN')
           $column.javaField: undefined,
       #elseif($column.queryType != 'BETWEEN_DATA')
@@ -70,7 +71,7 @@ onMounted(() => {
   <div class="page">
     <el-form ref="queryFormRef" class="table-header" :model="queryParams" inline>
         #foreach($column in $columns)
-            #if($column.queryOperation)
+            #if($column.queryCondition)
                 #set ($dictType = $column.dictType)
                 #set ($javaField = $column.javaField)
                 #set ($javaType = $column.javaType)
@@ -169,7 +170,7 @@ onMounted(() => {
       @pagination="get${table.className}Page()"
     />
   </div>
-  <PostForm ref="formRef" @success="get${table.className}Page()" />
+  <${table.className}Form ref="formRef" @success="get${table.className}Page()" />
 </template>
 
 <style lang="scss" scoped></style>
