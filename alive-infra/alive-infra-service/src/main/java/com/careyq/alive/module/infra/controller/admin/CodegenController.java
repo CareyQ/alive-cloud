@@ -1,8 +1,11 @@
 package com.careyq.alive.module.infra.controller.admin;
 
+import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.util.ZipUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.careyq.alive.core.domain.Result;
 import com.careyq.alive.core.util.CollUtils;
+import com.careyq.alive.core.util.ServletUtils;
 import com.careyq.alive.module.infra.dto.CodegenImportDTO;
 import com.careyq.alive.module.infra.dto.CodegenTablePageDTO;
 import com.careyq.alive.module.infra.service.CodegenService;
@@ -12,10 +15,14 @@ import com.careyq.alive.module.infra.vo.CodegenTablePageVO;
 import com.careyq.alive.module.infra.vo.DbTableVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -75,5 +82,18 @@ public class CodegenController {
     public Result<Boolean> updateCodegen(@Validated @RequestBody CodegenDetailVO codegen) {
         codegenService.updateCodegen(codegen);
         return Result.ok(true);
+    }
+
+    @GetMapping("/download")
+    @Operation(summary = "下载生成代码")
+    public void downloadCodegen(@RequestParam Long tableId, HttpServletResponse response) throws IOException {
+        Map<String, String> codes = codegenService.generationCode(tableId);
+        // 构建 zip 包
+        String[] paths = codes.keySet().toArray(new String[0]);
+        ByteArrayInputStream[] ins = codes.values().stream().map(IoUtil::toUtf8Stream).toArray(ByteArrayInputStream[]::new);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        ZipUtil.zip(outputStream, paths, ins);
+        // 输出
+        ServletUtils.writeAttachment(response, "codegen.zip", outputStream.toByteArray());
     }
 }
