@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.careyq</groupId>
+        <artifactId>alive-mall</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <artifactId>alive-product-service</artifactId>
+
+    <dependencies>
+        <!-- alive 依赖服务 -->
+        <dependency>
+            <groupId>com.careyq</groupId>
+            <artifactId>alive-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.careyq</groupId>
+            <artifactId>alive-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.careyq</groupId>
+            <artifactId>alive-mybatis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-generator</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.careyq</groupId>
+            <artifactId>alive-redis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.careyq</groupId>
+            <artifactId>alive-product-api</artifactId>
+            <version>${revision}</version>
+        </dependency>
+    </dependencies>
+
+</project>

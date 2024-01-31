@@ -49,6 +49,7 @@ public class CodegenEngine {
      * value: 生成文件路径
      */
     private static final Map<String, String> SERVER_TEMPLATES = MapUtil.<String, String>builder(new LinkedHashMap<>())
+            .put(javaTemplatePath("controller/controller"), javaModuleFilePath("controller/${sceneEnum.basePackage}", "Controller"))
             .put(javaTemplatePath("dto/pageDTO"), javaModuleExtraFilePath("dto", "PageDTO"))
             .put(javaTemplatePath("dto/saveDTO"), javaModuleExtraFilePath("dto", "DTO"))
             .put(javaTemplatePath("vo/detailVO"), javaModuleExtraFilePath("vo", "VO"))
@@ -56,8 +57,7 @@ public class CodegenEngine {
             .put(javaTemplatePath("entity/entity"), javaModuleFilePath("entity", ""))
             .put(javaTemplatePath("mapper/mapper"), javaModuleFilePath("mapper", "Mapper"))
             .put(javaTemplatePath("service/service"), javaModuleFilePath("service", "Service"))
-            .put(javaTemplatePath("service/serviceImpl"), javaModuleFilePath("service", "ServiceImpl"))
-            .put(javaTemplatePath("controller/controller"), javaModuleFilePath("controller", "Controller"))
+            .put(javaTemplatePath("service/serviceImpl"), javaModuleFilePath("service/impl", "ServiceImpl"))
             .build();
 
     /**

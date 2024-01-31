@@ -13,6 +13,7 @@
         <module>alive-system</module>
         <module>alive-server</module>
         <module>alive-infra</module>
+        <module>alive-mall</module>
     </modules>
     <packaging>pom</packaging>
 

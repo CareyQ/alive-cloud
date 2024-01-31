@@ -1,6 +1,7 @@
 package com.careyq.alive.module.infra.controller.admin;
 
 import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ZipUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.careyq.alive.core.domain.Result;
@@ -90,6 +91,7 @@ public class CodegenController {
         Map<String, String> codes = codegenService.generationCode(tableId);
         // 构建 zip 包
         String[] paths = codes.keySet().toArray(new String[0]);
+        System.out.println(ArrayUtil.toString(paths));
         ByteArrayInputStream[] ins = codes.values().stream().map(IoUtil::toUtf8Stream).toArray(ByteArrayInputStream[]::new);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ZipUtil.zip(outputStream, paths, ins);

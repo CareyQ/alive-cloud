@@ -1,10 +1,8 @@
 package ${basePackage}.module.${table.moduleName}.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import ${basePackage}.core.enums.CommonStatusEnum;
 import ${basePackage}.core.exception.CustomException;
 
 import ${basePackage}.module.${table.moduleName}.dto.*;
@@ -16,11 +14,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import static com.careyq.alive.module.system.constants.SystemResultCode.*;
+import static ${basePackage}.module.${table.moduleName}.constants.${table.moduleName.toUpperCase()}ResultCode}.*;
 ## 字段模板
 #macro(queryCondition)
     #foreach ($column in $columns)
@@ -87,7 +81,7 @@ public class ${table.className}ServiceImpl extends ServiceImpl<${table.className
     public IPage<${table.className}PageVO> get${simpleClassName}Page(${sceneEnum.prefixClass}${table.className}PageDTO dto) {
         IPage<${table.className}> page = this.lambdaQueryX()
             #queryCondition()
-            .orderByDesc(DictData::getId)
+            .orderByDesc(${table.className}::getId)
             .page(new Page<>(dto.getCurrent(), dto.getSize()));
         if (page.getRecords().isEmpty()) {
             return new Page<>();
@@ -98,7 +92,7 @@ public class ${table.className}ServiceImpl extends ServiceImpl<${table.className
     @Override
     public ${sceneEnum.prefixClass}${table.className}VO get${simpleClassName}Detail(${primaryColumn.javaType} id) {
         ${table.className} data = this.checkDataExists(id);
-        return BeanUtil.copyProperties(data, ${sceneEnum.prefixClass}${table.className}VO.class);;
+        return BeanUtil.copyProperties(data, ${sceneEnum.prefixClass}${table.className}VO.class);
     }
 
     @Override
@@ -119,7 +113,7 @@ public class ${table.className}ServiceImpl extends ServiceImpl<${table.className
         }
         ${table.className} data = this.getById(id);
         if (data == null) {
-            throw new CustomException(${simpleClassNameUnderlineCase.toUpperCase()}_NOT_EXISTS);
+            throw new CustomException(${simpleClassName_underlineCase.toUpperCase()}_NOT_EXISTS);
         }
         return data;
     }
