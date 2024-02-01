@@ -82,7 +82,7 @@ const submitForm = async () => {
 </script>
 
 <template>
-  <Dialog :title="dialogTitle" v-model="dialogVisible">
+  <Dialog :title="dialogTitle" v-model="dialogVisible" width="30%">
     <el-form ref="formRef" :model="formData" :rules="formRules" label-width="80px" v-loading="formLoading">
     #foreach($column in $columns)
       #if ($column.createOperation || $column.updateOperation)

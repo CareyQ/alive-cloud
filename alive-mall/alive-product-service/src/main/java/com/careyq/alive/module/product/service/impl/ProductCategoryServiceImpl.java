@@ -67,7 +67,7 @@ public class ProductCategoryServiceImpl extends ServiceImpl<ProductCategoryMappe
             return new ArrayList<>();
         }
 
-        return CollUtils.convertList(list, ProductConvert.INSTANCE::convert);
+        return CollUtils.convertList(list, ProductConvert.INSTANCE::categoryConvert);
     }
 
     @Override

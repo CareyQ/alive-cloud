@@ -33,8 +33,8 @@ export interface ${table.className}PageDTO {
 
 #if ( $table.templateType != 2 )
 // 查询${table.classComment}分页
-export const getPage = async (params: ${table.className}PageDTO) => {
-  return await request.post({ url: `${baseURL}/page`, params })
+export const getPage = async (data: ${table.className}PageDTO) => {
+  return await request.post({ url: `${baseURL}/page`, data })
 }
 #end
 

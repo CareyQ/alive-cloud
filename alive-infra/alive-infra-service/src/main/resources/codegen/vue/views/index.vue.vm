@@ -26,7 +26,7 @@ const queryParams = reactive({
   #foreach ($column in $columns)
     #if ($column.queryCondition)
       #if ($column.queryType != 'BETWEEN')
-          $column.javaField: undefined,
+  $column.javaField: undefined,
       #elseif($column.queryType != 'BETWEEN_DATA')
   startDate: computed(() => createDate.value[0]),
   endDate: computed(() => createDate.value[1])
@@ -127,6 +127,10 @@ onMounted(() => {
                 #end
             #end
         #end
+      <el-form-item>
+        <el-button type="primary" :icon="Search" @click="get${table.className}Page">搜索</el-button>
+        <el-button :icon="Refresh" @click="resetQuery">重置</el-button>
+      </el-form-item>
     </el-form>
 
     <div class="table-header">

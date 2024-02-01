@@ -30,6 +30,9 @@ import java.time.LocalDateTime;
 @Schema(description = "${sceneEnum.name} - ${table.classComment}分页 VO")
 public class ${sceneEnum.prefixClass}${table.className}PageVO {
 
+    @Schema(description = "编号")
+    private Long id;
+
 #foreach($column in $columns)
     #if(${column.queryResult})
     @Schema(description = "${column.columnComment}")

@@ -1,6 +1,8 @@
 package com.careyq.alive.module.product.convert;
 
+import com.careyq.alive.module.product.entity.ProductBrand;
 import com.careyq.alive.module.product.entity.ProductCategory;
+import com.careyq.alive.module.product.vo.ProductBrandPageVO;
 import com.careyq.alive.module.product.vo.ProductCategoryVO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
@@ -18,8 +20,16 @@ public interface ProductConvert {
     /**
      * 商品分类转换为 VO
      *
-     * @param productCategory 商品分类
+     * @param category 商品分类
      * @return VO
      */
-    ProductCategoryVO convert(ProductCategory productCategory);
+    ProductCategoryVO categoryConvert(ProductCategory category);
+
+    /**
+     * 品牌转换为分页 VO
+     *
+     * @param brand 品牌
+     * @return VO
+     */
+    ProductBrandPageVO brandConvert(ProductBrand brand);
 }
