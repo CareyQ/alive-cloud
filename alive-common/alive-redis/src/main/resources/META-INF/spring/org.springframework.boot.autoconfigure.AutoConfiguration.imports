@@ -1,2 +1,2 @@
-com.careyq.alive.redis.RedisAutoConfiguration
-com.careyq.alive.redis.CacheAutoConfiguration
+com.careyq.alive.redis.core.RedisAutoConfiguration
+com.careyq.alive.redis.core.CacheAutoConfiguration

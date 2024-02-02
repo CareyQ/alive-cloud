@@ -3,6 +3,7 @@ package com.careyq.alive.mybatis.core.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.careyq.alive.core.util.CollUtils;
 import com.careyq.alive.mybatis.core.query.LambdaQueryChainWrapperX;
+import com.careyq.alive.mybatis.core.query.LambdaUpdateChainWrapperX;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -23,6 +24,15 @@ public interface IServiceX<T> extends IService<T> {
      */
     default LambdaQueryChainWrapperX<T> lambdaQueryX() {
         return new LambdaQueryChainWrapperX<>(getBaseMapper(), getEntityClass());
+    }
+
+    /**
+     * 使用重写的 LambdaQueryChainWrapperX
+     *
+     * @return LambdaQueryChainWrapperX
+     */
+    default LambdaUpdateChainWrapperX<T> lambdaUpdateX() {
+        return new LambdaUpdateChainWrapperX<>(getBaseMapper());
     }
 
     /**

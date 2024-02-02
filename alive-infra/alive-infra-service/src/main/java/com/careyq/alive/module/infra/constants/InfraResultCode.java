@@ -32,6 +32,11 @@ public interface InfraResultCode {
     ResultCode CODEGEN_TABLE_IS_EXIST = new ResultCode(2_30006, "数据库的表({})已存在");
     ResultCode CODEGEN_TABLE_NOT_EXISTS = new ResultCode(2_30007, "表定义不存在");
     ResultCode CODEGEN_COLUMN_NOT_EXISTS = new ResultCode(2_30008, "表字段不存在");
-    ;
+
+    /**
+     * FILE
+     */
+    ResultCode OSS_CONFIG_NOT_EXISTS = new ResultCode(2_40001, "该存储配置不存在");
+    ResultCode OSS_CONFIG_NAME_IS_EXISTS = new ResultCode(2_40002, "该存储配置名称已存在");
 
 }

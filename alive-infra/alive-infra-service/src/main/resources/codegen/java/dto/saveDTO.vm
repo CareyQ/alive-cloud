@@ -34,7 +34,7 @@ public class ${sceneEnum.prefixClass}${table.className}DTO {
     @NotNull(message = "${column.columnComment}不能为空")
             #end
         #end
-    @Schema(description = "${column.columnComment}"#if (!${column.nullable}), requiredMode = Schema.RequiredMode.REQUIRED#end)
+    @Schema(description = "${column.columnComment}"#if (!${column.nullable} && !${column.primaryKey}), requiredMode = Schema.RequiredMode.REQUIRED#end)
     private ${column.javaType} ${column.javaField};
 
     #end

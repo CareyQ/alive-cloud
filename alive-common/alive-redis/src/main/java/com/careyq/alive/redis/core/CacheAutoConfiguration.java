@@ -1,4 +1,4 @@
-package com.careyq.alive.redis;
+package com.careyq.alive.redis.core;
 
 import cn.hutool.core.util.StrUtil;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -16,7 +16,7 @@ import org.springframework.data.redis.serializer.RedisSerializationContext;
 
 import java.util.Objects;
 
-import static com.careyq.alive.redis.RedisAutoConfiguration.buildRedisSerializer;
+import static com.careyq.alive.redis.core.RedisAutoConfiguration.buildRedisSerializer;
 
 /**
  * Cache 配置

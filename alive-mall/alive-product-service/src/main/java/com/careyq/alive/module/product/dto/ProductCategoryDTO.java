@@ -14,7 +14,7 @@ import lombok.Data;
 @Schema(description = "管理后台 - 商品分类 DTO")
 public class ProductCategoryDTO {
 
-    @Schema(description = "主键", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "主键")
     private Long id;
 
     @NotNull(message = "父级分类不能为空")

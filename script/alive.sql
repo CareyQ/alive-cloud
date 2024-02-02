@@ -277,6 +277,39 @@ create table if not exists infra_codegen_column
     update_time      datetime     not null default current_timestamp on update current_timestamp comment '更新时间'
 ) comment '代码生成表字段';
 
+create table if not exists infra_file
+(
+    id          bigint        not null auto_increment primary key comment '主键',
+    config_id   bigint        not null comment '配置编号',
+    name        varchar(250)  not null default '' comment '文件名',
+    path        varchar(512)  not null default '' comment '文件路径',
+    url         varchar(1024) not null default '' comment '文件 URL',
+    type        varchar(128)  not null default '' comment '文件类型',
+    size        int           not null default 0 comment '文件大小',
+    is_del      tinyint       not null default 0 comment '是否删除',
+    creator     bigint        null     default null comment '创建者',
+    create_time datetime      not null default current_timestamp comment '创建时间',
+    updater     bigint        null     default null comment '更新者',
+    update_time datetime      not null default current_timestamp on update current_timestamp comment '更新时间'
+) comment '文件';
+
+create table if not exists infra_oss_config
+(
+    id          bigint       not null auto_increment primary key comment '主键',
+    name        varchar(50)  not null default '' comment '配置名称',
+    access_key  varchar(200) not null comment 'accessKey',
+    secret_key  varchar(200) not null comment '秘钥',
+    bucket      varchar(200) not null comment '桶名称',
+    endpoint    varchar(200) not null comment '访问站点',
+    region      varchar(200) not null comment '域',
+    master      tinyint(1)   not null default 0 comment '是否为主配置',
+    is_del      tinyint      not null default 0 comment '是否删除',
+    creator     bigint       null     default null comment '创建者',
+    create_time datetime     not null default current_timestamp comment '创建时间',
+    updater     bigint       null     default null comment '更新者',
+    update_time datetime     not null default current_timestamp on update current_timestamp comment '更新时间'
+) comment '对象存储配置';
+
 # mall
 create table if not exists product_category
 (

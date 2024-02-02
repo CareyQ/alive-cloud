@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Schema(description = "管理后台 - 商品品牌 DTO")
 public class ProductBrandDTO {
 
-    @Schema(description = "主键", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "主键")
     private Long id;
 
     @NotBlank(message = "品牌名称不能为空")

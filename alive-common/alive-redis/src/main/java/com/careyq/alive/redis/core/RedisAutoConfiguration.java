@@ -1,4 +1,4 @@
-package com.careyq.alive.redis;
+package com.careyq.alive.redis.core;
 
 import cn.hutool.core.util.ReflectUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;

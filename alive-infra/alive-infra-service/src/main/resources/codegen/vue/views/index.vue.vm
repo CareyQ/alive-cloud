@@ -15,7 +15,7 @@ const formRef = ref()
 const queryFormRef = ref()
 const total = ref(0)
 #foreach ($column in $columns)
-    #if ($column.queryCondition && $column.queryType != 'BETWEEN_DATA')
+    #if ($column.queryCondition && ($column.queryType == 'BETWEEN_DATA' || $column.queryType == 'BETWEEN'))
 const createDate = ref<ElDate>([undefined, undefined])
         #break
     #end
@@ -25,9 +25,9 @@ const queryParams = reactive({
   size: 10,
   #foreach ($column in $columns)
     #if ($column.queryCondition)
-      #if ($column.queryType != 'BETWEEN')
+      #if ($column.queryType == 'BETWEEN')
   $column.javaField: undefined,
-      #elseif($column.queryType != 'BETWEEN_DATA')
+      #elseif($column.queryType == 'BETWEEN_DATA')
   startDate: computed(() => createDate.value[0]),
   endDate: computed(() => createDate.value[1])
       #end
@@ -59,6 +59,12 @@ const handleDel = async (id: number) => {
 
 const resetQuery = async () => {
   queryFormRef.value.resetFields()
+#foreach ($column in $columns)
+    #if ($column.queryCondition && ($column.queryType == 'BETWEEN_DATA' || $column.queryType == 'BETWEEN'))
+  createDate.value = [undefined, undefined]
+        #break
+    #end
+#end
   await get${table.className}Page()
 }
 
