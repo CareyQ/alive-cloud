@@ -14,6 +14,11 @@ import com.careyq.alive.module.infra.vo.*;
 public interface OssConfigService extends IServiceX<OssConfig> {
 
     /**
+     * 初始化对象存储配置
+     */
+    void init();
+
+    /**
      * 保存对象存储配置
      *
      * @param dto 对象存储配置

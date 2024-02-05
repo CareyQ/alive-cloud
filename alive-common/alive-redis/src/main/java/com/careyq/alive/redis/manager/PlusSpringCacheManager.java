@@ -2,7 +2,6 @@ package com.careyq.alive.redis.manager;
 
 import com.careyq.alive.redis.util.RedisUtils;
 import lombok.Setter;
-import org.redisson.api.RMap;
 import org.redisson.api.RMapCache;
 import org.redisson.spring.cache.CacheConfig;
 import org.redisson.spring.cache.RedissonCache;
@@ -51,6 +50,7 @@ public class PlusSpringCacheManager implements CacheManager {
      *
      * @param config object
      */
+    @SuppressWarnings("unchecked")
     public void setConfig(Map<String, ? extends CacheConfig> config) {
         this.configMap = (Map<String, CacheConfig>) config;
     }
@@ -93,25 +93,7 @@ public class PlusSpringCacheManager implements CacheManager {
             config.setMaxSize(Integer.parseInt(array[3]));
         }
 
-        if (config.getMaxIdleTime() == 0 && config.getTTL() == 0 && config.getMaxSize() == 0) {
-            return createMap(name, config);
-        }
-
         return createMapCache(name, config);
-    }
-
-    private Cache createMap(String name, CacheConfig config) {
-        RMap<Object, Object> map = RedisUtils.getClient().getMap(name);
-
-        Cache cache = new RedissonCache(map, allowNullValues);
-        if (transactionAware) {
-            cache = new TransactionAwareCacheDecorator(cache);
-        }
-        Cache oldCache = instanceMap.putIfAbsent(name, cache);
-        if (oldCache != null) {
-            cache = oldCache;
-        }
-        return cache;
     }
 
     /**
@@ -124,14 +106,20 @@ public class PlusSpringCacheManager implements CacheManager {
     private Cache createMapCache(String name, CacheConfig config) {
         RMapCache<Object, Object> map = RedisUtils.getClient().getMapCache(name);
 
-        Cache cache = new RedissonCache(map, config, allowNullValues);
+        Cache cache;
+        if (config.getMaxIdleTime() == 0 && config.getTTL() == 0 && config.getMaxSize() == 0) {
+            cache = new RedissonCache(map, allowNullValues);
+        } else {
+            cache = new RedissonCache(map, config, allowNullValues);
+        }
+
         if (transactionAware) {
             cache = new TransactionAwareCacheDecorator(cache);
         }
         Cache oldCache = instanceMap.putIfAbsent(name, cache);
         if (oldCache != null) {
             cache = oldCache;
-        } else {
+        } else if (config.getMaxSize() != 0) {
             map.setMaxSize(config.getMaxSize());
         }
         return cache;

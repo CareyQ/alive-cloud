@@ -4,7 +4,9 @@ import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.careyq.alive.core.constants.CacheNames;
 import com.careyq.alive.core.exception.CustomException;
+import com.careyq.alive.core.util.JsonUtils;
 import com.careyq.alive.module.infra.convert.FileConvert;
 import com.careyq.alive.module.infra.dto.OssConfigDTO;
 import com.careyq.alive.module.infra.dto.OssConfigPageDTO;
@@ -13,12 +15,15 @@ import com.careyq.alive.module.infra.mapper.OssConfigMapper;
 import com.careyq.alive.module.infra.service.OssConfigService;
 import com.careyq.alive.module.infra.vo.OssConfigPageVO;
 import com.careyq.alive.module.infra.vo.OssConfigVO;
+import com.careyq.alive.redis.util.CacheUtils;
+import com.careyq.alive.redis.util.RedisUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.careyq.alive.module.infra.constants.InfraResultCode.OSS_CONFIG_NAME_IS_EXISTS;
 import static com.careyq.alive.module.infra.constants.InfraResultCode.OSS_CONFIG_NOT_EXISTS;
+import static com.careyq.alive.oss.constants.OssConstants.DEFAULT_CONFIG_ID;
 
 
 /**
@@ -29,6 +34,16 @@ import static com.careyq.alive.module.infra.constants.InfraResultCode.OSS_CONFIG
 @Service
 @AllArgsConstructor
 public class OssConfigServiceImpl extends ServiceImpl<OssConfigMapper, OssConfig> implements OssConfigService {
+
+    @Override
+    public void init() {
+        this.list().forEach(ossConfig -> {
+            if (Boolean.TRUE.equals(ossConfig.getMaster())) {
+                RedisUtils.setObject(DEFAULT_CONFIG_ID, ossConfig.getId());
+            }
+            CacheUtils.put(CacheNames.OSS_CONFIG, ossConfig.getId(), JsonUtils.toJson(ossConfig));
+        });
+    }
 
     @Override
     @Transactional(rollbackFor = Exception.class)

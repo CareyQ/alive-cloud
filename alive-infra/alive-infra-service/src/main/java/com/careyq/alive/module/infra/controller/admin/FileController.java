@@ -2,16 +2,19 @@ package com.careyq.alive.module.infra.controller.admin;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.careyq.alive.core.domain.Result;
-import com.careyq.alive.module.infra.dto.*;
+import com.careyq.alive.module.infra.dto.FilePageDTO;
 import com.careyq.alive.module.infra.service.FileService;
-import com.careyq.alive.module.infra.vo.*;
+import com.careyq.alive.module.infra.vo.FilePageVO;
+import com.careyq.alive.module.infra.vo.FileVO;
+import com.careyq.alive.operatelog.core.annotations.OperateLog;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.*;
+import java.io.IOException;
 
 /**
  * 文件
@@ -26,10 +29,11 @@ public class FileController {
 
     private final FileService fileService;
 
-    @PostMapping("/save")
-    @Operation(summary = "保存文件")
-    public Result<Long> saveFile(@Validated @RequestBody FileDTO dto) {
-        return Result.ok(fileService.saveFile(dto));
+    @PostMapping("/upload")
+    @OperateLog(logArgs = false)
+    @Operation(summary = "上传文件")
+    public Result<String> uploadFile(@RequestPart("file") MultipartFile file) throws IOException {
+        return Result.ok(fileService.uploadFile(file));
     }
 
     @PostMapping("/page")

@@ -11,6 +11,11 @@ import lombok.Data;
 public class OssProperties {
 
     /**
+     * 编号
+     */
+    private Long id;
+
+    /**
      * 访问站点
      */
     private String endpoint;

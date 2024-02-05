@@ -269,7 +269,7 @@ public class OperateLogAspect {
             // 被忽略时，标记为 ignore 字符串，避免和 null 混在一起
             args.put(argName, !isIgnoreArgs(argValue) ? argValue : "[ignore]");
         }
-        return JsonUtils.toJsonString(args);
+        return JsonUtils.toJson(args);
     }
 
     private static String obtainResultData(Object result) {
@@ -277,7 +277,7 @@ public class OperateLogAspect {
         if (result instanceof Result<?>) {
             result = ((Result<?>) result).getData();
         }
-        return JsonUtils.toJsonString(result);
+        return JsonUtils.toJson(result);
     }
 
     private static OperateTypeEnum convertOperateLogType(String name, RequestMethod requestMethod) {

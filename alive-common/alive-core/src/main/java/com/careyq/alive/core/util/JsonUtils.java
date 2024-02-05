@@ -34,7 +34,10 @@ public class JsonUtils {
      * @return json 字符串
      */
     @SneakyThrows
-    public static String toJsonString(Object object) {
+    public static String toJson(Object object) {
+        if (object == null) {
+            return null;
+        }
         return objectMapper.writeValueAsString(object);
     }
 
@@ -50,6 +53,14 @@ public class JsonUtils {
     @SneakyThrows
     public static byte[] toJsonByte(Object object) {
         return objectMapper.writeValueAsBytes(object);
+    }
+
+    @SneakyThrows
+    public static <T> T parseObject(String text, Class<T> clazz) {
+        if (StrUtils.isEmpty(text)) {
+            return null;
+        }
+        return objectMapper.readValue(text, clazz);
     }
 
     public static JsonNode parseObject(String text) {

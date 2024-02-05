@@ -29,6 +29,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.util.Map;
@@ -62,6 +63,15 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public Result<?> methodArgumentTypeMismatchExceptionHandler(MethodArgumentTypeMismatchException ex) {
         log.error("[methodArgumentTypeMismatchExceptionHandler]", ex);
+        return Result.fail(FAIL_REQUEST.code(), String.format("请求参数类型错误: %s", ex.getMessage()));
+    }
+
+    /**
+     * multipart 类型错误
+     */
+    @ExceptionHandler(MultipartException.class)
+    public Result<?> multipartExceptionHandler(MultipartException ex) {
+        log.error("[multipartExceptionHandler]", ex);
         return Result.fail(FAIL_REQUEST.code(), String.format("请求参数类型错误: %s", ex.getMessage()));
     }
 
@@ -161,7 +171,7 @@ public class GlobalExceptionHandler {
             // 执行插入 errorLog
             logApi.createErrorLog(errorLog);
         } catch (Throwable th) {
-            log.error("[createExceptionLog][url({}) log({}) 发生异常]", request.getRequestURI(), JsonUtils.toJsonString(errorLog), th);
+            log.error("[createExceptionLog][url({}) log({}) 发生异常]", request.getRequestURI(), JsonUtils.toJson(errorLog), th);
         }
     }
 
@@ -182,7 +192,7 @@ public class GlobalExceptionHandler {
         errorLog.setRequestUrl(request.getRequestURI());
         Map<String, Object> requestParams = Map.of("query", ServletUtils.getParamMap(request),
                 "body", ServletUtils.getBody(request));
-        errorLog.setRequestParams(JsonUtils.toJsonString(requestParams));
+        errorLog.setRequestParams(JsonUtils.toJson(requestParams));
         errorLog.setRequestMethod(request.getMethod());
         errorLog.setRequestCurl(ServletUtils.getCurl(request));
         errorLog.setDevice(ServletUtils.getUserAgentInfo(request));

@@ -17,6 +17,10 @@ spring:
   jackson:
     serialization:
       write-dates-as-timestamps: true # 设置 Date 的格式，使用时间戳
+  servlet:
+    multipart:
+      max-file-size: 16MB # 单个文件大小
+      max-request-size: 32MB # 设置总上传的文件大小
 
 mybatis-plus:
   configuration:

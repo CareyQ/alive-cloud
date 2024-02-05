@@ -47,6 +47,7 @@
         <transmittable.version>2.14.5</transmittable.version>
         <velocity.version>2.3</velocity.version>
         <s3.version>1.12.648</s3.version>
+        <tika.version>2.9.1</tika.version>
     </properties>
 
     <dependencyManagement>
@@ -230,6 +231,12 @@
             </dependency>
 
             <dependency>
+                <groupId>com.careyq</groupId>
+                <artifactId>alive-oss</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.apache.skywalking</groupId>
                 <artifactId>apm-toolkit-trace</artifactId>
                 <version>${skywalking.version}</version>
@@ -245,6 +252,12 @@
                 <groupId>org.apache.velocity</groupId>
                 <artifactId>velocity-engine-core</artifactId>
                 <version>${velocity.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.tika</groupId>
+                <artifactId>tika-core</artifactId>
+                <version>${tika.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

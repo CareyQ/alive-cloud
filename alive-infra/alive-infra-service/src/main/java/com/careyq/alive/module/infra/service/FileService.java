@@ -5,6 +5,9 @@ import com.careyq.alive.mybatis.core.service.IServiceX;
 import com.careyq.alive.module.infra.entity.File;
 import com.careyq.alive.module.infra.dto.*;
 import com.careyq.alive.module.infra.vo.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 /**
  * 文件 服务
@@ -14,12 +17,12 @@ import com.careyq.alive.module.infra.vo.*;
 public interface FileService extends IServiceX<File> {
 
     /**
-     * 保存文件
+     * 上传文件
      *
-     * @param dto 文件
+     * @param file 文件
      * @return 编号
      */
-    Long saveFile(FileDTO dto);
+    String uploadFile(MultipartFile file) throws IOException;
 
     /**
      * 获取文件分页
