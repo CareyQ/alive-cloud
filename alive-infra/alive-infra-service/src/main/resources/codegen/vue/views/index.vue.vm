@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RefreshRight, Plus, Search, Refresh } from '@element-plus/icons-vue'
+import { Plus, EditPen, Delete } from '@element-plus/icons-vue'
 import { dateFormatter } from '@/utils/date'
 import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
 import * as ${table.className}Api from '@/api/${table.moduleName}/${table.businessName}'
@@ -7,146 +7,107 @@ import ${table.className}Form from './${table.className}Form.vue'
 
 defineOptions({ name: '${table.className}' })
 
+const aliveTable = ref()
 const message = useMessage()
-
-const tableLoading = ref(false)
-const tableData = ref<any>([])
 const formRef = ref()
-const queryFormRef = ref()
-const total = ref(0)
-#foreach ($column in $columns)
-    #if ($column.queryCondition && ($column.queryType == 'BETWEEN_DATA' || $column.queryType == 'BETWEEN'))
-const createDate = ref<ElDate>([undefined, undefined])
-        #break
-    #end
-#end
-const queryParams = reactive({
-  current: 1,
-  size: 10,
-  #foreach ($column in $columns)
-    #if ($column.queryCondition)
-      #if ($column.queryType == 'BETWEEN')
-  $column.javaField: undefined,
-      #elseif($column.queryType == 'BETWEEN_DATA')
-  startDate: computed(() => createDate.value[0]),
-  endDate: computed(() => createDate.value[1])
-      #end
-    #end
-  #end
-})
-
-const get${table.className}Page = async () => {
-  tableLoading.value = true
-  try {
-    const data = await ${table.className}Api.getPage(queryParams)
-    tableData.value = data.records
-    total.value = data.total
-  } finally {
-    tableLoading.value = false
-  }
-}
-
 const openForm = (id?: number) => {
-  formRef.value.open(id)
+  formRef.value.open(id, aliveTable.value.getTableList)
 }
+
+#set($hasDataSearch = false)
+#foreach ($column in $columns)
+  #if ($column.queryCondition && ($column.queryType == 'BETWEEN_DATA' || $column.queryType == 'BETWEEN'))
+const getTableList = (params: any) => {
+  let newParams = JSON.parse(JSON.stringify(params))
+  newParams.createDate && (newParams.startDate = newParams.createDate[0])
+  newParams.createDate && (newParams.endDate = newParams.createDate[1])
+  delete newParams.createDate
+  return ${table.className}Api.getPage(newParams)
+}
+      #set($hasDataSearch = true)
+    #break
+  #end
+#end
 
 const handleDel = async (id: number) => {
-  await message.delConfirm()
-  await ${table.className}Api.del(id)
-  message.success('删除成功')
-  await get${table.className}Page()
+  try {
+    await message.delConfirm()
+    await del(id)
+    message.success('删除成功')
+    await aliveTable.value.getTableList()
+  } catch {}
 }
-
-const resetQuery = async () => {
-  queryFormRef.value.resetFields()
-#foreach ($column in $columns)
-    #if ($column.queryCondition && ($column.queryType == 'BETWEEN_DATA' || $column.queryType == 'BETWEEN'))
-  createDate.value = [undefined, undefined]
-        #break
-    #end
-#end
-  await get${table.className}Page()
-}
-
-onMounted(() => {
-  get${table.className}Page()
-})
 </script>
 
 <template>
-  <div class="page">
-    <el-form ref="queryFormRef" class="table-header" :model="queryParams" inline>
+  <div class="table-box">
+    <AliveTable ref="aliveTable" :request-api="#if($hasDataSearch == true)getTableList#else${table.className}Api.getPage#end">
+      <template #search>
         #foreach($column in $columns)
-            #if($column.queryCondition)
-                #set ($dictType = $column.dictType)
-                #set ($javaField = $column.javaField)
-                #set ($javaType = $column.javaType)
-                #set ($AttrName = $column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
-                #set ($comment = $column.columnComment)
-                #set ($dictMethod = "getDictOptions")## 计算使用哪个 dict 字典方法
-                #if ($javaType == "Integer" || $javaType == "Long" || $javaType == "Byte" || $javaType == "Short")
-                    #set ($dictMethod = "getIntDictOptions")
-                #elseif ($javaType == "String")
-                    #set ($dictMethod = "getStrDictOptions")
-                #elseif ($javaType == "Boolean")
-                    #set ($dictMethod = "getBoolDictOptions")
-                #end
-                #if ($column.htmlType == "input")
-      <el-form-item label="${comment}" prop="${javaField}">
-        <el-input v-model="queryParams.${javaField}" placeholder="请输入${comment}" clearable />
-      </el-form-item>
-                #elseif($column.htmlType == "select" || $column.htmlType == "radio")
-      <el-form-item label="${comment}" prop="${javaField}">
-        <el-select v-model="queryParams.${javaField}" placeholder="请选择${comment}" clearable>
-                    #if ("" != $dictType)
-          <el-option
-            v-for="(item, index) in getIntDictOptions(DICT_TYPE.$dictType.toUpperCase())"
-            :key="index"
-            :label="item.label"
-            :value="item.value"
-          />
-                    #else
-          <el-option label="请选择字典生成" value="" />
-                    #end
-        </el-select>
-      </el-form-item>
-                #elseif($column.htmlType == "datetime")
-      <el-form-item label="${comment}" prop="${javaField}">
-                    #if ($column.queryType != "BETWEEN" && $column.queryType != "BETWEEN_DATA")
-        <el-date-picker
-          v-model="queryParams.${javaField}"
-          value-format="YYYY-MM-DD"
-          range-separator="至"
-          placeholder="请选择${comment}"
-        />
-                    #else
-        <el-date-picker
-          v-model="createDate"
-          value-format="YYYY-MM-DD"
-          type="daterange"
-          range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-        />
-                    #end
-      </el-form-item>
-                #end
+          #if($column.queryCondition)
+            #set ($dictType = $column.dictType)
+            #set ($javaField = $column.javaField)
+            #set ($javaType = $column.javaType)
+            #set ($AttrName = $column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
+            #set ($comment = $column.columnComment)
+            #set ($dictMethod = "getDictOptions")## 计算使用哪个 dict 字典方法
+            #if ($javaType == "Integer" || $javaType == "Long" || $javaType == "Byte" || $javaType == "Short")
+              #set ($dictMethod = "getIntDictOptions")
+            #elseif ($javaType == "String")
+              #set ($dictMethod = "getStrDictOptions")
+            #elseif ($javaType == "Boolean")
+              #set ($dictMethod = "getBoolDictOptions")
             #end
+            #if ($column.htmlType == "input")
+        <el-form-item label="${comment}" prop="${javaField}">
+          <el-input v-model="aliveTable.searchParam.${javaField}" placeholder="请输入${comment}" clearable />
+        </el-form-item>
+            #elseif($column.htmlType == "select" || $column.htmlType == "radio")
+        <el-form-item label="${comment}" prop="${javaField}">
+          <el-select v-model="aliveTable.searchParam.${javaField}" placeholder="请选择${comment}" clearable>
+            #if ("" != $dictType)
+            <el-option
+              v-for="(item, index) in getIntDictOptions(DICT_TYPE.$dictType.toUpperCase())"
+              :key="index"
+              :label="item.label"
+              :value="item.value"
+            />
+            #else
+            <el-option label="请选择字典生成" value="" />
+            #end
+          </el-select>
+        </el-form-item>
+          #elseif($column.htmlType == "datetime")
+        <el-form-item label="${comment}" prop="${javaField}">
+              #if ($column.queryType != "BETWEEN" && $column.queryType != "BETWEEN_DATA")
+          <el-date-picker
+            v-model="aliveTable.queryParams.${javaField}"
+            value-format="YYYY-MM-DD"
+            range-separator="至"
+            placeholder="请选择${comment}"
+          />
+              #else
+          <el-date-picker
+            v-model="aliveTable.queryParams.createDate"
+            value-format="YYYY-MM-DD"
+            type="daterange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+          />
+              #end
+        </el-form-item>
+            #end
+          #end
         #end
-      <el-form-item>
-        <el-button type="primary" :icon="Search" @click="get${table.className}Page">搜索</el-button>
-        <el-button :icon="Refresh" @click="resetQuery">重置</el-button>
-      </el-form-item>
-    </el-form>
+      </template>
 
-    <div class="table-header">
-      <el-button type="info" :icon="RefreshRight" @click="get${table.className}Page()" />
-      <el-button type="primary" :icon="Plus" @click="openForm(undefined)">添加${table.classComment}</el-button>
-    </div>
+      <template #operation>
+        <el-button type="primary" :icon="Plus" @click="openForm(undefined)">添加${table.classComment}</el-button>
+      </template>
 
-    <el-table ref="tableRef" v-loading="tableLoading" :data="tableData" border stripe show-overflow-tooltip>
-    #foreach($column in $columns)
-        #if($column.queryResult)
+        #foreach($column in $columns)
+          #if($column.queryResult)
             #set ($dictType=$column.dictType)
             #set ($javaField = $column.javaField)
             #set ($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
@@ -156,31 +117,22 @@ onMounted(() => {
             #elseif($column.dictType && "" != $column.dictType)
       <el-table-column align="center" label="${comment}" prop="${javaField}" width="150">
         <template #default="{ row }">
-          <Tag :type="DICT_TYPE.$dictType.toUpperCase()" :value="row.${column.javaField}" />
+            <Tag :type="DICT_TYPE.$dictType.toUpperCase()" :value="row.${column.javaField}" />
         </template>
       </el-table-column>
             #else
-        <el-table-column label="${comment}" align="center" prop="${javaField}" />
+      <el-table-column label="${comment}" align="center" prop="${javaField}" />
             #end
+          #end
         #end
-    #end
+
       <el-table-column align="center" label="操作" width="200">
         <template #default="{ row }">
-          <el-button link type="primary" size="small" @click="openForm(row.id)"> 编辑 </el-button>
-          <el-divider direction="vertical" />
-          <el-button link type="danger" size="small" @click="handleDel(row.id)">删除</el-button>
+          <el-button :icon="EditPen" link type="primary" size="small" @click="openForm(row.id)"> 编辑 </el-button>
+          <el-button :icon="Delete" link type="danger" size="small" @click="handleDel(row.id)"> 删除 </el-button>
         </template>
       </el-table-column>
-    </el-table>
-
-    <Pagination
-      v-model:limit="queryParams.size"
-      v-model:page="queryParams.current"
-      :total="total"
-      @pagination="get${table.className}Page()"
-    />
+    </AliveTable>
   </div>
-  <${table.className}Form ref="formRef" @success="get${table.className}Page()" />
+  <${table.className}Form ref="formRef" />
 </template>
-
-<style lang="scss" scoped></style>

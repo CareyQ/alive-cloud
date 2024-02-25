@@ -5,21 +5,21 @@ const message = useMessage()
 const formLoading = ref(false)
 const dialogTitle = ref('')
 const dialogVisible = ref(false)
-
 const formRef = ref()
 
-const formData = ref({
-#foreach ($column in $columns)
-  #if ($column.createOperation || $column.updateOperation)
-    #if ($column.htmlType == "checkbox")
+const defaultData: ${table.className}Api.${table.className}DTO = {
+  #foreach ($column in $columns)
+    #if ($column.createOperation || $column.updateOperation)
+      #if ($column.htmlType == "checkbox")
   $column.javaField: [],
-    #else
+      #else
   $column.javaField: undefined,
+      #end
     #end
   #end
-#end
-})
+}
 
+const formData = ref<${table.className}Api.${table.className}DTO>(defaultData)
 const formRules = reactive({
 #foreach ($column in $columns)
   #if (($column.createOperation || $column.updateOperation) && !$column.nullable && !${column.primaryKey})## 创建或者更新操作 && 要求非空 && 非主键
@@ -29,8 +29,10 @@ const formRules = reactive({
 #end
 })
 
-const open = async (id: number) => {
+let refersh: () => void
+const open = async (id: number, getTableList: () => void) => {
   resetForm()
+  refersh = getTableList
   dialogVisible.value = true
   if (id) {
     dialogTitle.value = '编辑${table.classComment}'
@@ -47,21 +49,10 @@ const open = async (id: number) => {
 defineExpose({ open })
 
 const resetForm = () => {
-  formData.value = {
-  #foreach ($column in $columns)
-    #if ($column.createOperation || $column.updateOperation)
-      #if ($column.htmlType == "checkbox")
-    $column.javaField: [],
-      #else
-    $column.javaField: undefined,
-      #end
-    #end
-  #end
-  }
+  formData.value = defaultData
   formRef.value?.resetFields()
 }
 
-const emit = defineEmits(['success'])
 const submitForm = async () => {
   const valid = await formRef.value?.validate()
   if (!valid) {
@@ -73,7 +64,7 @@ const submitForm = async () => {
     await ${table.className}Api.save(data)
     message.success('保存成功')
     dialogVisible.value = false
-    emit('success')
+    refersh()
   } finally {
     formLoading.value = false
   }
