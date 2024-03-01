@@ -2,6 +2,7 @@ package com.careyq.alive.web.config;
 
 import cn.hutool.core.text.AntPathMatcher;
 import com.careyq.alive.module.infra.api.LogApi;
+import com.careyq.alive.web.filter.ApiRequestFilter;
 import com.careyq.alive.web.handler.GlobalExceptionHandler;
 import com.careyq.alive.web.util.WebUtils;
 import jakarta.servlet.Filter;
@@ -66,5 +67,10 @@ public class WebAutoConfiguration implements WebMvcConfigurer {
         // 对接口配置跨域设置
         source.registerCorsConfiguration("/**", config);
         return createFilterBean(new CorsFilter(source), Integer.MIN_VALUE);
+    }
+
+    @Bean
+    public FilterRegistrationBean<ApiRequestFilter> apiRequestFilter(WebProperties webProperties) {
+        return createFilterBean(new ApiRequestFilter(webProperties), Integer.MIN_VALUE + 1);
     }
 }

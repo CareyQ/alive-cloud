@@ -11,34 +11,38 @@
     <modules>
         <module>alive-common</module>
         <module>alive-system</module>
-        <module>alive-server</module>
         <module>alive-infra</module>
         <module>alive-mall</module>
+        <module>alive-gateway</module>
     </modules>
     <packaging>pom</packaging>
 
     <properties>
+        <!-- 环境 -->
         <java.version>21</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
         <revision>1.0.0-snapshot</revision>
         <flatten-maven-plugin.version>1.5.0</flatten-maven-plugin.version>
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
-
+        <!-- 核心框架 -->
         <spring.boot.version>3.2.2</spring.boot.version>
-        <snakeyaml.version>2.2</snakeyaml.version>
+        <spring.cloud.version>2023.0.0</spring.cloud.version>
+        <spring.cloud.alibaba.version>2022.0.0.0</spring.cloud.alibaba.version>
+        <sa-token.version>1.37.0</sa-token.version>
+        <!-- 文档相关 -->
         <knife4j.version>4.4.0</knife4j.version>
+        <springdoc.version>2.3.0</springdoc.version>
+        <!-- DB 相关 -->
         <druid.version>1.2.21</druid.version>
         <mysql.version>8.2.0</mysql.version>
         <mybatis.spring.version>3.0.3</mybatis.spring.version>
         <mybatis-plus.version>3.5.5</mybatis-plus.version>
-        <sa-token.version>1.37.0</sa-token.version>
         <redisson.version>3.26.0</redisson.version>
-        <springdoc.version>2.3.0</springdoc.version>
         <!-- 工具类 -->
+        <snakeyaml.version>2.2</snakeyaml.version>
         <hutool.version>5.8.25</hutool.version>
         <lombok.version>1.18.30</lombok.version>
         <jsoup.version>1.17.2</jsoup.version>
@@ -46,6 +50,7 @@
         <skywalking.version>9.1.0</skywalking.version>
         <transmittable.version>2.14.5</transmittable.version>
         <velocity.version>2.3</velocity.version>
+        <!-- 存储相关 -->
         <s3.version>1.12.648</s3.version>
         <tika.version>2.9.1</tika.version>
     </properties>
@@ -56,6 +61,21 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
                 <version>${spring.boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring.cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring.cloud.alibaba.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -163,6 +183,12 @@
             </dependency>
 
             <dependency>
+                <groupId>com.github.xiaoymin</groupId> <!-- 接口文档 UI：knife4j【网关专属】 -->
+                <artifactId>knife4j-gateway-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>com.github.xiaoymin</groupId>
                 <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
                 <version>${knife4j.version}</version>
@@ -215,6 +241,12 @@
             <dependency>
                 <groupId>com.careyq</groupId>
                 <artifactId>alive-redis</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.careyq</groupId>
+                <artifactId>alive-rpc</artifactId>
                 <version>${revision}</version>
             </dependency>
 

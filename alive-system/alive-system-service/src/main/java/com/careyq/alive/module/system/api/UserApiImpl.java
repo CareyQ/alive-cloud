@@ -3,8 +3,9 @@ package com.careyq.alive.module.system.api;
 import cn.hutool.core.util.StrUtil;
 import com.careyq.alive.module.system.entity.User;
 import com.careyq.alive.module.system.service.UserService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
@@ -14,7 +15,8 @@ import java.util.Optional;
  * @author CareyQ
  */
 @Service
-@AllArgsConstructor
+@RestController
+@RequiredArgsConstructor
 public class UserApiImpl implements UserApi {
 
     private final UserService userService;

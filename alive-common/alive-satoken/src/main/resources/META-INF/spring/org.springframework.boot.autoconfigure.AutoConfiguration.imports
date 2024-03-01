@@ -1,1 +1,2 @@
 com.careyq.alive.satoken.config.SaTokenConfiguration
+com.careyq.alive.satoken.config.RpcAutoConfiguration

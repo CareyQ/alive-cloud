@@ -9,27 +9,22 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>alive-satoken</artifactId>
+    <artifactId>alive-rpc</artifactId>
 
     <dependencies>
         <dependency>
-            <groupId>cn.dev33</groupId>
-            <artifactId>sa-token-spring-boot3-starter</artifactId>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>cn.dev33</groupId>
-            <artifactId>sa-token-redis-jackson</artifactId>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.careyq</groupId>
-            <artifactId>alive-core</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.careyq</groupId>
-            <artifactId>alive-rpc</artifactId>
+            <groupId>io.github.openfeign</groupId>
+            <artifactId>feign-okhttp</artifactId>
         </dependency>
     </dependencies>
 

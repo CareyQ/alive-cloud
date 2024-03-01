@@ -46,6 +46,7 @@ public class LogServiceImpl implements LogService {
         if (dto != null) {
             dto.setIpInfo(dto.getIpInfo().trim());
             LoginLog loginLog = LogConvert.INSTANCE.convert(dto);
+            loginLog.setTraceId("1");
             loginLogMapper.insert(loginLog);
         }
     }

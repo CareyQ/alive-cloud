@@ -1,0 +1,29 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        ## system-server
+        - id: system-admin-api
+          uri: lb://system-server
+          predicates:
+            - Path=/api-admin/system/**
+          filters:
+            - RewritePath=/api-admin/system/v3/api-docs, /v3/api-docs
+        ## infra-server
+        - id: infra-admin-api
+          uri: lb://infra-server
+          predicates:
+            - Path=/api-admin/infra/**
+          filters:
+            - RewritePath=/api-admin/infra/v3/api-docs, /v3/api-docs
+
+knife4j:
+  gateway:
+    enabled: true
+    routes:
+      - name: system-server
+        service-name: system-server
+        url: /api-admin/system/v3/api-docs
+      - name: infra-server
+        service-name: infra-server
+        url: /api-admin/infra/v3/api-docs
