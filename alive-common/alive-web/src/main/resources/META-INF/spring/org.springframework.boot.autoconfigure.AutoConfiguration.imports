@@ -5,4 +5,5 @@ com.careyq.alive.web.xss.XssAutoConfiguration
 com.careyq.alive.web.config.WebProperties
 com.careyq.alive.web.config.WebAutoConfiguration
 com.careyq.alive.web.config.SecurityConfig
+com.careyq.alive.web.config.LogRpcConfiguration
 com.careyq.alive.web.filter.AliveFilter
