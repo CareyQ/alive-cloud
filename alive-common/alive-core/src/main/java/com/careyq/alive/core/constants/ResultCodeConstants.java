@@ -21,4 +21,5 @@ public interface ResultCodeConstants {
     ResultCode METHOD_NOT_ALLOWED = new ResultCode(405, "请求方法不正确");
 
     ResultCode SERVER_ERROR = new ResultCode(500, "服务器开小差了");
+    ResultCode NOT_IMPLEMENTED = new ResultCode(501, "功能未实现/未开启");
 }

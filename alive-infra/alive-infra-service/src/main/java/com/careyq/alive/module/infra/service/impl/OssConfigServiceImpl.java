@@ -39,7 +39,7 @@ public class OssConfigServiceImpl extends ServiceImpl<OssConfigMapper, OssConfig
     public void init() {
         this.list().forEach(ossConfig -> {
             if (Boolean.TRUE.equals(ossConfig.getMaster())) {
-                RedisUtils.setObject(DEFAULT_CONFIG_ID, ossConfig.getId());
+                RedisUtils.setNotExpireObject(DEFAULT_CONFIG_ID, ossConfig.getId());
             }
             CacheUtils.put(CacheNames.OSS_CONFIG, ossConfig.getId(), JsonUtils.toJson(ossConfig));
         });

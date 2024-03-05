@@ -24,7 +24,7 @@
 
     <!-- 开发环境 -->
     <springProfile name="dev,test,local">
-        <root level="DEBUG">
+        <root level="INFO">
             <appender-ref ref="STDOUT"/>
         </root>
     </springProfile>

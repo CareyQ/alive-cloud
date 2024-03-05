@@ -183,7 +183,7 @@ create table if not exists infra_operate_log
     start_time       datetime      not null comment '操作时间',
     duration         int           not null comment '执行时长',
     result_code      int           not null default 0 comment '结果码',
-    result_msg       varchar(512)  null     default '' comment '结果提示',
+    result_msg       varchar(4000)  null     default '' comment '结果提示',
     result_data      varchar(4000) null     default '' comment '结果数据',
     is_del           tinyint       not null default 0 comment '是否删除',
     creator          bigint        null     default null comment '创建者',

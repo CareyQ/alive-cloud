@@ -35,6 +35,17 @@ public class RedisUtils {
     }
 
     /**
+     * 缓存基本的对象，Integer、String、实体类等，不过期
+     *
+     * @param key   缓存的键值
+     * @param value 缓存的值
+     */
+    public static <T> void setNotExpireObject(final String key, final T value) {
+        RBucket<T> bucket = CLIENT.getBucket(key);
+        bucket.set(value);
+    }
+
+    /**
      * 缓存基本的对象，Integer、String、实体类等
      *
      * @param key   缓存的键值

@@ -3,8 +3,10 @@ package com.careyq.alive.web.handler;
 import cn.dev33.satoken.exception.NotLoginException;
 import cn.dev33.satoken.exception.NotPermissionException;
 import cn.hutool.core.exceptions.ExceptionUtil;
+import com.careyq.alive.core.constants.TableNotExists;
 import com.careyq.alive.core.domain.Result;
 import com.careyq.alive.core.exception.CustomException;
+import com.careyq.alive.core.exception.FileUploadException;
 import com.careyq.alive.core.util.AsyncUtils;
 import com.careyq.alive.core.util.JsonUtils;
 import com.careyq.alive.core.util.ServletUtils;
@@ -20,6 +22,7 @@ import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
@@ -27,6 +30,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.multipart.MultipartException;
@@ -42,6 +46,7 @@ import static com.careyq.alive.core.constants.ResultCodeConstants.*;
  * @author CareyQ
  */
 @Slf4j
+@ResponseStatus(HttpStatus.ACCEPTED)
 @RestControllerAdvice
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
@@ -153,13 +158,47 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * 文件上传异常
+     */
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(FileUploadException.class)
+    public Result<?> fileUploadExceptionHandler(FileUploadException ex) {
+        log.error("[fileUploadExceptionHandler]", ex);
+        return Result.fail(ex.getCode(), ex.getMessage());
+    }
+
+    /**
      * 未捕获到的异常
      */
     @ExceptionHandler(Exception.class)
     public Result<?> defaultExceptionHandler(HttpServletRequest req, Throwable ex) {
+        Result<?> result = this.handleTableNotExists(ex);
+        if (result != null) {
+            return result;
+        }
         log.error("[defaultExceptionHandler]", ex);
         AsyncUtils.runAsync(() -> this.createErrorLog(req, ex));
         return Result.fail(SERVER_ERROR.code(), SERVER_ERROR.msg());
+    }
+
+    private Result<?> handleTableNotExists(Throwable ex) {
+        String message = ExceptionUtil.getRootCauseMessage(ex);
+        if (!message.contains(TableNotExists.TABLE_NOT_EXIST)) {
+            return null;
+        }
+        if (message.contains(TableNotExists.TABLE_SYSTEM)) {
+            log.error("[system 模块 alive-system - 表结构未导入]");
+            return Result.fail(NOT_IMPLEMENTED.code(), "[system 模块 alive-system - 表结构未导入]");
+        }
+        if (message.contains(TableNotExists.TABLE_INFRA)) {
+            log.error("[system 模块 alive-infra - 表结构未导入]");
+            return Result.fail(NOT_IMPLEMENTED.code(), "[system 模块 alive-infra - 表结构未导入]");
+        }
+        if (message.contains(TableNotExists.TABLE_MALL)) {
+            log.error("[system 模块 alive-mall - 表结构未导入]");
+            return Result.fail(NOT_IMPLEMENTED.code(), "[system 模块 alive-mall - 表结构未导入]");
+        }
+        return null;
     }
 
     private void createErrorLog(HttpServletRequest request, Throwable e) {

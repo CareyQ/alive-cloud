@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.careyq.alive.core.exception.CustomException;
+import com.careyq.alive.core.exception.FileUploadException;
 import com.careyq.alive.module.infra.convert.FileConvert;
 import com.careyq.alive.module.infra.dto.FilePageDTO;
 import com.careyq.alive.module.infra.entity.File;
@@ -17,6 +18,7 @@ import com.careyq.alive.module.infra.vo.FileVO;
 import com.careyq.alive.oss.core.client.OssClient;
 import com.careyq.alive.oss.core.factory.OssFactory;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.tika.Tika;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +32,7 @@ import java.io.InputStream;
  *
  * @author CareyQ
  */
+@Slf4j
 @Service
 @AllArgsConstructor
 public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements FileService {
@@ -39,22 +42,28 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements Fi
     @Override
     @Transactional(rollbackFor = Exception.class)
     public String uploadFile(MultipartFile file) throws IOException {
-        String path = file.getOriginalFilename();
-        InputStream inputStream = file.getInputStream();
-        byte[] content = IoUtil.readBytes(inputStream);
-        String type = getFileType(content, path);
+        String url = null;
+        try {
+            String path = file.getOriginalFilename();
+            InputStream inputStream = file.getInputStream();
+            byte[] content = IoUtil.readBytes(inputStream);
+            String type = getFileType(content, path);
 
-        OssClient client = OssFactory.instance();
-        String url = client.upload(content, path, type);
+            OssClient client = OssFactory.instance();
+            url = client.upload(content, path, type);
 
-        File saveFile = new File();
-        saveFile.setConfigId(client.getConfigId())
-                .setName(file.getOriginalFilename())
-                .setPath(path)
-                .setUrl(url)
-                .setType(type)
-                .setSize(content.length);
-        this.save(saveFile);
+            File saveFile = new File();
+            saveFile.setConfigId(client.getConfigId())
+                    .setName(file.getOriginalFilename())
+                    .setPath(path)
+                    .setUrl(url)
+                    .setType(type)
+                    .setSize(content.length);
+            this.save(saveFile);
+        } catch (Exception ex) {
+            log.error("文件上传出错", ex);
+            throw new FileUploadException(ex.getMessage());
+        }
         return url;
     }
 
