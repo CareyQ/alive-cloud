@@ -340,3 +340,50 @@ create table if not exists product_brand
     updater     bigint        null     default null comment '更新者',
     update_time datetime      not null default current_timestamp on update current_timestamp comment '更新时间'
 ) comment '商品品牌';
+
+create table if not exists product_attribute_group
+(
+    id          bigint       not null auto_increment primary key comment '主键',
+    category_id bigint       not null comment '分类 ID',
+    name        varchar(255) not null comment '属性分组名称',
+    sort        int          not null default 0 comment '排序',
+    is_del      tinyint      not null default 0 comment '是否删除',
+    creator     bigint       null     default null comment '创建者',
+    create_time datetime     not null default current_timestamp comment '创建时间',
+    updater     bigint       null     default null comment '更新者',
+    update_time datetime     not null default current_timestamp on update current_timestamp comment '更新时间'
+) comment '商品属性分组';
+
+create table if not exists product_attribute
+(
+    id             bigint       not null auto_increment primary key comment '主键',
+    category_id    bigint       not null comment '分类 ID',
+    type           int          not null default 0 comment '属性类型，0规格 1参数',
+    name           varchar(255) not null comment '属性名称',
+    select_type    tinyint      not null default 0 comment '属性选择类型，0唯一 1单选 2多选',
+    input_type     tinyint      not null default 0 comment '属性录入方式，0手工录入 1从列表中选取',
+    input_list     varchar(255) null     default null comment '可选值列表，以逗号隔开',
+    sort           int          not null default 0 comment '排序',
+    filter_type    tinyint      not null default 0 comment '分类筛选样式，1普通 1颜色',
+    search_type    tinyint      not null default 0 comment '检索类型，0不需要进行检索 1关键字检索 2范围检索',
+    related_status tinyint      not null default 0 comment '相同属性产品是否关联，0不关联 1关联',
+    addition       tinyint      not null default 0 comment '支持新增',
+    is_del         tinyint      not null default 0 comment '是否删除',
+    creator        bigint       null     default null comment '创建者',
+    create_time    datetime     not null default current_timestamp comment '创建时间',
+    updater        bigint       null     default null comment '更新者',
+    update_time    datetime     not null default current_timestamp on update current_timestamp comment '更新时间'
+) comment '商品属性';
+
+create table if not exists product_attribute_value
+(
+    id           bigint       not null auto_increment primary key comment '主键',
+    attribute_id bigint       not null comment '属性 ID',
+    value        varchar(255) not null comment '属性值',
+    sort         int          not null default 0 comment '排序',
+    is_del       tinyint      not null default 0 comment '是否删除',
+    creator      bigint       null     default null comment '创建者',
+    create_time  datetime     not null default current_timestamp comment '创建时间',
+    updater      bigint       null     default null comment '更新者',
+    update_time  datetime     not null default current_timestamp on update current_timestamp comment '更新时间'
+) comment '商品属性值';
