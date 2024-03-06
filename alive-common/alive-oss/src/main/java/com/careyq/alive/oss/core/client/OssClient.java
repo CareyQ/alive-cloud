@@ -69,11 +69,12 @@ public class OssClient {
 
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentType(contentType);
+        metadata.setContentDisposition("inline");
         metadata.setContentLength(inputStream.available());
         PutObjectRequest putObjectRequest = new PutObjectRequest(properties.getBucket(), path, inputStream, metadata);
 
         client.putObject(putObjectRequest);
-        return properties.getBucket() + "." + properties.getEndpoint() + "/" + path;
+        return "https://" + properties.getBucket() + "." + properties.getEndpoint() + "/" + path;
     }
 
 }

@@ -1,10 +1,15 @@
 package com.careyq.alive.module.infra.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.careyq.alive.mybatis.core.service.IServiceX;
+import com.careyq.alive.core.domain.EntryVO;
+import com.careyq.alive.module.infra.dto.OssConfigDTO;
+import com.careyq.alive.module.infra.dto.OssConfigPageDTO;
 import com.careyq.alive.module.infra.entity.OssConfig;
-import com.careyq.alive.module.infra.dto.*;
-import com.careyq.alive.module.infra.vo.*;
+import com.careyq.alive.module.infra.vo.OssConfigPageVO;
+import com.careyq.alive.module.infra.vo.OssConfigVO;
+import com.careyq.alive.mybatis.core.service.IServiceX;
+
+import java.util.List;
 
 /**
  * 对象存储配置 服务
@@ -48,4 +53,11 @@ public interface OssConfigService extends IServiceX<OssConfig> {
      * @param id 编号
      */
     void delOssConfig(Long id);
+
+    /**
+     * 获取对象存储配置列表
+     *
+     * @return 对象存储配置列表
+     */
+    List<EntryVO> getOssConfigList();
 }

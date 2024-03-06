@@ -8,11 +8,14 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.careyq.alive.core.exception.CustomException;
 import com.careyq.alive.core.exception.FileUploadException;
+import com.careyq.alive.core.util.CollUtils;
 import com.careyq.alive.module.infra.convert.FileConvert;
 import com.careyq.alive.module.infra.dto.FilePageDTO;
 import com.careyq.alive.module.infra.entity.File;
+import com.careyq.alive.module.infra.entity.OssConfig;
 import com.careyq.alive.module.infra.mapper.FileMapper;
 import com.careyq.alive.module.infra.service.FileService;
+import com.careyq.alive.module.infra.service.OssConfigService;
 import com.careyq.alive.module.infra.vo.FilePageVO;
 import com.careyq.alive.module.infra.vo.FileVO;
 import com.careyq.alive.oss.core.client.OssClient;
@@ -24,8 +27,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 文件 服务实现
@@ -37,18 +41,19 @@ import java.io.InputStream;
 @AllArgsConstructor
 public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements FileService {
 
+    private final OssConfigService ossConfigService;
+
     private static final ThreadLocal<Tika> TIKA = TransmittableThreadLocal.withInitial(Tika::new);
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public String uploadFile(MultipartFile file) throws IOException {
+    public String uploadFile(MultipartFile file) {
         String url = null;
         try {
             String path = file.getOriginalFilename();
             InputStream inputStream = file.getInputStream();
             byte[] content = IoUtil.readBytes(inputStream);
             String type = getFileType(content, path);
-
             OssClient client = OssFactory.instance();
             url = client.upload(content, path, type);
 
@@ -89,7 +94,9 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements Fi
         if (page.getRecords().isEmpty()) {
             return new Page<>();
         }
-        return page.convert(FileConvert.INSTANCE::fileConvert);
+        List<Long> configIds = CollUtils.convertList(page.getRecords(), File::getConfigId);
+        Map<Long, String> configMap = CollUtils.convertMap(ossConfigService.listByIds(configIds), OssConfig::getId, OssConfig::getName);
+        return page.convert(e -> FileConvert.INSTANCE.fileConvert(e, configMap));
     }
 
     @Override

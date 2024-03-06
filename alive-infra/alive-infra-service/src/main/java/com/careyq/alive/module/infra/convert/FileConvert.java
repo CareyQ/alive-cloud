@@ -5,7 +5,10 @@ import com.careyq.alive.module.infra.entity.OssConfig;
 import com.careyq.alive.module.infra.vo.FilePageVO;
 import com.careyq.alive.module.infra.vo.OssConfigPageVO;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
+
+import java.util.Map;
 
 /**
  * 文件相关转换器
@@ -31,5 +34,18 @@ public interface FileConvert {
      * @param file File
      * @return VO
      */
+    @Mapping(target = "configName", ignore = true)
     FilePageVO fileConvert(File file);
+
+    /**
+     * 文件转换为分页 VO
+     *
+     * @param file File
+     * @return VO
+     */
+    default FilePageVO fileConvert(File file, Map<Long, String> configMap) {
+        FilePageVO vo = fileConvert(file);
+        vo.setConfigName(configMap.get(file.getConfigId()));
+        return vo;
+    }
 }

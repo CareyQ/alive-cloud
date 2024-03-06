@@ -4,14 +4,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * mall 模块
+ * 商品模块
  *
  * @author CareyQ
  */
 @SpringBootApplication
-public class MallApplication {
+public class ProductApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(MallApplication.class, args);
+        SpringApplication.run(ProductApplication.class, args);
     }
 }

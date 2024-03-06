@@ -5,7 +5,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.careyq.alive.core.constants.CacheNames;
+import com.careyq.alive.core.domain.EntryVO;
 import com.careyq.alive.core.exception.CustomException;
+import com.careyq.alive.core.util.CollUtils;
 import com.careyq.alive.core.util.JsonUtils;
 import com.careyq.alive.module.infra.convert.FileConvert;
 import com.careyq.alive.module.infra.dto.OssConfigDTO;
@@ -20,6 +22,8 @@ import com.careyq.alive.redis.util.RedisUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static com.careyq.alive.module.infra.constants.InfraResultCode.OSS_CONFIG_NAME_IS_EXISTS;
 import static com.careyq.alive.module.infra.constants.InfraResultCode.OSS_CONFIG_NOT_EXISTS;
@@ -112,6 +116,8 @@ public class OssConfigServiceImpl extends ServiceImpl<OssConfigMapper, OssConfig
         return data;
     }
 
-
-
+    @Override
+    public List<EntryVO> getOssConfigList() {
+        return CollUtils.convertList(this.list(), e -> new EntryVO(e.getId(), e.getName()));
+    }
 }

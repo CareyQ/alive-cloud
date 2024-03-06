@@ -1,6 +1,7 @@
 package com.careyq.alive.module.infra.controller.admin;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.careyq.alive.core.domain.EntryVO;
 import com.careyq.alive.core.domain.Result;
 import com.careyq.alive.module.infra.dto.OssConfigDTO;
 import com.careyq.alive.module.infra.dto.OssConfigPageDTO;
@@ -12,6 +13,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 对象存储配置
@@ -49,5 +52,11 @@ public class OssConfigController {
     public Result<Boolean> delOssConfig(@RequestParam Long id) {
         ossConfigService.delOssConfig(id);
         return Result.ok(true);
+    }
+
+    @GetMapping("/list")
+    @Operation(summary = "获取对象存储配置列表")
+    public Result<List<EntryVO>> getOssConfigList() {
+        return Result.ok(ossConfigService.getOssConfigList());
     }
 }

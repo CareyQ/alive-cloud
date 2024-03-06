@@ -16,6 +16,13 @@ spring:
             - Path=/api-admin/infra/**
           filters:
             - RewritePath=/api-admin/infra/v3/api-docs, /v3/api-docs
+        ## mall-server
+        - id: product-admin-api
+          uri: lb://product-server
+          predicates:
+            - Path=/api-admin/product/**
+          filters:
+            - RewritePath=/api-admin/product/v3/api-docs, /v3/api-docs
 
 knife4j:
   gateway:

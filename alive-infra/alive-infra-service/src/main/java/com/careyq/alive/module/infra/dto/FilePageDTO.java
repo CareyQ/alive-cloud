@@ -2,8 +2,8 @@ package com.careyq.alive.module.infra.dto;
 
 import com.careyq.alive.core.domain.PageDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.*;
 import lombok.Data;
+
 import java.time.LocalDate;
 
 /**
