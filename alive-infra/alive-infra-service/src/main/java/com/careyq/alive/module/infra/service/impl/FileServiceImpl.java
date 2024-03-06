@@ -48,7 +48,7 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements Fi
     @Override
     @Transactional(rollbackFor = Exception.class)
     public String uploadFile(MultipartFile file) {
-        String url = null;
+        String url;
         try {
             String path = file.getOriginalFilename();
             InputStream inputStream = file.getInputStream();

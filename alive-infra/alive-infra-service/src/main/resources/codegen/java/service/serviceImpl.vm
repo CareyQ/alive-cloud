@@ -14,7 +14,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static ${basePackage}.module.${table.moduleName}.constants.${table.moduleName.substring(0,1).toUpperCase()}${table.moduleName.substring(1)}ResultCode}.*;
+import static ${basePackage}.module.${table.moduleName}.constants.${table.moduleName.substring(0,1).toUpperCase()}${table.moduleName.substring(1)}ResultCode.*;
 ## 字段模板
 #macro(queryCondition)
     #foreach ($column in $columns)
@@ -43,6 +43,9 @@ import static ${basePackage}.module.${table.moduleName}.constants.${table.module
             #end
             #if (${column.queryType} == "BETWEEN")##情况八，Between 的时候
             .betweenIfPresent(${table.className}::get${JavaField}, dto.get${JavaField}())
+            #end
+            #if (${column.queryType} == "BETWEEN_DATE")##情况九，BetweenDate 的时候
+            .dateBetween(${table.className}::get${JavaField}, dto.getStartDate(), dto.getEndDate())
             #end
         #end
     #end

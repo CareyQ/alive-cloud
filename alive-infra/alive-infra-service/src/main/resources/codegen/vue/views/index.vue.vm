@@ -16,13 +16,13 @@ const openForm = (id?: number) => {
 
 #set($hasDataSearch = false)
 #foreach ($column in $columns)
-  #if ($column.queryCondition && ($column.queryType == 'BETWEEN_DATA' || $column.queryType == 'BETWEEN'))
+  #if ($column.queryCondition && ($column.queryType == 'BETWEEN_DATE' || $column.queryType == 'BETWEEN'))
 const getTableList = (params: any) => {
   let newParams = JSON.parse(JSON.stringify(params))
   newParams.createDate && (newParams.startDate = newParams.createDate[0])
   newParams.createDate && (newParams.endDate = newParams.createDate[1])
   delete newParams.createDate
-  return ${table.className}Api.getPage(newParams)
+  return ${table.className}Api.get${simpleClassName}Page(newParams)
 }
       #set($hasDataSearch = true)
     #break
@@ -32,7 +32,7 @@ const getTableList = (params: any) => {
 const handleDel = async (id: number) => {
   try {
     await message.delConfirm()
-    await del(id)
+    await ${table.className}Api.del${simpleClassName}(id)
     message.success('删除成功')
     await aliveTable.value.getTableList()
   } catch {}
@@ -79,16 +79,16 @@ const handleDel = async (id: number) => {
         </el-form-item>
           #elseif($column.htmlType == "datetime")
         <el-form-item label="${comment}" prop="${javaField}">
-              #if ($column.queryType != "BETWEEN" && $column.queryType != "BETWEEN_DATA")
+              #if ($column.queryType != "BETWEEN" && $column.queryType != "BETWEEN_DATE")
           <el-date-picker
-            v-model="aliveTable.queryParams.${javaField}"
+            v-model="aliveTable.searchParam.${javaField}"
             value-format="YYYY-MM-DD"
             range-separator="至"
             placeholder="请选择${comment}"
           />
               #else
           <el-date-picker
-            v-model="aliveTable.queryParams.createDate"
+            v-model="aliveTable.searchParam.createDate"
             value-format="YYYY-MM-DD"
             type="daterange"
             range-separator="至"
@@ -129,6 +129,7 @@ const handleDel = async (id: number) => {
       <el-table-column align="center" label="操作" width="200">
         <template #default="{ row }">
           <el-button :icon="EditPen" link type="primary" size="small" @click="openForm(row.id)"> 编辑 </el-button>
+          <el-divider direction="vertical" />
           <el-button :icon="Delete" link type="danger" size="small" @click="handleDel(row.id)"> 删除 </el-button>
         </template>
       </el-table-column>

@@ -11,7 +11,7 @@ import java.math.BigDecimal;
     #end
 #end
 #foreach ($column in $columns)
-    #if (${column.queryCondition} && ${column.queryType} == "BETWEEN_DATA")
+    #if (${column.queryCondition} && ${column.queryType} == "BETWEEN_DATE")
 import java.time.LocalDate;
         #break
     #end
@@ -34,7 +34,7 @@ public class ${sceneEnum.prefixClass}${table.className}PageDTO extends PageDTO {
 
 #foreach($column in $columns)
     #if(${column.queryCondition})
-        #if(${column.queryType} == "BETWEEN_DATA")
+        #if(${column.queryType} == "BETWEEN_DATE")
     @Schema(description = "开始日期")
     private LocalDate startDate;
 

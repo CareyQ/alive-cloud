@@ -1,5 +1,6 @@
 package com.careyq.alive.module.product.service;
 
+import cn.hutool.core.lang.tree.Tree;
 import com.careyq.alive.module.product.dto.ProductCategoryDTO;
 import com.careyq.alive.module.product.entity.ProductCategory;
 import com.careyq.alive.module.product.vo.ProductCategoryVO;
@@ -46,4 +47,11 @@ public interface ProductCategoryService extends IServiceX<ProductCategory> {
      * @param id 编号
      */
     void delCategory(Long id);
+
+    /**
+     * 获取商品分类树
+     *
+     * @return 商品分类树
+     */
+    List<Tree<Long>> getCategoryTree();
 }

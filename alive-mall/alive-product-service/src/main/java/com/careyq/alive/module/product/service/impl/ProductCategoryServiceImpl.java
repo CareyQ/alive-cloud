@@ -1,7 +1,10 @@
 package com.careyq.alive.module.product.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.lang.tree.Tree;
+import cn.hutool.core.lang.tree.TreeUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.careyq.alive.core.enums.CommonStatusEnum;
 import com.careyq.alive.core.exception.CustomException;
 import com.careyq.alive.core.util.CollUtils;
 import com.careyq.alive.module.product.convert.ProductConvert;
@@ -102,4 +105,15 @@ public class ProductCategoryServiceImpl extends ServiceImpl<ProductCategoryMappe
         return data;
     }
 
+    @Override
+    public List<Tree<Long>> getCategoryTree() {
+        List<ProductCategory> list = this.lambdaQueryX()
+                .eq(ProductCategory::getStatus, CommonStatusEnum.ENABLE.getStatus())
+                .list();
+        return TreeUtil.build(list, ProductCategory.PARENT_ID_NULL, (node, tree) -> {
+            tree.setId(node.getId())
+                    .setParentId(node.getParentId())
+                    .setName(node.getName());
+        });
+    }
 }

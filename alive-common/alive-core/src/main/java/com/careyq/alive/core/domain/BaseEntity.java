@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 public abstract class BaseEntity implements Serializable {
 
     /**
-     * 主键
+     * 编号
      */
     @TableId
     private Long id;

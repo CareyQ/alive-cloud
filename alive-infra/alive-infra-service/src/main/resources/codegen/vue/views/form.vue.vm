@@ -38,7 +38,7 @@ const open = async (id: number, getTableList: () => void) => {
     dialogTitle.value = '编辑${table.classComment}'
     formLoading.value = true
     try {
-      formData.value = await ${table.className}Api.getDetail(id)
+      formData.value = await ${table.className}Api.get${simpleClassName}Detail(id)
     } finally {
       formLoading.value = false
     }
@@ -61,7 +61,7 @@ const submitForm = async () => {
   formLoading.value = true
   try {
     const data = formData.value
-    await ${table.className}Api.save(data)
+    await ${table.className}Api.save${simpleClassName}(data)
     message.success('保存成功')
     dialogVisible.value = false
     refersh()
@@ -153,6 +153,10 @@ const submitForm = async () => {
         #elseif($column.htmlType == "textarea")## 文本框
       <el-form-item label="${comment}" prop="${javaField}">
         <el-input v-model="formData.${javaField}" type="textarea" placeholder="请输入${comment}" />
+      </el-form-item>
+        #elseif($column.htmlType == "inputNumber")## 文本框
+      <el-form-item label="${comment}" prop="${javaField}">
+        <el-input-number v-model="formData.${javaField}" :min="0" controls-position="right" />
       </el-form-item>
         #end
       #end

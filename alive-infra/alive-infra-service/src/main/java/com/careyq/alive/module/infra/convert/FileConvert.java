@@ -40,7 +40,8 @@ public interface FileConvert {
     /**
      * 文件转换为分页 VO
      *
-     * @param file File
+     * @param file      File
+     * @param configMap 存储配置 map
      * @return VO
      */
     default FilePageVO fileConvert(File file, Map<Long, String> configMap) {

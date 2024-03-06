@@ -21,6 +21,10 @@ public enum CodegenColumnHtmlTypeEnum {
      */
     TEXTAREA("textarea"),
     /**
+     * 数值框
+     */
+    INPUT_NUMBER("inputNumber"),
+    /**
      * 下拉框
      */
     SELECT("select"),

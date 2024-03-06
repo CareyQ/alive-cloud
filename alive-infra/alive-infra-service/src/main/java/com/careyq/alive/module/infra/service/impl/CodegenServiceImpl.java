@@ -64,7 +64,8 @@ public class CodegenServiceImpl implements CodegenService {
                 new LambdaQueryWrapperX<CodegenTable>()
                         .likeIfPresent(CodegenTable::getTableName, dto.getTableName())
                         .likeIfPresent(CodegenTable::getTableComment, dto.getTableComment())
-                        .dateBetween(CodegenTable::getCreateTime, dto.getStartDate(), dto.getEndDate()));
+                        .dateBetween(CodegenTable::getCreateTime, dto.getStartDate(), dto.getEndDate())
+                        .orderByDesc(CodegenTable::getId));
         if (CollUtils.isEmpty(page.getRecords())) {
             return new Page<>();
         }
