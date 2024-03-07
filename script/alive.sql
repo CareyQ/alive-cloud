@@ -183,7 +183,7 @@ create table if not exists infra_operate_log
     start_time       datetime      not null comment '操作时间',
     duration         int           not null comment '执行时长',
     result_code      int           not null default 0 comment '结果码',
-    result_msg       varchar(4000)  null     default '' comment '结果提示',
+    result_msg       varchar(4000) null     default '' comment '结果提示',
     result_data      varchar(4000) null     default '' comment '结果数据',
     is_del           tinyint       not null default 0 comment '是否删除',
     creator          bigint        null     default null comment '创建者',
@@ -357,7 +357,8 @@ create table if not exists product_attribute_group
 create table if not exists product_attribute
 (
     id             bigint       not null auto_increment primary key comment '主键',
-    category_id    bigint       not null comment '分类 ID',
+    group_id       bigint       not null comment '所属分组',
+    category_id    bigint       not null comment '所属分类',
     type           int          not null default 0 comment '属性类型，0规格 1参数',
     name           varchar(255) not null comment '属性名称',
     select_type    tinyint      not null default 0 comment '属性选择类型，0唯一 1单选 2多选',

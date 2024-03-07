@@ -41,7 +41,7 @@ const handleDel = async (id: number) => {
 
 <template>
   <div class="table-box">
-    <AliveTable ref="aliveTable" :request-api="#if($hasDataSearch == true)getTableList#else${table.className}Api.getPage#end">
+    <AliveTable ref="aliveTable" :request-api="#if($hasDataSearch == true)getTableList#else${table.className}Api.get${simpleClassName}Page#end">
       <template #search>
         #foreach($column in $columns)
           #if($column.queryCondition)

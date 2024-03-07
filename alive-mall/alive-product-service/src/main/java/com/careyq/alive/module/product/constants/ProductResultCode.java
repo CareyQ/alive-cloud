@@ -24,10 +24,15 @@ public interface ProductResultCode {
     ResultCode CODEGEN_TABLE_NOT_EXISTS = new ResultCode(3_20003, "表定义不存在");
     ResultCode CODEGEN_COLUMN_NOT_EXISTS = new ResultCode(3_20004, "表字段不存在");
     /**
-     * GROUP
+     * ATTRIBUTE_GROUP
      */
     ResultCode ATTRIBUTE_GROUP_NOT_EXISTS = new ResultCode(3_30001, "属性分组不存在");
     ResultCode ATTRIBUTE_GROUP_IS_EXISTS = new ResultCode(3_30002, "该属性分组名称已存在");
+    /**
+     * ATTRIBUTE_
+     */
+    ResultCode ATTRIBUTE_NOT_EXISTS = new ResultCode(3_30001, "属性不存在");
+    ResultCode ATTRIBUTE_IS_EXISTS = new ResultCode(3_30002, "该属性名称已存在");
     ;
 
 }

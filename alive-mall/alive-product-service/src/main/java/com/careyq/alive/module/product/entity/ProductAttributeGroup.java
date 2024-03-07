@@ -1,9 +1,8 @@
 package com.careyq.alive.module.product.entity;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.careyq.alive.core.domain.BaseEntity;
 import lombok.Data;
-import java.time.LocalDateTime;
 
 /**
  * 商品属性分组
@@ -28,6 +27,5 @@ public class ProductAttributeGroup extends BaseEntity {
      * 排序 
      */
     private Integer sort;
-
 
 }

@@ -1,9 +1,9 @@
 package com.careyq.alive.module.product.convert;
 
+import com.careyq.alive.module.product.entity.ProductAttribute;
 import com.careyq.alive.module.product.entity.ProductAttributeGroup;
-import com.careyq.alive.module.product.entity.ProductBrand;
 import com.careyq.alive.module.product.vo.ProductAttributeGroupPageVO;
-import com.careyq.alive.module.product.vo.ProductBrandPageVO;
+import com.careyq.alive.module.product.vo.ProductAttributePageVO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -16,9 +16,9 @@ import java.util.Map;
  * @author CareyQ
  */
 @Mapper
-public interface ProductAttributeGroupConvert {
+public interface ProductAttributeConvert {
 
-    ProductAttributeGroupConvert INSTANCE = Mappers.getMapper(ProductAttributeGroupConvert.class);
+    ProductAttributeConvert INSTANCE = Mappers.getMapper(ProductAttributeConvert.class);
 
     /**
      * 商品属性分组转换为分页 VO
@@ -43,10 +43,10 @@ public interface ProductAttributeGroupConvert {
     }
 
     /**
-     * 品牌转换为分页 VO
+     * 属性转换为分页 VO
      *
-     * @param brand 品牌
+     * @param attribute 属性
      * @return VO
      */
-    ProductBrandPageVO brandConvert(ProductBrand brand);
+    ProductAttributePageVO convert(ProductAttribute attribute);
 }

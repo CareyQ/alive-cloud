@@ -1,15 +1,27 @@
 package com.careyq.alive.module.product.controller.admin;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.careyq.alive.core.domain.EntryVO;
 import com.careyq.alive.core.domain.Result;
-import com.careyq.alive.module.product.dto.*;
+import com.careyq.alive.core.enums.IEnum;
+import com.careyq.alive.module.product.dto.ProductAttributeDTO;
+import com.careyq.alive.module.product.dto.ProductAttributeGroupDTO;
+import com.careyq.alive.module.product.dto.ProductAttributeGroupPageDTO;
+import com.careyq.alive.module.product.dto.ProductAttributePageDTO;
+import com.careyq.alive.module.product.enums.AttrTypeEnum;
 import com.careyq.alive.module.product.service.ProductAttributeGroupService;
-import com.careyq.alive.module.product.vo.*;
+import com.careyq.alive.module.product.service.ProductAttributeService;
+import com.careyq.alive.module.product.vo.ProductAttributeGroupPageVO;
+import com.careyq.alive.module.product.vo.ProductAttributeGroupVO;
+import com.careyq.alive.module.product.vo.ProductAttributePageVO;
+import com.careyq.alive.module.product.vo.ProductAttributeVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 /**
  * 商品属性相关
@@ -22,6 +34,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "管理后台 - 商品属性相关")
 public class ProductAttributeController {
 
+    private final ProductAttributeService attributeService;
     private final ProductAttributeGroupService attributeGroupService;
 
     @PostMapping("/group/save")
@@ -46,6 +59,40 @@ public class ProductAttributeController {
     @Operation(summary = "删除商品属性分组")
     public Result<Boolean> delAttributeGroup(@RequestParam Long id) {
         attributeGroupService.delAttributeGroup(id);
+        return Result.ok(true);
+    }
+
+    @GetMapping("/enums")
+    @Operation(summary = "获取商品属性相关枚举")
+    public Result<Map<String, Object>> getAttributeEnums() {
+        Map<String, Object> res = Map.of(
+                "attrType", IEnum.toEntry(AttrTypeEnum.class),
+                "group", attributeGroupService.list().stream().map(e -> new EntryVO(e.getId(), e.getName())).toList());
+        return Result.ok(res);
+    }
+
+    @PostMapping("/save")
+    @Operation(summary = "保存商品属性")
+    public Result<Long> saveAttribute(@Validated @RequestBody ProductAttributeDTO dto) {
+        return Result.ok(attributeService.saveAttribute(dto));
+    }
+
+    @PostMapping("/page")
+    @Operation(summary = "获取商品属性分页")
+    public Result<IPage<ProductAttributePageVO>> getAttributePage(@Validated @RequestBody ProductAttributePageDTO dto) {
+        return Result.ok(attributeService.getAttributePage(dto));
+    }
+
+    @GetMapping("/detail")
+    @Operation(summary = "获取商品属性详情")
+    public Result<ProductAttributeVO> getAttributeDetail(@RequestParam Long id) {
+        return Result.ok(attributeService.getAttributeDetail(id));
+    }
+
+    @DeleteMapping("/del")
+    @Operation(summary = "删除商品属性")
+    public Result<Boolean> delAttribute(@RequestParam Long id) {
+        attributeService.delAttribute(id);
         return Result.ok(true);
     }
 }

@@ -1,10 +1,12 @@
 package com.careyq.alive.module.product.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.careyq.alive.mybatis.core.service.IServiceX;
+import com.careyq.alive.module.product.dto.ProductAttributeGroupDTO;
+import com.careyq.alive.module.product.dto.ProductAttributeGroupPageDTO;
 import com.careyq.alive.module.product.entity.ProductAttributeGroup;
-import com.careyq.alive.module.product.dto.*;
-import com.careyq.alive.module.product.vo.*;
+import com.careyq.alive.module.product.vo.ProductAttributeGroupPageVO;
+import com.careyq.alive.module.product.vo.ProductAttributeGroupVO;
+import com.careyq.alive.mybatis.core.service.IServiceX;
 
 /**
  * 商品属性分组 服务
@@ -43,4 +45,5 @@ public interface ProductAttributeGroupService extends IServiceX<ProductAttribute
      * @param id 编号
      */
     void delAttributeGroup(Long id);
+
 }

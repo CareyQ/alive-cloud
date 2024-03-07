@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.careyq.alive.core.exception.CustomException;
 import com.careyq.alive.core.util.CollUtils;
-import com.careyq.alive.module.product.convert.ProductAttributeGroupConvert;
+import com.careyq.alive.module.product.convert.ProductAttributeConvert;
 import com.careyq.alive.module.product.dto.ProductAttributeGroupDTO;
 import com.careyq.alive.module.product.dto.ProductAttributeGroupPageDTO;
 import com.careyq.alive.module.product.entity.ProductAttributeGroup;
@@ -67,7 +67,7 @@ public class ProductAttributeGroupServiceImpl extends ServiceImpl<ProductAttribu
         }
         List<Long> categoryIds = CollUtils.convertList(page.getRecords(), ProductAttributeGroup::getCategoryId);
         Map<Long, String> categoryMap = CollUtils.convertMap(categoryService.listByIds(categoryIds), ProductCategory::getId, ProductCategory::getName);
-        return page.convert(e -> ProductAttributeGroupConvert.INSTANCE.groupConvert(e, categoryMap));
+        return page.convert(e -> ProductAttributeConvert.INSTANCE.groupConvert(e, categoryMap));
     }
 
     @Override
