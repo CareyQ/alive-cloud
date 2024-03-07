@@ -1,5 +1,6 @@
 package com.careyq.alive.module.product.vo;
 
+import com.careyq.alive.module.product.enums.AttributeTypeEnum;
 import com.careyq.alive.module.product.enums.InputTypeEnum;
 import com.careyq.alive.module.product.enums.SelectTypeEnum;
 import com.careyq.alive.web.jackson.EnumName;
@@ -18,6 +19,7 @@ public class ProductAttributePageVO {
     @Schema(description = "主键")
     private Long id;
 
+    @EnumName(AttributeTypeEnum.class)
     @Schema(description = "属性类型，0规格 1参数")
     private Integer type;
 

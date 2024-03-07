@@ -8,7 +8,7 @@ import com.careyq.alive.module.product.dto.ProductAttributeDTO;
 import com.careyq.alive.module.product.dto.ProductAttributeGroupDTO;
 import com.careyq.alive.module.product.dto.ProductAttributeGroupPageDTO;
 import com.careyq.alive.module.product.dto.ProductAttributePageDTO;
-import com.careyq.alive.module.product.enums.AttrTypeEnum;
+import com.careyq.alive.module.product.enums.AttributeTypeEnum;
 import com.careyq.alive.module.product.service.ProductAttributeGroupService;
 import com.careyq.alive.module.product.service.ProductAttributeService;
 import com.careyq.alive.module.product.vo.ProductAttributeGroupPageVO;
@@ -66,7 +66,7 @@ public class ProductAttributeController {
     @Operation(summary = "获取商品属性相关枚举")
     public Result<Map<String, Object>> getAttributeEnums() {
         Map<String, Object> res = Map.of(
-                "attrType", IEnum.toEntry(AttrTypeEnum.class),
+                "attrType", IEnum.toEntry(AttributeTypeEnum.class),
                 "group", attributeGroupService.list().stream().map(e -> new EntryVO(e.getId(), e.getName())).toList());
         return Result.ok(res);
     }

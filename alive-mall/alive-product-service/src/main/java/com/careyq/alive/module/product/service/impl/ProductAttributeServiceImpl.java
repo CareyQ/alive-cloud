@@ -9,7 +9,9 @@ import com.careyq.alive.module.product.convert.ProductAttributeConvert;
 import com.careyq.alive.module.product.dto.ProductAttributeDTO;
 import com.careyq.alive.module.product.dto.ProductAttributePageDTO;
 import com.careyq.alive.module.product.entity.ProductAttribute;
+import com.careyq.alive.module.product.entity.ProductAttributeGroup;
 import com.careyq.alive.module.product.mapper.ProductAttributeMapper;
+import com.careyq.alive.module.product.service.ProductAttributeGroupService;
 import com.careyq.alive.module.product.service.ProductAttributeService;
 import com.careyq.alive.module.product.vo.ProductAttributePageVO;
 import com.careyq.alive.module.product.vo.ProductAttributeVO;
@@ -17,6 +19,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.careyq.alive.module.product.constants.ProductResultCode.ATTRIBUTE_GROUP_NOT_EXISTS;
 import static com.careyq.alive.module.product.constants.ProductResultCode.ATTRIBUTE_NOT_EXISTS;
 
 /**
@@ -27,6 +30,8 @@ import static com.careyq.alive.module.product.constants.ProductResultCode.ATTRIB
 @Service
 @AllArgsConstructor
 public class ProductAttributeServiceImpl extends ServiceImpl<ProductAttributeMapper, ProductAttribute> implements ProductAttributeService {
+
+    private ProductAttributeGroupService groupService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -43,6 +48,11 @@ public class ProductAttributeServiceImpl extends ServiceImpl<ProductAttributeMap
             this.checkDataExists(dto.getId());
         }
         ProductAttribute attribute = BeanUtil.copyProperties(dto, ProductAttribute.class);
+        ProductAttributeGroup group = groupService.getById(dto.getGroupId());
+        if (group == null) {
+            throw new CustomException(ATTRIBUTE_GROUP_NOT_EXISTS);
+        }
+        attribute.setCategoryId(group.getCategoryId());
         this.saveOrUpdate(attribute);
         return attribute.getId();
     }

@@ -11,7 +11,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum AttrTypeEnum implements IEnum {
+public enum AttributeTypeEnum implements IEnum {
 
     /**
      * 规格
