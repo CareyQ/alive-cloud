@@ -1,12 +1,15 @@
 package com.careyq.alive.module.product.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.careyq.alive.core.domain.EntryVO;
 import com.careyq.alive.module.product.dto.ProductAttributeGroupDTO;
 import com.careyq.alive.module.product.dto.ProductAttributeGroupPageDTO;
 import com.careyq.alive.module.product.entity.ProductAttributeGroup;
 import com.careyq.alive.module.product.vo.ProductAttributeGroupPageVO;
 import com.careyq.alive.module.product.vo.ProductAttributeGroupVO;
 import com.careyq.alive.mybatis.core.service.IServiceX;
+
+import java.util.List;
 
 /**
  * 商品属性分组 服务
@@ -38,6 +41,13 @@ public interface ProductAttributeGroupService extends IServiceX<ProductAttribute
      * @return 商品属性分组
      */
     ProductAttributeGroupVO getAttributeGroupDetail(Long id);
+
+    /**
+     * 获取商品属性分组列表
+     *
+     * @return 属性分组列表
+     */
+    List<EntryVO> getAttributeGroupList();
 
     /**
      * 删除商品属性分组

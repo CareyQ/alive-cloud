@@ -21,6 +21,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -60,6 +61,12 @@ public class ProductAttributeController {
     public Result<Boolean> delAttributeGroup(@RequestParam Long id) {
         attributeGroupService.delAttributeGroup(id);
         return Result.ok(true);
+    }
+
+    @GetMapping("/group/list")
+    @Operation(summary = "获取商品属性分组列表")
+    public Result<List<EntryVO>> getAttributeGroupList() {
+        return Result.ok(attributeGroupService.getAttributeGroupList());
     }
 
     @GetMapping("/enums")

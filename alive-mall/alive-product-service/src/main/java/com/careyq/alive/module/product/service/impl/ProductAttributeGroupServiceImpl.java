@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.careyq.alive.core.domain.EntryVO;
 import com.careyq.alive.core.exception.CustomException;
 import com.careyq.alive.core.util.CollUtils;
 import com.careyq.alive.module.product.convert.ProductAttributeConvert;
@@ -20,6 +21,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -74,6 +76,13 @@ public class ProductAttributeGroupServiceImpl extends ServiceImpl<ProductAttribu
     public ProductAttributeGroupVO getAttributeGroupDetail(Long id) {
         ProductAttributeGroup data = this.checkDataExists(id);
         return BeanUtil.copyProperties(data, ProductAttributeGroupVO.class);
+    }
+
+    @Override
+    public List<EntryVO> getAttributeGroupList() {
+        List<ProductAttributeGroup> list = this.list();
+        list.sort(Comparator.comparing(ProductAttributeGroup::getSort));
+        return CollUtils.convertList(list, e -> new EntryVO(e.getId(), e.getName()));
     }
 
     @Override
