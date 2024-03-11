@@ -17,6 +17,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.careyq.alive.module.product.constants.ProductResultCode.PRODUCT_NOT_EXISTS;
+
 /**
  * 商品信息 服务实现
  *
@@ -33,7 +35,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     public Long save(ProductDTO dto) {
         boolean exists = this.lambdaQueryX()
                 .neIfPresent(Product::getId, dto.getId())
-                // TODO
+                .eq(Product::getSnCode, dto.getSnCode())
                 .exists();
         if (exists) {
             throw new CustomException();

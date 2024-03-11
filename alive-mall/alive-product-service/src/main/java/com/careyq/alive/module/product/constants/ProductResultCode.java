@@ -29,10 +29,14 @@ public interface ProductResultCode {
     ResultCode ATTRIBUTE_GROUP_NOT_EXISTS = new ResultCode(3_30001, "属性分组不存在");
     ResultCode ATTRIBUTE_GROUP_IS_EXISTS = new ResultCode(3_30002, "该属性分组名称已存在");
     /**
-     * ATTRIBUTE_
+     * ATTRIBUTE
      */
     ResultCode ATTRIBUTE_NOT_EXISTS = new ResultCode(3_30001, "属性不存在");
     ResultCode ATTRIBUTE_IS_EXISTS = new ResultCode(3_30002, "该属性名称已存在");
-    ;
+    /**
+     * PRODUCT
+     */
+    ResultCode PRODUCT_NOT_EXISTS = new ResultCode(3_30001, "商品不存在");
+    ResultCode PRODUCT_IS_EXISTS = new ResultCode(3_30002, "该商品编码已存在");
 
 }

@@ -2,7 +2,6 @@ package com.careyq.alive.module.product.vo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import java.math.BigDecimal;
 
 /**
  * 商品信息分页 VO
@@ -38,15 +37,9 @@ public class ProductPageVO {
     private Integer salesVolume;
 
     @Schema(description = "价格")
-    private BigDecimal price;
-
-    @Schema(description = "市场价")
-    private BigDecimal marketPrice;
+    private String price;
 
     @Schema(description = "库存")
     private Integer stock;
-
-    @Schema(description = "单位")
-    private String unit;
 
 }

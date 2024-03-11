@@ -1,9 +1,11 @@
 package com.careyq.alive.module.product.convert;
 
+import com.careyq.alive.module.product.entity.Product;
 import com.careyq.alive.module.product.entity.ProductBrand;
 import com.careyq.alive.module.product.entity.ProductCategory;
 import com.careyq.alive.module.product.vo.ProductBrandPageVO;
 import com.careyq.alive.module.product.vo.ProductCategoryVO;
+import com.careyq.alive.module.product.vo.ProductPageVO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -32,4 +34,12 @@ public interface ProductConvert {
      * @return VO
      */
     ProductBrandPageVO brandConvert(ProductBrand brand);
+
+    /**
+     * 商品转换为分页 VO
+     *
+     * @param product 商品
+     * @return VO
+     */
+    ProductPageVO convert(Product product);
 }
