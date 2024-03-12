@@ -45,9 +45,10 @@ public interface ProductAttributeGroupService extends IServiceX<ProductAttribute
     /**
      * 获取商品属性分组列表
      *
+     * @param categoryId 分类编号
      * @return 属性分组列表
      */
-    List<EntryVO> getAttributeGroupList();
+    List<EntryVO> getAttributeGroupList(Long categoryId);
 
     /**
      * 删除商品属性分组

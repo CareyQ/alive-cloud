@@ -1,10 +1,15 @@
 package com.careyq.alive.module.product.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.careyq.alive.mybatis.core.service.IServiceX;
+import com.careyq.alive.core.domain.EntryVO;
+import com.careyq.alive.module.product.dto.ProductBrandDTO;
+import com.careyq.alive.module.product.dto.ProductBrandPageDTO;
 import com.careyq.alive.module.product.entity.ProductBrand;
-import com.careyq.alive.module.product.dto.*;
-import com.careyq.alive.module.product.vo.*;
+import com.careyq.alive.module.product.vo.ProductBrandPageVO;
+import com.careyq.alive.module.product.vo.ProductBrandVO;
+import com.careyq.alive.mybatis.core.service.IServiceX;
+
+import java.util.List;
 
 /**
  * 商品品牌 服务
@@ -43,4 +48,11 @@ public interface ProductBrandService extends IServiceX<ProductBrand> {
      * @param id 编号
      */
     void delBrand(Long id);
+
+    /**
+     * 获取商品品牌列表
+     *
+     * @return 商品品牌列表
+     */
+    List<EntryVO> getBrandList();
 }

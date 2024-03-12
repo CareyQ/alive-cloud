@@ -4,7 +4,10 @@ import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.careyq.alive.core.domain.EntryVO;
+import com.careyq.alive.core.enums.CommonStatusEnum;
 import com.careyq.alive.core.exception.CustomException;
+import com.careyq.alive.core.util.CollUtils;
 import com.careyq.alive.module.product.convert.ProductConvert;
 import com.careyq.alive.module.product.dto.ProductBrandDTO;
 import com.careyq.alive.module.product.dto.ProductBrandPageDTO;
@@ -16,6 +19,8 @@ import com.careyq.alive.module.product.vo.ProductBrandVO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static com.careyq.alive.module.product.constants.ProductResultCode.BRAND_NAME_IS_EXISTS;
 import static com.careyq.alive.module.product.constants.ProductResultCode.BRAND_NOT_EXISTS;
@@ -52,11 +57,11 @@ public class ProductBrandServiceImpl extends ServiceImpl<ProductBrandMapper, Pro
     @Override
     public IPage<ProductBrandPageVO> getBrandPage(ProductBrandPageDTO dto) {
         IPage<ProductBrand> page = this.lambdaQueryX()
-            .likeIfPresent(ProductBrand::getName, dto.getName())
-            .eqIfPresent(ProductBrand::getStatus, dto.getStatus())
-            .dateBetween(ProductBrand::getCreateTime, dto.getStartDate(), dto.getEndDate())
-            .orderByDesc(ProductBrand::getId)
-            .page(new Page<>(dto.getCurrent(), dto.getSize()));
+                .likeIfPresent(ProductBrand::getName, dto.getName())
+                .eqIfPresent(ProductBrand::getStatus, dto.getStatus())
+                .dateBetween(ProductBrand::getCreateTime, dto.getStartDate(), dto.getEndDate())
+                .orderByDesc(ProductBrand::getId)
+                .page(new Page<>(dto.getCurrent(), dto.getSize()));
         if (page.getRecords().isEmpty()) {
             return new Page<>();
         }
@@ -92,4 +97,12 @@ public class ProductBrandServiceImpl extends ServiceImpl<ProductBrandMapper, Pro
         return data;
     }
 
+    @Override
+    public List<EntryVO> getBrandList() {
+        List<ProductBrand> list = this.lambdaQuery()
+                .eq(ProductBrand::getStatus, CommonStatusEnum.ENABLE.getStatus())
+                .orderByAsc(ProductBrand::getSort)
+                .list();
+        return CollUtils.convertList(list, e -> new EntryVO(e.getId(), e.getName()));
+    }
 }

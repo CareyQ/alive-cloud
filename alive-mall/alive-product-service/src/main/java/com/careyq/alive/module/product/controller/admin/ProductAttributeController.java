@@ -65,8 +65,8 @@ public class ProductAttributeController {
 
     @GetMapping("/group/list")
     @Operation(summary = "获取商品属性分组列表")
-    public Result<List<EntryVO>> getAttributeGroupList() {
-        return Result.ok(attributeGroupService.getAttributeGroupList());
+    public Result<List<EntryVO>> getAttributeGroupList(@RequestParam Long categoryId) {
+        return Result.ok(attributeGroupService.getAttributeGroupList(categoryId));
     }
 
     @GetMapping("/enums")
@@ -101,5 +101,11 @@ public class ProductAttributeController {
     public Result<Boolean> delAttribute(@RequestParam Long id) {
         attributeService.delAttribute(id);
         return Result.ok(true);
+    }
+
+    @GetMapping("/list")
+    @Operation(summary = "获取商品属性列表")
+    public Result<List<ProductAttributeVO>> getAttributeList(@RequestParam Long groupId, @RequestParam Integer type) {
+        return Result.ok(attributeService.getAttributeList(groupId, type));
     }
 }

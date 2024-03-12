@@ -1,10 +1,14 @@
 package com.careyq.alive.module.product.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.careyq.alive.mybatis.core.service.IServiceX;
+import com.careyq.alive.module.product.dto.ProductAttributeDTO;
+import com.careyq.alive.module.product.dto.ProductAttributePageDTO;
 import com.careyq.alive.module.product.entity.ProductAttribute;
-import com.careyq.alive.module.product.dto.*;
-import com.careyq.alive.module.product.vo.*;
+import com.careyq.alive.module.product.vo.ProductAttributePageVO;
+import com.careyq.alive.module.product.vo.ProductAttributeVO;
+import com.careyq.alive.mybatis.core.service.IServiceX;
+
+import java.util.List;
 
 /**
  * 商品属性 服务
@@ -43,4 +47,13 @@ public interface ProductAttributeService extends IServiceX<ProductAttribute> {
      * @param id 编号
      */
     void delAttribute(Long id);
+
+    /**
+     * 获取商品属性列表
+     *
+     * @param groupId 分组编号
+     * @param type    类型
+     * @return 商品属性列表
+     */
+    List<ProductAttributeVO> getAttributeList(Long groupId, Integer type);
 }

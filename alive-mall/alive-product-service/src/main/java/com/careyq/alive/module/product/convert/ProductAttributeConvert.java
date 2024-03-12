@@ -4,6 +4,7 @@ import com.careyq.alive.module.product.entity.ProductAttribute;
 import com.careyq.alive.module.product.entity.ProductAttributeGroup;
 import com.careyq.alive.module.product.vo.ProductAttributeGroupPageVO;
 import com.careyq.alive.module.product.vo.ProductAttributePageVO;
+import com.careyq.alive.module.product.vo.ProductAttributeVO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -48,5 +49,13 @@ public interface ProductAttributeConvert {
      * @param attribute 属性
      * @return VO
      */
-    ProductAttributePageVO convert(ProductAttribute attribute);
+    ProductAttributePageVO convertToPageVo(ProductAttribute attribute);
+
+    /**
+     * 属性转换为 VO
+     *
+     * @param attribute 属性
+     * @return VO
+     */
+    ProductAttributeVO convertToVo(ProductAttribute attribute);
 }

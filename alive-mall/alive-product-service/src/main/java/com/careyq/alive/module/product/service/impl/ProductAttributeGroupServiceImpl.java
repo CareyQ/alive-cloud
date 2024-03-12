@@ -79,8 +79,10 @@ public class ProductAttributeGroupServiceImpl extends ServiceImpl<ProductAttribu
     }
 
     @Override
-    public List<EntryVO> getAttributeGroupList() {
-        List<ProductAttributeGroup> list = this.list();
+    public List<EntryVO> getAttributeGroupList(Long categoryId) {
+        List<ProductAttributeGroup> list = this.lambdaQuery()
+                .eq(ProductAttributeGroup::getCategoryId, categoryId)
+                .list();
         list.sort(Comparator.comparing(ProductAttributeGroup::getSort));
         return CollUtils.convertList(list, e -> new EntryVO(e.getId(), e.getName()));
     }

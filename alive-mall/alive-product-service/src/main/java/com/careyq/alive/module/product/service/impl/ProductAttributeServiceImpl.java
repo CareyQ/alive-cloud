@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.careyq.alive.core.exception.CustomException;
+import com.careyq.alive.core.util.CollUtils;
 import com.careyq.alive.module.product.convert.ProductAttributeConvert;
 import com.careyq.alive.module.product.dto.ProductAttributeDTO;
 import com.careyq.alive.module.product.dto.ProductAttributePageDTO;
@@ -18,6 +19,8 @@ import com.careyq.alive.module.product.vo.ProductAttributeVO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static com.careyq.alive.module.product.constants.ProductResultCode.ATTRIBUTE_GROUP_NOT_EXISTS;
 import static com.careyq.alive.module.product.constants.ProductResultCode.ATTRIBUTE_NOT_EXISTS;
@@ -68,7 +71,7 @@ public class ProductAttributeServiceImpl extends ServiceImpl<ProductAttributeMap
         if (page.getRecords().isEmpty()) {
             return new Page<>();
         }
-        return page.convert(ProductAttributeConvert.INSTANCE::convert);
+        return page.convert(ProductAttributeConvert.INSTANCE::convertToPageVo);
     }
 
     @Override
@@ -100,4 +103,13 @@ public class ProductAttributeServiceImpl extends ServiceImpl<ProductAttributeMap
         return data;
     }
 
+    @Override
+    public List<ProductAttributeVO> getAttributeList(Long groupId, Integer type) {
+        List<ProductAttribute> list = this.lambdaQuery()
+                .eq(ProductAttribute::getGroupId, groupId)
+                .eq(ProductAttribute::getType, type)
+                .orderByAsc(ProductAttribute::getSort)
+                .list();
+        return CollUtils.convertList(list, ProductAttributeConvert.INSTANCE::convertToVo);
+    }
 }

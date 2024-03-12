@@ -1,17 +1,20 @@
 package com.careyq.alive.module.product.controller.admin;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.careyq.alive.core.domain.EntryVO;
 import com.careyq.alive.core.domain.Result;
-import com.careyq.alive.module.product.dto.*;
+import com.careyq.alive.module.product.dto.ProductBrandDTO;
+import com.careyq.alive.module.product.dto.ProductBrandPageDTO;
 import com.careyq.alive.module.product.service.ProductBrandService;
-import com.careyq.alive.module.product.vo.*;
+import com.careyq.alive.module.product.vo.ProductBrandPageVO;
+import com.careyq.alive.module.product.vo.ProductBrandVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
 
 /**
  * 商品品牌
@@ -49,5 +52,11 @@ public class ProductBrandController {
     public Result<Boolean> delBrand(@RequestParam Long id) {
         brandService.delBrand(id);
         return Result.ok(true);
+    }
+
+    @GetMapping("/list")
+    @Operation(summary = "获取商品品牌列表")
+    public Result<List<EntryVO>> getBrandList() {
+        return Result.ok(brandService.getBrandList());
     }
 }
