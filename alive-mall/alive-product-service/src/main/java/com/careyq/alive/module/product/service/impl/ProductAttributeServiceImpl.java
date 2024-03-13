@@ -11,18 +11,21 @@ import com.careyq.alive.module.product.dto.ProductAttributeDTO;
 import com.careyq.alive.module.product.dto.ProductAttributePageDTO;
 import com.careyq.alive.module.product.entity.ProductAttribute;
 import com.careyq.alive.module.product.entity.ProductAttributeGroup;
+import com.careyq.alive.module.product.enums.AttributeTypeEnum;
 import com.careyq.alive.module.product.mapper.ProductAttributeMapper;
 import com.careyq.alive.module.product.service.ProductAttributeGroupService;
 import com.careyq.alive.module.product.service.ProductAttributeService;
+import com.careyq.alive.module.product.vo.ProductAttributeListVO;
 import com.careyq.alive.module.product.vo.ProductAttributePageVO;
 import com.careyq.alive.module.product.vo.ProductAttributeVO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import static com.careyq.alive.module.product.constants.ProductResultCode.ATTRIBUTE_GROUP_NOT_EXISTS;
 import static com.careyq.alive.module.product.constants.ProductResultCode.ATTRIBUTE_NOT_EXISTS;
 
 /**
@@ -34,7 +37,7 @@ import static com.careyq.alive.module.product.constants.ProductResultCode.ATTRIB
 @AllArgsConstructor
 public class ProductAttributeServiceImpl extends ServiceImpl<ProductAttributeMapper, ProductAttribute> implements ProductAttributeService {
 
-    private ProductAttributeGroupService groupService;
+    private final ProductAttributeGroupService attributeGroupService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -51,11 +54,8 @@ public class ProductAttributeServiceImpl extends ServiceImpl<ProductAttributeMap
             this.checkDataExists(dto.getId());
         }
         ProductAttribute attribute = BeanUtil.copyProperties(dto, ProductAttribute.class);
-        ProductAttributeGroup group = groupService.getById(dto.getGroupId());
-        if (group == null) {
-            throw new CustomException(ATTRIBUTE_GROUP_NOT_EXISTS);
-        }
-        attribute.setCategoryId(group.getCategoryId());
+        // 手动添加属性时，只能添加参数属性
+        attribute.setType(AttributeTypeEnum.PARAM.getCode());
         this.saveOrUpdate(attribute);
         return attribute.getId();
     }
@@ -64,9 +64,9 @@ public class ProductAttributeServiceImpl extends ServiceImpl<ProductAttributeMap
     public IPage<ProductAttributePageVO> getAttributePage(ProductAttributePageDTO dto) {
         IPage<ProductAttribute> page = this.lambdaQueryX()
                 .likeIfPresent(ProductAttribute::getName, dto.getName())
-                .eq(ProductAttribute::getGroupId, dto.getGroupId())
-                .eq(ProductAttribute::getType, dto.getType())
-                .orderByDesc(ProductAttribute::getId)
+                .eqIfPresent(ProductAttribute::getGroupId, dto.getGroupId())
+                .eqIfPresent(ProductAttribute::getType, dto.getType())
+                .orderByAsc(ProductAttribute::getSort)
                 .page(new Page<>(dto.getCurrent(), dto.getSize()));
         if (page.getRecords().isEmpty()) {
             return new Page<>();
@@ -104,12 +104,37 @@ public class ProductAttributeServiceImpl extends ServiceImpl<ProductAttributeMap
     }
 
     @Override
-    public List<ProductAttributeVO> getAttributeList(Long groupId, Integer type) {
-        List<ProductAttribute> list = this.lambdaQuery()
-                .eq(ProductAttribute::getGroupId, groupId)
-                .eq(ProductAttribute::getType, type)
+    public List<ProductAttributeListVO> getAttributeList(Long categoryId) {
+        List<ProductAttributeGroup> groups = attributeGroupService.lambdaQuery()
+                .eq(ProductAttributeGroup::getCategoryId, categoryId)
+                .orderByAsc(ProductAttributeGroup::getSort)
+                .list();
+        if (groups.isEmpty()) {
+            return new ArrayList<>();
+        }
+        List<Long> groupIds = CollUtils.convertList(groups, ProductAttributeGroup::getId);
+        List<ProductAttribute> attributes = this.lambdaQuery()
+                .in(ProductAttribute::getGroupId, groupIds)
+                .eq(ProductAttribute::getType, AttributeTypeEnum.PARAM.getCode())
                 .orderByAsc(ProductAttribute::getSort)
                 .list();
-        return CollUtils.convertList(list, ProductAttributeConvert.INSTANCE::convertToVo);
+        if (attributes.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        List<ProductAttributeListVO> res = new ArrayList<>();
+        Map<Long, List<ProductAttribute>> attribueMap = CollUtils.convertMultiMap(attributes, ProductAttribute::getGroupId);
+        for (ProductAttributeGroup group : groups) {
+            List<ProductAttribute> attribute = attribueMap.get(group.getId());
+            if (CollUtils.isEmpty(attribute)) {
+                continue;
+            }
+            ProductAttributeListVO vo = new ProductAttributeListVO();
+            vo.setGroupId(group.getId());
+            vo.setGroupName(group.getName());
+            vo.setAttributes(CollUtils.convertList(attribute, ProductAttributeConvert.INSTANCE::convertToVo));
+            res.add(vo);
+        }
+        return res;
     }
 }

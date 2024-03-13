@@ -19,11 +19,6 @@ public class ProductAttribute extends BaseEntity {
     private Long groupId;
 
     /**
-     * 所属分类 
-     */
-    private Long categoryId;
-
-    /**
      * 属性类型，0规格 1参数 
      */
     private Integer type;

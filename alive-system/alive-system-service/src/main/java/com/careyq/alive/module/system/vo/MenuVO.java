@@ -50,6 +50,9 @@ public class MenuVO {
     @Schema(description = "是否缓存")
     private Boolean keepAlive;
 
+    @Schema(description = "是否可见")
+    private Boolean visible;
+
     @NotNull(message = "状态不能为空")
     @Schema(description = "状态")
     private Integer status;

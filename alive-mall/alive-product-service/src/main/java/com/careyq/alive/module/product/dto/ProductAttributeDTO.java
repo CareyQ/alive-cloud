@@ -17,13 +17,8 @@ public class ProductAttributeDTO {
     @Schema(description = "主键")
     private Long id;
 
-    @NotNull(message = "所属分组不能为空")
-    @Schema(description = "所属分组", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "所属分组")
     private Long groupId;
-
-    @NotNull(message = "属性类型，0规格 1参数不能为空")
-    @Schema(description = "属性类型，0规格 1参数", requiredMode = Schema.RequiredMode.REQUIRED)
-    private Integer type;
 
     @NotBlank(message = "属性名称不能为空")
     @Schema(description = "属性名称", requiredMode = Schema.RequiredMode.REQUIRED)

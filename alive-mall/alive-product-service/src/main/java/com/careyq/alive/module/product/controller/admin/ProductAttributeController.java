@@ -11,10 +11,7 @@ import com.careyq.alive.module.product.dto.ProductAttributePageDTO;
 import com.careyq.alive.module.product.enums.AttributeTypeEnum;
 import com.careyq.alive.module.product.service.ProductAttributeGroupService;
 import com.careyq.alive.module.product.service.ProductAttributeService;
-import com.careyq.alive.module.product.vo.ProductAttributeGroupPageVO;
-import com.careyq.alive.module.product.vo.ProductAttributeGroupVO;
-import com.careyq.alive.module.product.vo.ProductAttributePageVO;
-import com.careyq.alive.module.product.vo.ProductAttributeVO;
+import com.careyq.alive.module.product.vo.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
@@ -105,7 +102,7 @@ public class ProductAttributeController {
 
     @GetMapping("/list")
     @Operation(summary = "获取商品属性列表")
-    public Result<List<ProductAttributeVO>> getAttributeList(@RequestParam Long groupId, @RequestParam Integer type) {
-        return Result.ok(attributeService.getAttributeList(groupId, type));
+    public Result<List<ProductAttributeListVO>> getAttributeList(@RequestParam Long categoryId) {
+        return Result.ok(attributeService.getAttributeList(categoryId));
     }
 }

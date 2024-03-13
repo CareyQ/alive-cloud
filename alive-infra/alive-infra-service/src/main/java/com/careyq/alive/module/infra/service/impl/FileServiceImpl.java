@@ -47,7 +47,7 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements Fi
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public String uploadFile(MultipartFile file) {
+    public String uploadFile(MultipartFile file, String folder) {
         String url;
         try {
             String path = file.getOriginalFilename();
@@ -55,11 +55,12 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements Fi
             byte[] content = IoUtil.readBytes(inputStream);
             String type = getFileType(content, path);
             OssClient client = OssFactory.instance();
-            url = client.upload(content, path, type);
+            url = client.upload(content, path, folder, type);
 
             File saveFile = new File();
             saveFile.setConfigId(client.getConfigId())
                     .setName(file.getOriginalFilename())
+                    .setFolder(folder)
                     .setPath(path)
                     .setUrl(url)
                     .setType(type)

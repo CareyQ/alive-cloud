@@ -20,9 +20,10 @@ public interface FileService extends IServiceX<File> {
      * 上传文件
      *
      * @param file 文件
+     * @param folder 目录
      * @return 编号
      */
-    String uploadFile(MultipartFile file) throws IOException;
+    String uploadFile(MultipartFile file, String folder) throws IOException;
 
     /**
      * 获取文件分页

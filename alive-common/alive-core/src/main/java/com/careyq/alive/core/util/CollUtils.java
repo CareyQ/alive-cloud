@@ -88,6 +88,13 @@ public class CollUtils extends CollUtil {
         return coll.stream().collect(Collectors.toMap(keyFunc, valueFunc, (v1, v2) -> v1));
     }
 
+    public static <T, K> Map<K, List<T>> convertMultiMap(Collection<T> from, Function<T, K> keyFunc) {
+        if (CollUtil.isEmpty(from)) {
+            return MapUtil.newHashMap();
+        }
+        return from.stream().collect(Collectors.groupingBy(keyFunc, Collectors.mapping(t -> t, Collectors.toList())));
+    }
+
     /**
      * 获取指定条件第一个元素
      *

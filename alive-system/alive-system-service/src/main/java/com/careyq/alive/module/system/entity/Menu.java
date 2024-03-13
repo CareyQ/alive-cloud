@@ -75,4 +75,9 @@ public class Menu extends BaseEntity {
      * 注意：如果开启缓存，则必须填写 {@link #componentName} 属性，否则无法缓存
      */
     private Boolean keepAlive;
+
+    /**
+     * 是否可见
+     */
+    private Boolean visible;
 }

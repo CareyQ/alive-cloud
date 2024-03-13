@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.careyq.alive.module.product.dto.ProductAttributeDTO;
 import com.careyq.alive.module.product.dto.ProductAttributePageDTO;
 import com.careyq.alive.module.product.entity.ProductAttribute;
+import com.careyq.alive.module.product.vo.ProductAttributeListVO;
 import com.careyq.alive.module.product.vo.ProductAttributePageVO;
 import com.careyq.alive.module.product.vo.ProductAttributeVO;
 import com.careyq.alive.mybatis.core.service.IServiceX;
@@ -51,9 +52,8 @@ public interface ProductAttributeService extends IServiceX<ProductAttribute> {
     /**
      * 获取商品属性列表
      *
-     * @param groupId 分组编号
-     * @param type    类型
+     * @param categoryId 分类编号
      * @return 商品属性列表
      */
-    List<ProductAttributeVO> getAttributeList(Long groupId, Integer type);
+    List<ProductAttributeListVO> getAttributeList(Long categoryId);
 }

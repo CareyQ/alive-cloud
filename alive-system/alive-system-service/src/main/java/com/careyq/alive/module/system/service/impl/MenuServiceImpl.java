@@ -64,6 +64,7 @@ public class MenuServiceImpl extends ServiceImplX<MenuMapper, Menu> implements M
             }
             tree.putExtra("path", node.getPath());
             tree.putExtra("keepAlive", node.getKeepAlive());
+            tree.putExtra("visible", node.getVisible());
         });
     }
 

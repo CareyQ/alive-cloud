@@ -14,32 +14,37 @@ import lombok.Data;
 public class File extends BaseEntity {
 
     /**
-     * 配置编号 
+     * 配置编号
      */
     private Long configId;
 
     /**
-     * 文件名 
+     * 文件名
      */
     private String name;
 
     /**
-     * 文件路径 
+     * 目录
+     */
+    private String folder;
+
+    /**
+     * 文件路径
      */
     private String path;
 
     /**
-     * 文件 URL 
+     * 文件 URL
      */
     private String url;
 
     /**
-     * 文件类型 
+     * 文件类型
      */
     private String type;
 
     /**
-     * 文件大小 
+     * 文件大小
      */
     private Integer size;
 

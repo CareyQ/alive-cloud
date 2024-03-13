@@ -32,8 +32,8 @@ public class FileController {
     @PostMapping("/upload")
     @OperateLog(logArgs = false)
     @Operation(summary = "上传文件")
-    public Result<String> uploadFile(@RequestPart("file") MultipartFile file) throws IOException {
-        return Result.ok(fileService.uploadFile(file));
+    public Result<String> uploadFile(@RequestPart("file") MultipartFile file, @RequestParam String folder) throws IOException {
+        return Result.ok(fileService.uploadFile(file, folder));
     }
 
     @PostMapping("/page")

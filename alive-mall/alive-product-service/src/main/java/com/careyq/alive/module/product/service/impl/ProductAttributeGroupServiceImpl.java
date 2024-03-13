@@ -62,7 +62,7 @@ public class ProductAttributeGroupServiceImpl extends ServiceImpl<ProductAttribu
                 .eqIfPresent(ProductAttributeGroup::getCategoryId, dto.getCategoryId())
                 .likeIfPresent(ProductAttributeGroup::getName, dto.getName())
                 .dateBetween(ProductAttributeGroup::getCreateTime, dto.getStartDate(), dto.getEndDate())
-                .orderByDesc(ProductAttributeGroup::getId)
+                .orderByAsc(ProductAttributeGroup::getSort)
                 .page(new Page<>(dto.getCurrent(), dto.getSize()));
         if (page.getRecords().isEmpty()) {
             return new Page<>();
