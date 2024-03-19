@@ -18,6 +18,7 @@ import com.careyq.alive.module.infra.service.FileService;
 import com.careyq.alive.module.infra.service.OssConfigService;
 import com.careyq.alive.module.infra.vo.FilePageVO;
 import com.careyq.alive.module.infra.vo.FileVO;
+import com.careyq.alive.oss.core.OssProperties;
 import com.careyq.alive.oss.core.client.OssClient;
 import com.careyq.alive.oss.core.factory.OssFactory;
 import lombok.AllArgsConstructor;
@@ -50,19 +51,21 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements Fi
     public String uploadFile(MultipartFile file, String folder) {
         String url;
         try {
-            String path = file.getOriginalFilename();
+            String path = folder + "/" + file.getOriginalFilename();
             InputStream inputStream = file.getInputStream();
             byte[] content = IoUtil.readBytes(inputStream);
             String type = getFileType(content, path);
             OssClient client = OssFactory.instance();
-            url = client.upload(content, path, folder, type);
+            path = client.upload(content, path, type);
+
+            OssProperties properties = OssFactory.getOssProperties();
+            url = "https://" + properties.getBucket() + "." + properties.getEndpoint() + "/" + path;
 
             File saveFile = new File();
             saveFile.setConfigId(client.getConfigId())
                     .setName(file.getOriginalFilename())
                     .setFolder(folder)
                     .setPath(path)
-                    .setUrl(url)
                     .setType(type)
                     .setSize(content.length);
             this.save(saveFile);

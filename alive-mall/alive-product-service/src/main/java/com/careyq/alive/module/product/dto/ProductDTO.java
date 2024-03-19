@@ -1,10 +1,11 @@
 package com.careyq.alive.module.product.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 /**
  * 商品信息 DTO
@@ -42,7 +43,7 @@ public class ProductDTO {
     @Schema(description = "商品封面图片", requiredMode = Schema.RequiredMode.REQUIRED)
     private String pic;
 
-    @NotNull(message = "状态，0下架 1上架不能为空")
+    @NotNull(message = "上架状态不能为空")
     @Schema(description = "状态，0下架 1上架", requiredMode = Schema.RequiredMode.REQUIRED)
     private Integer status;
 
@@ -50,21 +51,11 @@ public class ProductDTO {
     @Schema(description = "排序", requiredMode = Schema.RequiredMode.REQUIRED)
     private Integer sort;
 
-    @NotNull(message = "销量不能为空")
-    @Schema(description = "销量", requiredMode = Schema.RequiredMode.REQUIRED)
-    private Integer salesVolume;
-
-    @NotNull(message = "价格不能为空")
-    @Schema(description = "价格", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "价格")
     private BigDecimal price;
 
-    @NotNull(message = "市场价不能为空")
-    @Schema(description = "市场价", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "市场价")
     private BigDecimal marketPrice;
-
-    @NotNull(message = "库存不能为空")
-    @Schema(description = "库存", requiredMode = Schema.RequiredMode.REQUIRED)
-    private Integer stock;
 
     @NotBlank(message = "单位不能为空")
     @Schema(description = "单位", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -76,16 +67,13 @@ public class ProductDTO {
     @Schema(description = "移动端商品详情")
     private String detailMobileHtml;
 
-    @NotNull(message = "赠送积分不能为空")
-    @Schema(description = "赠送积分", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "赠送积分")
     private Integer giftPoint;
 
-    @NotNull(message = "赠送成长值不能为空")
-    @Schema(description = "赠送成长值", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "赠送成长值")
     private Integer giftGrowth;
 
-    @NotNull(message = "限制使用的积分数不能为空")
-    @Schema(description = "限制使用的积分数", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "限制使用的积分数")
     private Integer usePointLimit;
 
     @NotBlank(message = "副标题不能为空")
@@ -96,8 +84,7 @@ public class ProductDTO {
     @Schema(description = "关键字", requiredMode = Schema.RequiredMode.REQUIRED)
     private String keyword;
 
-    @NotBlank(message = "简介不能为空")
-    @Schema(description = "简介", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "简介")
     private String intro;
 
 }

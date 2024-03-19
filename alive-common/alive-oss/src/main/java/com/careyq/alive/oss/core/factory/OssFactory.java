@@ -31,12 +31,7 @@ public class OssFactory {
      * @return 对象存储客户端
      */
     public static OssClient instance() {
-        Object object = RedisUtils.getObject(DEFAULT_CONFIG_ID);
-        if (object == null) {
-            log.error("未找到默认的对象存储配置");
-            throw new CustomException(ResultCodeConstants.SERVER_ERROR);
-        }
-        return instance(Long.valueOf(String.valueOf(object)));
+        return instance(getDefaultConfigId());
     }
 
     /**
@@ -46,6 +41,37 @@ public class OssFactory {
      * @return 对象存储客户端
      */
     public static OssClient instance(Long configId) {
+        OssProperties ossProperties = getOssProperties();
+        OssClient ossClient = CLIENT_CACHE.get(configId);
+        if (ossClient == null) {
+            ossClient = new OssClient(configId, ossProperties);
+            CLIENT_CACHE.put(ossProperties.getId(), ossClient);
+            return CLIENT_CACHE.get(configId);
+        }
+        return ossClient;
+    }
+
+    /**
+     * 获取默认的对象存储配置
+     *
+     * @return 对象存储配置 ID
+     */
+    public static Long getDefaultConfigId() {
+        Object object = RedisUtils.getObject(DEFAULT_CONFIG_ID);
+        if (object == null) {
+            log.error("未找到默认的对象存储配置");
+            throw new CustomException(ResultCodeConstants.SERVER_ERROR);
+        }
+        return Long.valueOf(String.valueOf(object));
+    }
+
+    /**
+     * 获取对象存储配置
+     *
+     * @return 存储配置
+     */
+    public static OssProperties getOssProperties() {
+        Long configId = getDefaultConfigId();
         String json = CacheUtils.get(CacheNames.OSS_CONFIG, configId);
         if (json == null) {
             log.error("配置 ID：{} 对象存储配置不存在", configId);
@@ -56,12 +82,6 @@ public class OssFactory {
             log.error("配置 ID：{} 对象存储配置不存在", configId);
             throw new CustomException(ResultCodeConstants.SERVER_ERROR);
         }
-        OssClient ossClient = CLIENT_CACHE.get(configId);
-        if (ossClient == null) {
-            ossClient = new OssClient(configId, ossProperties);
-            CLIENT_CACHE.put(ossProperties.getId(), ossClient);
-            return CLIENT_CACHE.get(configId);
-        }
-        return ossClient;
+        return ossProperties;
     }
 }

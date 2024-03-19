@@ -61,21 +61,20 @@ public class OssClient {
      *
      * @param content     文件内容
      * @param path        文件路径
-     * @param folder      指定目录
      * @param contentType 文件类型
-     * @return 文件访问地址
+     * @return 文件路径
      */
-    public String upload(byte[] content, String path, String folder, String contentType) {
+    public String upload(byte[] content, String path, String contentType) {
         ByteArrayInputStream inputStream = new ByteArrayInputStream(content);
 
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentType(contentType);
         metadata.setContentDisposition("inline");
         metadata.setContentLength(inputStream.available());
-        PutObjectRequest putObjectRequest = new PutObjectRequest(properties.getBucket(), folder + "/" + path, inputStream, metadata);
+        PutObjectRequest putObjectRequest = new PutObjectRequest(properties.getBucket(), path, inputStream, metadata);
 
         client.putObject(putObjectRequest);
-        return "https://" + properties.getBucket() + "." + properties.getEndpoint() + "/" + folder + "/" + path;
+        return path;
     }
 
 }
