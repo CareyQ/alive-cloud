@@ -2,16 +2,16 @@ package com.careyq.alive.module.product.controller.admin;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.careyq.alive.core.domain.Result;
-import com.careyq.alive.module.product.dto.*;
+import com.careyq.alive.module.product.dto.ProductDTO;
+import com.careyq.alive.module.product.dto.ProductPageDTO;
 import com.careyq.alive.module.product.service.ProductService;
-import com.careyq.alive.module.product.vo.*;
+import com.careyq.alive.module.product.vo.ProductPageVO;
+import com.careyq.alive.module.product.vo.ProductVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.*;
 
 /**
  * 商品信息
@@ -26,10 +26,10 @@ public class ProductController {
 
     private final ProductService Service;
 
-    @PostMapping("/save")
-    @Operation(summary = "保存商品信息")
+    @PostMapping("/create")
+    @Operation(summary = "新增商品信息")
     public Result<Long> save(@Validated @RequestBody ProductDTO dto) {
-        return Result.ok(Service.save(dto));
+        return Result.ok(Service.createProduct(dto));
     }
 
     @PostMapping("/page")

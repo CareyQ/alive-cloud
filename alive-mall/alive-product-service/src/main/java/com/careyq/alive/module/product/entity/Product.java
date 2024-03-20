@@ -1,10 +1,11 @@
 package com.careyq.alive.module.product.entity;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.careyq.alive.core.domain.BaseEntity;
 import lombok.Data;
+
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 商品信息
@@ -24,11 +25,6 @@ public class Product extends BaseEntity {
      * 所属品牌 
      */
     private Long brandId;
-
-    /**
-     * 属性分组 
-     */
-    private Long attributeGroupId;
 
     /**
      * 商品编号 
@@ -104,6 +100,21 @@ public class Product extends BaseEntity {
      * 限制使用的积分数 
      */
     private Integer usePointLimit;
+
+    /**
+     * 是否新品
+     */
+    private Boolean newStatus;
+
+    /**
+     * 是否推荐
+     */
+    private Boolean recommendStatus;
+
+    /**
+     * 服务保障
+     */
+    private List<Integer> serviceIds;
 
     /**
      * 副标题 

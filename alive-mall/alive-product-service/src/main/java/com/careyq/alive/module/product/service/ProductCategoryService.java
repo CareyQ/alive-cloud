@@ -54,4 +54,11 @@ public interface ProductCategoryService extends IServiceX<ProductCategory> {
      * @return 商品分类树
      */
     List<Tree<Long>> getCategoryTree();
+
+    /**
+     * 校验商品分类
+     *
+     * @param id 分类编号
+     */
+    void validateCategory(Long id);
 }

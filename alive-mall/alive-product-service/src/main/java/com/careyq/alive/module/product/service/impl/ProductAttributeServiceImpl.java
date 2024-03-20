@@ -7,8 +7,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.careyq.alive.core.exception.CustomException;
 import com.careyq.alive.core.util.CollUtils;
 import com.careyq.alive.module.product.convert.ProductAttributeConvert;
-import com.careyq.alive.module.product.dto.ProductAttributeDTO;
+import com.careyq.alive.module.product.dto.ProductAttributeParamDTO;
 import com.careyq.alive.module.product.dto.ProductAttributePageDTO;
+import com.careyq.alive.module.product.dto.ProductAttributeSpecDTO;
 import com.careyq.alive.module.product.entity.ProductAttribute;
 import com.careyq.alive.module.product.entity.ProductAttributeGroup;
 import com.careyq.alive.module.product.enums.AttributeTypeEnum;
@@ -41,10 +42,11 @@ public class ProductAttributeServiceImpl extends ServiceImpl<ProductAttributeMap
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Long saveAttribute(ProductAttributeDTO dto) {
+    public Long saveAttributeParam(ProductAttributeParamDTO dto) {
         boolean exists = this.lambdaQueryX()
                 .neIfPresent(ProductAttribute::getId, dto.getId())
                 .eq(ProductAttribute::getGroupId, dto.getGroupId())
+                .eq(ProductAttribute::getType, AttributeTypeEnum.PARAM.getCode())
                 .eq(ProductAttribute::getName, dto.getName())
                 .exists();
         if (exists) {
@@ -54,8 +56,17 @@ public class ProductAttributeServiceImpl extends ServiceImpl<ProductAttributeMap
             this.checkDataExists(dto.getId());
         }
         ProductAttribute attribute = BeanUtil.copyProperties(dto, ProductAttribute.class);
-        // 手动添加属性时，只能添加参数属性
         attribute.setType(AttributeTypeEnum.PARAM.getCode());
+        this.saveOrUpdate(attribute);
+        return attribute.getId();
+    }
+
+    @Override
+    public Long saveAttributeSpec(ProductAttributeSpecDTO dto) {
+        ProductAttribute attribute = new ProductAttribute();
+        attribute.setType(AttributeTypeEnum.SPEC.getCode())
+                .setName(dto.getName())
+                .setId(dto.getId());
         this.saveOrUpdate(attribute);
         return attribute.getId();
     }

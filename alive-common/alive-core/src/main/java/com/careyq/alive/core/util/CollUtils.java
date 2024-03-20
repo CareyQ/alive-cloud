@@ -5,6 +5,7 @@ import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
 
 import java.util.*;
+import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -121,5 +122,57 @@ public class CollUtils extends CollUtil {
             return null;
         }
         return coll.stream().filter(predicate).findFirst().map(func).orElse(null);
+    }
+
+    /**
+     * 获取最小值
+     *
+     * @param coll      列表
+     * @param valueFunc 获取值
+     * @param <T>       T
+     * @param <V>       V
+     * @return V
+     */
+    public static <T, V extends Comparable<? super V>> V getMinValue(List<T> coll, Function<T, V> valueFunc) {
+        if (CollUtil.isEmpty(coll)) {
+            return null;
+        }
+        assert !coll.isEmpty();
+        T t = coll.stream().min(Comparator.comparing(valueFunc)).get();
+        return valueFunc.apply(t);
+    }
+
+    /**
+     * 指定字段求和
+     *
+     * @param coll      列表
+     * @param valueFunc 获取值
+     * @param <T>       T
+     * @param <V>       V
+     * @return V
+     */
+    public static <T, V extends Comparable<? super V>> V getSumValue(List<T> coll, Function<T, V> valueFunc,
+                                                                     BinaryOperator<V> accumulator) {
+        return getSumValue(coll, valueFunc, accumulator, null);
+    }
+
+    /**
+     * 指定字段求和
+     *
+     * @param coll         列表
+     * @param valueFunc    获取值
+     * @param accumulator  累加器
+     * @param defaultValue 默认值
+     * @param <T>          T
+     * @param <V>          V
+     * @return V
+     */
+    public static <T, V extends Comparable<? super V>> V getSumValue(Collection<T> coll, Function<T, V> valueFunc,
+                                                                     BinaryOperator<V> accumulator, V defaultValue) {
+        if (CollUtil.isEmpty(coll)) {
+            return defaultValue;
+        }
+        assert !coll.isEmpty();
+        return coll.stream().map(valueFunc).filter(Objects::nonNull).reduce(accumulator).orElse(defaultValue);
     }
 }

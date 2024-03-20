@@ -10,6 +10,8 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * JSON 工具类
@@ -69,6 +71,26 @@ public class JsonUtils {
         }
         try {
             return objectMapper.readTree(text);
+        } catch (IOException e) {
+            log.error("json parse err,json:{}", text, e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 解析数组
+     *
+     * @param text  json 字符串
+     * @param clazz 类
+     * @param <T>   泛型
+     * @return 数组
+     */
+    public static <T> List<T> parseArray(String text, Class<T> clazz) {
+        if (StrUtil.isEmpty(text)) {
+            return new ArrayList<>();
+        }
+        try {
+            return objectMapper.readValue(text, objectMapper.getTypeFactory().constructCollectionType(List.class, clazz));
         } catch (IOException e) {
             log.error("json parse err,json:{}", text, e);
             throw new RuntimeException(e);

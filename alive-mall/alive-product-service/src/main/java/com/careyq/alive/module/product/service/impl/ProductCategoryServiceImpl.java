@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.careyq.alive.module.product.constants.ProductResultCode.*;
 
@@ -115,5 +116,16 @@ public class ProductCategoryServiceImpl extends ServiceImpl<ProductCategoryMappe
                     .setParentId(node.getParentId())
                     .setName(node.getName());
         });
+    }
+
+    @Override
+    public void validateCategory(Long id) {
+        ProductCategory category = this.getById(id);
+        if (category == null) {
+            throw new CustomException(CATEGORY_NOT_EXISTS);
+        }
+        if (Objects.equals(category.getStatus(), CommonStatusEnum.DISABLE.getStatus())) {
+            throw new CustomException(CATEGORY_DISABLED, category.getName());
+        }
     }
 }

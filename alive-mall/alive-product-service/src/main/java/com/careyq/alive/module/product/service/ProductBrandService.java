@@ -55,4 +55,11 @@ public interface ProductBrandService extends IServiceX<ProductBrand> {
      * @return 商品品牌列表
      */
     List<EntryVO> getBrandList();
+
+    /**
+     * 校验商品品牌
+     *
+     * @param id 品牌编号
+     */
+    void validateBrand(Long id);
 }

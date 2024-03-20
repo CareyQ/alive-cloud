@@ -21,9 +21,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
-import static com.careyq.alive.module.product.constants.ProductResultCode.BRAND_NAME_IS_EXISTS;
-import static com.careyq.alive.module.product.constants.ProductResultCode.BRAND_NOT_EXISTS;
+import static com.careyq.alive.module.product.constants.ProductResultCode.*;
 
 /**
  * 商品品牌 服务实现
@@ -104,5 +104,16 @@ public class ProductBrandServiceImpl extends ServiceImpl<ProductBrandMapper, Pro
                 .orderByAsc(ProductBrand::getSort)
                 .list();
         return CollUtils.convertList(list, e -> new EntryVO(e.getId(), e.getName()));
+    }
+
+    @Override
+    public void validateBrand(Long id) {
+        ProductBrand brand = this.getById(id);
+        if (brand == null) {
+            throw new CustomException(BRAND_NOT_EXISTS);
+        }
+        if (Objects.equals(brand.getStatus(), CommonStatusEnum.DISABLE.getStatus())) {
+            throw new CustomException(BRAND_DISABLED);
+        }
     }
 }

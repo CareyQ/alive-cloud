@@ -1,11 +1,13 @@
 package com.careyq.alive.module.product.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * 商品信息 DTO
@@ -26,10 +28,6 @@ public class ProductDTO {
     @NotNull(message = "所属品牌不能为空")
     @Schema(description = "所属品牌", requiredMode = Schema.RequiredMode.REQUIRED)
     private Long brandId;
-
-    @NotNull(message = "属性分组不能为空")
-    @Schema(description = "属性分组", requiredMode = Schema.RequiredMode.REQUIRED)
-    private Long attributeGroupId;
 
     @NotBlank(message = "商品编号不能为空")
     @Schema(description = "商品编号", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -76,15 +74,30 @@ public class ProductDTO {
     @Schema(description = "限制使用的积分数")
     private Integer usePointLimit;
 
+    @Schema(description = "是否新品")
+    private Boolean newStatus;
+
+    @Schema(description = "是否推荐")
+    private Boolean recommendStatus;
+
+    @Schema(description = "服务保障")
+    private List<Integer> serviceIds;
+
     @NotBlank(message = "副标题不能为空")
     @Schema(description = "副标题", requiredMode = Schema.RequiredMode.REQUIRED)
     private String subTitle;
 
-    @NotBlank(message = "关键字不能为空")
     @Schema(description = "关键字", requiredMode = Schema.RequiredMode.REQUIRED)
     private String keyword;
 
     @Schema(description = "简介")
     private String intro;
 
+    @Valid
+    @Schema(description = "商品参数")
+    private List<ProductParamDTO> param;
+
+    @Valid
+    @Schema(description = "商品 SKU 信息")
+    private List<ProductSkuDTO> skus;
 }

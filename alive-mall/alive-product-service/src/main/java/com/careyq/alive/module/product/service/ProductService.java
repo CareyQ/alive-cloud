@@ -14,12 +14,12 @@ import com.careyq.alive.module.product.vo.*;
 public interface ProductService extends IServiceX<Product> {
 
     /**
-     * 保存商品信息
+     * 创建商品信息
      *
      * @param dto 商品信息
      * @return 编号
      */
-    Long save(ProductDTO dto);
+    Long createProduct(ProductDTO dto);
 
     /**
      * 获取商品信息分页

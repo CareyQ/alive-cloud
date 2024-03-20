@@ -1,8 +1,9 @@
 package com.careyq.alive.module.product.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.careyq.alive.module.product.dto.ProductAttributeDTO;
 import com.careyq.alive.module.product.dto.ProductAttributePageDTO;
+import com.careyq.alive.module.product.dto.ProductAttributeParamDTO;
+import com.careyq.alive.module.product.dto.ProductAttributeSpecDTO;
 import com.careyq.alive.module.product.entity.ProductAttribute;
 import com.careyq.alive.module.product.vo.ProductAttributeListVO;
 import com.careyq.alive.module.product.vo.ProductAttributePageVO;
@@ -19,12 +20,20 @@ import java.util.List;
 public interface ProductAttributeService extends IServiceX<ProductAttribute> {
 
     /**
-     * 保存商品属性
+     * 保存商品属性参数
      *
-     * @param dto 商品属性
+     * @param dto 商品属性参数
      * @return 编号
      */
-    Long saveAttribute(ProductAttributeDTO dto);
+    Long saveAttributeParam(ProductAttributeParamDTO dto);
+
+    /**
+     * 保存商品属性规格
+     *
+     * @param dto 商品属性规格
+     * @return 编号
+     */
+    Long saveAttributeSpec(ProductAttributeSpecDTO dto);
 
     /**
      * 获取商品属性分页

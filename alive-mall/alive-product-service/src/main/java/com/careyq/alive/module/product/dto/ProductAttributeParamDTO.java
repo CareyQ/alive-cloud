@@ -6,13 +6,13 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 /**
- * 商品属性 DTO
+ * 商品属性参数 DTO
  *
  * @author CareyQ
  */
 @Data
-@Schema(description = "管理后台 - 商品属性 DTO")
-public class ProductAttributeDTO {
+@Schema(description = "管理后台 - 商品属性参数 DTO")
+public class ProductAttributeParamDTO {
 
     @Schema(description = "主键")
     private Long id;
