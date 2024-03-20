@@ -18,9 +18,9 @@ import com.careyq.alive.module.infra.service.FileService;
 import com.careyq.alive.module.infra.service.OssConfigService;
 import com.careyq.alive.module.infra.vo.FilePageVO;
 import com.careyq.alive.module.infra.vo.FileVO;
-import com.careyq.alive.oss.core.OssProperties;
 import com.careyq.alive.oss.core.client.OssClient;
 import com.careyq.alive.oss.core.factory.OssFactory;
+import com.careyq.alive.oss.core.util.FileUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tika.Tika;
@@ -52,14 +52,20 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements Fi
         String url;
         try {
             String path = folder + "/" + file.getOriginalFilename();
+            File existsFile = this.lambdaQuery()
+                    .eq(File::getPath, path)
+                    .last("LIMIT 1")
+                    .one();
+            if (existsFile != null) {
+                return FileUtils.getFileUrl(path);
+            }
             InputStream inputStream = file.getInputStream();
             byte[] content = IoUtil.readBytes(inputStream);
             String type = getFileType(content, path);
             OssClient client = OssFactory.instance();
             path = client.upload(content, path, type);
 
-            OssProperties properties = OssFactory.getOssProperties();
-            url = "https://" + properties.getBucket() + "." + properties.getEndpoint() + "/" + path;
+            url = FileUtils.getFileUrl(path);
 
             File saveFile = new File();
             saveFile.setConfigId(client.getConfigId())

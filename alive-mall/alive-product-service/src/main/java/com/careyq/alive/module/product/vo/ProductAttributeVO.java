@@ -24,6 +24,9 @@ public class ProductAttributeVO {
     @Schema(description = "属性名称")
     private String name;
 
+    @Schema(description = "属性值")
+    private String value;
+
     @Schema(description = "属性选择类型，0唯一 1单选 2多选")
     private Integer selectType;
 

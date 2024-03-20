@@ -62,7 +62,8 @@ public interface ProductAttributeService extends IServiceX<ProductAttribute> {
      * 获取商品属性列表
      *
      * @param categoryId 分类编号
+     * @param productId  商品编号
      * @return 商品属性列表
      */
-    List<ProductAttributeListVO> getAttributeList(Long categoryId);
+    List<ProductAttributeListVO> getAttributeList(Long categoryId, Long productId);
 }

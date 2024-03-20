@@ -10,6 +10,7 @@ import com.careyq.alive.module.product.vo.ProductBrandVO;
 import com.careyq.alive.mybatis.core.service.IServiceX;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 商品品牌 服务
@@ -62,4 +63,12 @@ public interface ProductBrandService extends IServiceX<ProductBrand> {
      * @param id 品牌编号
      */
     void validateBrand(Long id);
+
+    /**
+     * 获取品牌名称 map
+     *
+     * @param ids 品牌编号
+     * @return 品牌名称
+     */
+    Map<Long, String> getBrandNameMap(List<Long> ids);
 }

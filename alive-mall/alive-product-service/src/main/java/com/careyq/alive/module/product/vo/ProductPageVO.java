@@ -12,11 +12,20 @@ import lombok.Data;
 @Schema(description = "管理后台 - 商品信息分页 VO")
 public class ProductPageVO {
 
+    @Schema(description = "编号")
+    private Long id;
+
     @Schema(description = "所属分类")
     private Long categoryId;
 
+    @Schema(description = "所属分类")
+    private String categoryName;
+
     @Schema(description = "所属品牌")
     private Long brandId;
+
+    @Schema(description = "所属品牌")
+    private String brandName;
 
     @Schema(description = "商品编号")
     private String snCode;

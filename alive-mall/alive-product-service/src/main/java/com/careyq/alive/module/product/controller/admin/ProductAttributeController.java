@@ -107,8 +107,8 @@ public class ProductAttributeController {
 
     @GetMapping("/list")
     @Operation(summary = "获取商品属性列表")
-    public Result<List<ProductAttributeListVO>> getAttributeList(@RequestParam Long categoryId) {
-        return Result.ok(attributeService.getAttributeList(categoryId));
+    public Result<List<ProductAttributeListVO>> getAttributeList(@RequestParam Long categoryId, @RequestParam(required = false) Long productId) {
+        return Result.ok(attributeService.getAttributeList(categoryId, productId));
     }
 
     @PostMapping("/value/save")

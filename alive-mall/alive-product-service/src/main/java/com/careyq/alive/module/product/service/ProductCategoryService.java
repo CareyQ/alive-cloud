@@ -7,6 +7,7 @@ import com.careyq.alive.module.product.vo.ProductCategoryVO;
 import com.careyq.alive.mybatis.core.service.IServiceX;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 商品分类 服务
@@ -61,4 +62,12 @@ public interface ProductCategoryService extends IServiceX<ProductCategory> {
      * @param id 分类编号
      */
     void validateCategory(Long id);
+
+    /**
+     * 获取分类名称 map
+     *
+     * @param ids 分类编号
+     * @return 分类名称
+     */
+    Map<Long, String> getCategoryNameMap(List<Long> ids);
 }

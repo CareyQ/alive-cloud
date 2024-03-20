@@ -19,7 +19,7 @@ import java.util.List;
  * @author CareyQ
  */
 @Data
-@TableName("product_sku")
+@TableName(value = "product_sku", autoResultMap = true)
 public class ProductSku extends BaseEntity {
 
     /**

@@ -1,9 +1,11 @@
 package com.careyq.alive.module.product.vo;
 
+import com.careyq.alive.module.product.dto.ProductSkuDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 商品信息 VO
@@ -23,9 +25,6 @@ public class ProductVO {
     @Schema(description = "所属品牌")
     private Long brandId;
 
-    @Schema(description = "属性分组")
-    private Long attributeGroupId;
-
     @Schema(description = "商品编号")
     private String snCode;
 
@@ -40,9 +39,6 @@ public class ProductVO {
 
     @Schema(description = "排序")
     private Integer sort;
-
-    @Schema(description = "销量")
-    private Integer salesVolume;
 
     @Schema(description = "价格")
     private BigDecimal price;
@@ -80,4 +76,6 @@ public class ProductVO {
     @Schema(description = "简介")
     private String intro;
 
+    @Schema(description = "商品 SKU 信息")
+    private List<ProductSkuDTO> skus;
 }

@@ -57,5 +57,6 @@ public interface ProductAttributeConvert {
      * @param attribute 属性
      * @return VO
      */
+    @Mapping(target = "value", ignore = true)
     ProductAttributeVO convertToVo(ProductAttribute attribute);
 }

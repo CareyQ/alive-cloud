@@ -3,6 +3,7 @@ package com.careyq.alive.module.product.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.lang.tree.TreeUtil;
+import cn.hutool.core.map.MapUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.careyq.alive.core.enums.CommonStatusEnum;
 import com.careyq.alive.core.exception.CustomException;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.careyq.alive.module.product.constants.ProductResultCode.*;
@@ -127,5 +129,14 @@ public class ProductCategoryServiceImpl extends ServiceImpl<ProductCategoryMappe
         if (Objects.equals(category.getStatus(), CommonStatusEnum.DISABLE.getStatus())) {
             throw new CustomException(CATEGORY_DISABLED, category.getName());
         }
+    }
+
+    @Override
+    public Map<Long, String> getCategoryNameMap(List<Long> ids) {
+        if (CollUtils.isEmpty(ids)) {
+            return MapUtil.newHashMap();
+        }
+        ids = CollUtils.distinct(ids);
+        return CollUtils.convertMap(this.listByIds(ids), ProductCategory::getId, ProductCategory::getName);
     }
 }

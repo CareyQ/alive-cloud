@@ -1,6 +1,7 @@
 package com.careyq.alive.module.product.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.map.MapUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.careyq.alive.module.product.constants.ProductResultCode.*;
@@ -115,5 +117,14 @@ public class ProductBrandServiceImpl extends ServiceImpl<ProductBrandMapper, Pro
         if (Objects.equals(brand.getStatus(), CommonStatusEnum.DISABLE.getStatus())) {
             throw new CustomException(BRAND_DISABLED);
         }
+    }
+
+    @Override
+    public Map<Long, String> getBrandNameMap(List<Long> ids) {
+        if (CollUtils.isEmpty(ids)) {
+            return MapUtil.newHashMap();
+        }
+        ids = CollUtils.distinct(ids);
+        return CollUtils.convertMap(this.listByIds(ids), ProductBrand::getId, ProductBrand::getName);
     }
 }

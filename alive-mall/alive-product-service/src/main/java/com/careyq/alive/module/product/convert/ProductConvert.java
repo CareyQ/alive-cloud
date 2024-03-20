@@ -1,12 +1,15 @@
 package com.careyq.alive.module.product.convert;
 
+import com.careyq.alive.module.product.dto.ProductSkuDTO;
 import com.careyq.alive.module.product.entity.Product;
 import com.careyq.alive.module.product.entity.ProductBrand;
 import com.careyq.alive.module.product.entity.ProductCategory;
+import com.careyq.alive.module.product.entity.ProductSku;
 import com.careyq.alive.module.product.vo.ProductBrandPageVO;
 import com.careyq.alive.module.product.vo.ProductCategoryVO;
 import com.careyq.alive.module.product.vo.ProductPageVO;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -41,5 +44,15 @@ public interface ProductConvert {
      * @param product 商品
      * @return VO
      */
+    @Mapping(target = "categoryName", ignore = true)
+    @Mapping(target = "brandName", ignore = true)
     ProductPageVO convert(Product product);
+
+    /**
+     * 商品 sku 转换
+     *
+     * @param sku sku
+     * @return VO
+     */
+    ProductSkuDTO skuConvert(ProductSku sku);
 }

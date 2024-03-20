@@ -12,10 +12,12 @@ import com.careyq.alive.module.product.dto.ProductAttributePageDTO;
 import com.careyq.alive.module.product.dto.ProductAttributeSpecDTO;
 import com.careyq.alive.module.product.entity.ProductAttribute;
 import com.careyq.alive.module.product.entity.ProductAttributeGroup;
+import com.careyq.alive.module.product.entity.ProductAttributeValue;
 import com.careyq.alive.module.product.enums.AttributeTypeEnum;
 import com.careyq.alive.module.product.mapper.ProductAttributeMapper;
 import com.careyq.alive.module.product.service.ProductAttributeGroupService;
 import com.careyq.alive.module.product.service.ProductAttributeService;
+import com.careyq.alive.module.product.service.ProductAttributeValueService;
 import com.careyq.alive.module.product.vo.ProductAttributeListVO;
 import com.careyq.alive.module.product.vo.ProductAttributePageVO;
 import com.careyq.alive.module.product.vo.ProductAttributeVO;
@@ -39,6 +41,7 @@ import static com.careyq.alive.module.product.constants.ProductResultCode.ATTRIB
 public class ProductAttributeServiceImpl extends ServiceImpl<ProductAttributeMapper, ProductAttribute> implements ProductAttributeService {
 
     private final ProductAttributeGroupService attributeGroupService;
+    private final ProductAttributeValueService attributeValueService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -115,7 +118,7 @@ public class ProductAttributeServiceImpl extends ServiceImpl<ProductAttributeMap
     }
 
     @Override
-    public List<ProductAttributeListVO> getAttributeList(Long categoryId) {
+    public List<ProductAttributeListVO> getAttributeList(Long categoryId, Long productId) {
         List<ProductAttributeGroup> groups = attributeGroupService.lambdaQuery()
                 .eq(ProductAttributeGroup::getCategoryId, categoryId)
                 .orderByAsc(ProductAttributeGroup::getSort)
@@ -133,6 +136,13 @@ public class ProductAttributeServiceImpl extends ServiceImpl<ProductAttributeMap
             return new ArrayList<>();
         }
 
+        List<Long> attributeIds = CollUtils.convertList(attributes, ProductAttribute::getId);
+        List<ProductAttributeValue> values = attributeValueService.lambdaQueryX()
+                .eqIfPresent(ProductAttributeValue::getProductId, productId)
+                .in(ProductAttributeValue::getAttributeId, attributeIds)
+                .list();
+        Map<Long, String> valueMap = CollUtils.convertMap(values, ProductAttributeValue::getAttributeId, ProductAttributeValue::getValue);
+
         List<ProductAttributeListVO> res = new ArrayList<>();
         Map<Long, List<ProductAttribute>> attribueMap = CollUtils.convertMultiMap(attributes, ProductAttribute::getGroupId);
         for (ProductAttributeGroup group : groups) {
@@ -143,7 +153,11 @@ public class ProductAttributeServiceImpl extends ServiceImpl<ProductAttributeMap
             ProductAttributeListVO vo = new ProductAttributeListVO();
             vo.setGroupId(group.getId());
             vo.setGroupName(group.getName());
-            vo.setAttributes(CollUtils.convertList(attribute, ProductAttributeConvert.INSTANCE::convertToVo));
+            List<ProductAttributeVO> attributeList = CollUtils.convertList(attribute, ProductAttributeConvert.INSTANCE::convertToVo);
+            for (ProductAttributeVO item : attributeList) {
+                item.setValue(valueMap.get(item.getId()));
+            }
+            vo.setAttributes(attributeList);
             res.add(vo);
         }
         return res;

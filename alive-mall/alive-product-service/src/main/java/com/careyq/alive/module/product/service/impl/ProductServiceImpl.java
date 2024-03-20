@@ -11,6 +11,7 @@ import com.careyq.alive.module.product.dto.ProductDTO;
 import com.careyq.alive.module.product.dto.ProductPageDTO;
 import com.careyq.alive.module.product.dto.ProductSkuDTO;
 import com.careyq.alive.module.product.entity.Product;
+import com.careyq.alive.module.product.entity.ProductSku;
 import com.careyq.alive.module.product.mapper.ProductMapper;
 import com.careyq.alive.module.product.service.*;
 import com.careyq.alive.module.product.vo.ProductPageVO;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 import static com.careyq.alive.module.product.constants.ProductResultCode.PRODUCT_NOT_EXISTS;
 
@@ -92,13 +94,28 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         if (page.getRecords().isEmpty()) {
             return new Page<>();
         }
-        return page.convert(ProductConvert.INSTANCE::convert);
+        List<Long> categoryId = CollUtils.convertList(page.getRecords(), Product::getCategoryId);
+        Map<Long, String> categoryMap = categoryService.getCategoryNameMap(categoryId);
+
+        List<Long> brandId = CollUtils.convertList(page.getRecords(), Product::getBrandId);
+        Map<Long, String> brandMap = brandService.getBrandNameMap(brandId);
+        return page.convert(e -> {
+            ProductPageVO vo = ProductConvert.INSTANCE.convert(e);
+            vo.setCategoryName(categoryMap.get(e.getCategoryId()));
+            vo.setBrandName(brandMap.get(e.getBrandId()));
+            return vo;
+        });
     }
 
     @Override
     public ProductVO getDetail(Long id) {
         Product data = this.checkDataExists(id);
-        return BeanUtil.copyProperties(data, ProductVO.class);
+        ProductVO res = BeanUtil.copyProperties(data, ProductVO.class);
+        List<ProductSku> skuList = skuService.lambdaQueryX()
+                .eq(ProductSku::getProductId, id)
+                .list();
+        res.setSkus(CollUtils.convertList(skuList, ProductConvert.INSTANCE::skuConvert));
+        return res;
     }
 
     @Override
