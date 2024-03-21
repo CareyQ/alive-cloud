@@ -55,4 +55,31 @@ public interface ProductConvert {
      * @return VO
      */
     ProductSkuDTO skuConvert(ProductSku sku);
+
+    /**
+     * 商品 sku 转换
+     *
+     * @param dto dto
+     * @return VO
+     */
+    @Mapping(target = "updater", ignore = true)
+    @Mapping(target = "updateTime", ignore = true)
+    @Mapping(target = "salesVolume", ignore = true)
+    @Mapping(target = "isDel", ignore = true)
+    @Mapping(target = "creator", ignore = true)
+    @Mapping(target = "createTime", ignore = true)
+    ProductSku skuConvert(ProductSkuDTO dto);
+
+    /**
+     * 商品 sku 转换
+     *
+     * @param dto       dto
+     * @param productId 商品编号
+     * @return VO
+     */
+    default ProductSku skuConvert(ProductSkuDTO dto, Long productId) {
+        ProductSku productSku = skuConvert(dto);
+        productSku.setProductId(productId);
+        return productSku;
+    }
 }

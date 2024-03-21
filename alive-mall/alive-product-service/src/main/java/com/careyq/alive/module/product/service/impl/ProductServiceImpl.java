@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Map;
 
-import static com.careyq.alive.module.product.constants.ProductResultCode.PRODUCT_NOT_EXISTS;
+import static com.careyq.alive.module.product.constants.ProductResultCode.*;
 
 /**
  * 商品信息 服务实现
@@ -43,13 +43,40 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     @Transactional(rollbackFor = Exception.class)
     public Long createProduct(ProductDTO dto) {
         this.validateProduct(dto);
-
         Product product = BeanUtil.copyProperties(dto, Product.class);
         initSpuFormSku(product, dto.getSkus());
         this.save(product);
         skuService.createProductSku(product.getId(), dto.getSkus());
-        attributeValueService.saveProductParam(product.getId(), dto.getParam());
+        attributeValueService.createProductParam(product.getId(), dto.getParam());
         return product.getId();
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Long updateProduct(ProductDTO dto) {
+        this.validateProduct(dto);
+        Product product = BeanUtil.copyProperties(dto, Product.class);
+        initSpuFormSku(product, dto.getSkus());
+        this.updateById(product);
+        skuService.updateProductSku(product.getId(), dto.getSkus());
+        attributeValueService.updateProductParam(product.getId(), dto.getParam());
+        return product.getId();
+    }
+
+    /**
+     * 检查商品编码
+     *
+     * @param id     商品编号
+     * @param snCode 商品编码
+     */
+    private void checkSnCode(Long id, String snCode) {
+        boolean exists = this.lambdaQueryX()
+                .neIfPresent(Product::getId, id)
+                .eq(Product::getSnCode, snCode)
+                .exists();
+        if (exists) {
+            throw new CustomException(PRODUCT_IS_EXISTS);
+        }
     }
 
     /**
@@ -58,6 +85,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
      * @param dto 商品信息
      */
     private void validateProduct(ProductDTO dto) {
+        this.checkSnCode(dto.getId(), dto.getSnCode());
         // 校验分类/品牌
         categoryService.validateCategory(dto.getCategoryId());
         brandService.validateBrand(dto.getBrandId());
@@ -122,6 +150,18 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     public void del(Long id) {
         this.checkDataExists(id);
         this.removeById(id);
+    }
+
+    @Override
+    public void updateStatus(Long id, Integer status) {
+        Product product = this.checkDataExists(id);
+        if (product.getStatus().equals(status)) {
+            throw new CustomException(PRODUCT_STATUS_ALREADY, status == 0 ? "下架" : "上架");
+        }
+        this.lambdaUpdate()
+                .set(Product::getStatus, status)
+                .eq(Product::getId, id)
+                .update();
     }
 
     /**

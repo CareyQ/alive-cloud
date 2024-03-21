@@ -28,5 +28,13 @@ public interface ProductAttributeValueService extends IServiceX<ProductAttribute
      * @param productId 商品编号
      * @param param     商品属性参数
      */
-    void saveProductParam(Long productId, List<ProductParamDTO> param);
+    void createProductParam(Long productId, List<ProductParamDTO> param);
+
+    /**
+     * 更新商品属性参数
+     *
+     * @param productId 商品编号
+     * @param param     商品属性参数
+     */
+    void updateProductParam(Long productId, List<ProductParamDTO> param);
 }

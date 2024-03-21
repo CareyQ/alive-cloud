@@ -115,7 +115,7 @@ public class ProductBrandServiceImpl extends ServiceImpl<ProductBrandMapper, Pro
             throw new CustomException(BRAND_NOT_EXISTS);
         }
         if (Objects.equals(brand.getStatus(), CommonStatusEnum.DISABLE.getStatus())) {
-            throw new CustomException(BRAND_DISABLED);
+            throw new CustomException(BRAND_DISABLED, brand.getName());
         }
     }
 

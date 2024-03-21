@@ -3,6 +3,7 @@ package com.careyq.alive.module.product.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.careyq.alive.core.exception.CustomException;
 import com.careyq.alive.core.util.CollUtils;
+import com.careyq.alive.module.product.convert.ProductConvert;
 import com.careyq.alive.module.product.dto.ProductSkuDTO;
 import com.careyq.alive.module.product.entity.ProductSku;
 import com.careyq.alive.module.product.mapper.ProductSkuMapper;
@@ -11,6 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -49,19 +51,37 @@ public class ProductSkuServiceImpl extends ServiceImpl<ProductSkuMapper, Product
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void createProductSku(Long productId, List<ProductSkuDTO> skus) {
-        List<ProductSku> skuList = skus.stream().map(sku -> {
-            ProductSku productSku = new ProductSku();
-            productSku.setProductId(productId)
-                    .setSpec(sku.getSpec())
-                    .setSkuCode(sku.getSkuCode())
-                    .setPrice(sku.getPrice())
-                    .setMarketPrice(sku.getMarketPrice())
-                    .setStock(sku.getStock())
-                    .setAlbumPics(sku.getAlbumPics())
-                    .setWeight(sku.getWeight())
-                    .setVolume(sku.getVolume());
-            return productSku;
-        }).toList();
-        this.saveBatch(skuList);
+        this.saveBatch(skus.stream().map(e -> ProductConvert.INSTANCE.skuConvert(e, productId)).toList());
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateProductSku(Long productId, List<ProductSkuDTO> skus) {
+        List<ProductSku> existsSkus = this.lambdaQuery()
+                .eq(ProductSku::getProductId, productId)
+                .list();
+        Set<Long> existsSkuIds = new HashSet<>(CollUtils.convertList(existsSkus, ProductSku::getId));
+        List<ProductSku> updateSkus = skus.stream().map(e -> ProductConvert.INSTANCE.skuConvert(e, productId)).toList();
+
+        List<ProductSku> update = new ArrayList<>();
+        List<ProductSku> create = new ArrayList<>();
+        for (ProductSku sku : updateSkus) {
+            if (sku.getId() != null && existsSkuIds.contains(sku.getId())) {
+                update.add(sku);
+                existsSkuIds.remove(sku.getId());
+                continue;
+            }
+            create.add(sku);
+        }
+
+        if (!update.isEmpty()) {
+            this.updateBatchById(update);
+        }
+        if (!create.isEmpty()) {
+            this.saveBatch(create);
+        }
+        if (!existsSkuIds.isEmpty()) {
+            this.removeBatchByIds(existsSkuIds);
+        }
     }
 }

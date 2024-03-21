@@ -24,30 +24,43 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "管理后台 - 商品信息")
 public class ProductController {
 
-    private final ProductService Service;
+    private final ProductService productService;
 
     @PostMapping("/create")
     @Operation(summary = "新增商品信息")
-    public Result<Long> save(@Validated @RequestBody ProductDTO dto) {
-        return Result.ok(Service.createProduct(dto));
+    public Result<Long> createProduct(@Validated @RequestBody ProductDTO dto) {
+        return Result.ok(productService.createProduct(dto));
+    }
+
+    @PostMapping("/update")
+    @Operation(summary = "修改商品信息")
+    public Result<Long> updateProduct(@Validated @RequestBody ProductDTO dto) {
+        return Result.ok(productService.updateProduct(dto));
     }
 
     @PostMapping("/page")
     @Operation(summary = "获取商品信息分页")
     public Result<IPage<ProductPageVO>> getPage(@Validated @RequestBody ProductPageDTO dto) {
-        return Result.ok(Service.getPage(dto));
+        return Result.ok(productService.getPage(dto));
     }
 
     @GetMapping("/detail")
     @Operation(summary = "获取商品信息详情")
     public Result<ProductVO> getDetail(@RequestParam Long id) {
-        return Result.ok(Service.getDetail(id));
+        return Result.ok(productService.getDetail(id));
     }
 
     @DeleteMapping("/del")
     @Operation(summary = "删除商品信息")
     public Result<Boolean> del(@RequestParam Long id) {
-        Service.del(id);
+        productService.del(id);
+        return Result.ok(true);
+    }
+
+    @PutMapping("/update-status")
+    @Operation(summary = "更新商品状态")
+    public Result<Boolean> updateStatus(@RequestParam Long id, @RequestParam Integer status) {
+        productService.updateStatus(id, status);
         return Result.ok(true);
     }
 }

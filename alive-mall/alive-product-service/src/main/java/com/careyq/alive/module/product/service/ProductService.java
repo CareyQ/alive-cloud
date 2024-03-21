@@ -22,6 +22,14 @@ public interface ProductService extends IServiceX<Product> {
     Long createProduct(ProductDTO dto);
 
     /**
+     * 更新商品信息
+     *
+     * @param dto 商品信息
+     * @return 编号
+     */
+    Long updateProduct(ProductDTO dto);
+
+    /**
      * 获取商品信息分页
      *
      * @param dto 分页筛选项
@@ -43,4 +51,12 @@ public interface ProductService extends IServiceX<Product> {
      * @param id 编号
      */
     void del(Long id);
+
+    /**
+     * 更新商品状态
+     *
+     * @param id     商品编号
+     * @param status 状态
+     */
+    void updateStatus(Long id, Integer status);
 }

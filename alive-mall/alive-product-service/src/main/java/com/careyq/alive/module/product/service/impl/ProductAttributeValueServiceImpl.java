@@ -11,7 +11,10 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
 /**
  * 商品属性值 服务实现
@@ -21,6 +24,8 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class ProductAttributeValueServiceImpl extends ServiceImpl<ProductAttributeValueMapper, ProductAttributeValue> implements ProductAttributeValueService {
+
+    private final ProductAttributeValueMapper attributeValueMapper;
 
     @Override
     public Long saveAttributeValue(ProductAttributeValueDTO dto) {
@@ -34,7 +39,7 @@ public class ProductAttributeValueServiceImpl extends ServiceImpl<ProductAttribu
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void saveProductParam(Long productId, List<ProductParamDTO> param) {
+    public void createProductParam(Long productId, List<ProductParamDTO> param) {
         List<ProductAttributeValue> attributeValues = CollUtils.convertList(param, e -> {
             ProductAttributeValue attributeValue = new ProductAttributeValue();
             attributeValue.setAttributeId(e.getAttributeId())
@@ -43,5 +48,38 @@ public class ProductAttributeValueServiceImpl extends ServiceImpl<ProductAttribu
             return attributeValue;
         });
         this.saveBatch(attributeValues);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateProductParam(Long productId, List<ProductParamDTO> param) {
+        List<ProductAttributeValue> attributeValues = attributeValueMapper.selectExistAttribute(productId);
+        Map<Long, ProductAttributeValue> valueMap = CollUtils.convertMap(attributeValues, ProductAttributeValue::getAttributeId, Function.identity());
+
+        List<ProductAttributeValue> update = new ArrayList<>();
+        List<ProductAttributeValue> create = new ArrayList<>();
+        for (ProductParamDTO item : param) {
+            ProductAttributeValue attributeValue = new ProductAttributeValue();
+            attributeValue.setAttributeId(item.getAttributeId())
+                    .setProductId(productId)
+                    .setValue(item.getValue());
+            ProductAttributeValue value = valueMap.remove(item.getAttributeId());
+            if (value != null) {
+                attributeValue.setId(value.getId());
+                update.add(attributeValue);
+                continue;
+            }
+            create.add(attributeValue);
+        }
+
+        if (!update.isEmpty()) {
+            this.updateBatchById(update);
+        }
+        if (!create.isEmpty()) {
+            this.saveBatch(create);
+        }
+        if (!valueMap.values().isEmpty()) {
+            this.removeBatchByIds(valueMap.values());
+        }
     }
 }

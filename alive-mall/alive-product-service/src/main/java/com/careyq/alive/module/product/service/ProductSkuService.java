@@ -27,4 +27,12 @@ public interface ProductSkuService extends IServiceX<ProductSku> {
      * @param skus      SKU 信息
      */
     void createProductSku(Long productId, List<ProductSkuDTO> skus);
+
+    /**
+     * 更新商品 SKU
+     *
+     * @param productId 商品编号
+     * @param skus      SKU 信息
+     */
+    void updateProductSku(Long productId, List<ProductSkuDTO> skus);
 }

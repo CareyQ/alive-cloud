@@ -29,7 +29,7 @@ public class CollUtils extends CollUtil {
         if (isEmpty(coll)) {
             return new HashSet<>();
         }
-        return coll.stream().map(func).filter(Objects::nonNull).collect(Collectors.toSet());
+        return coll.stream().map(func).filter(e -> Objects.nonNull(e) && !StrUtil.isEmptyIfStr(e)).collect(Collectors.toSet());
     }
 
     /**
