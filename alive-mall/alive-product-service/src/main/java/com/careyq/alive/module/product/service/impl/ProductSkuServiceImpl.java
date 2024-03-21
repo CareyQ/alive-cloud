@@ -7,6 +7,7 @@ import com.careyq.alive.module.product.convert.ProductConvert;
 import com.careyq.alive.module.product.dto.ProductSkuDTO;
 import com.careyq.alive.module.product.entity.ProductSku;
 import com.careyq.alive.module.product.mapper.ProductSkuMapper;
+import com.careyq.alive.module.product.service.ProductAttributeValueService;
 import com.careyq.alive.module.product.service.ProductSkuService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,8 @@ import static com.careyq.alive.module.product.constants.ProductResultCode.*;
 @Service
 @AllArgsConstructor
 public class ProductSkuServiceImpl extends ServiceImpl<ProductSkuMapper, ProductSku> implements ProductSkuService {
+
+    private final ProductAttributeValueService attributeValueService;
 
     @Override
     public void validateSkus(List<ProductSkuDTO> skus) {
@@ -52,6 +55,7 @@ public class ProductSkuServiceImpl extends ServiceImpl<ProductSkuMapper, Product
     @Transactional(rollbackFor = Exception.class)
     public void createProductSku(Long productId, List<ProductSkuDTO> skus) {
         this.saveBatch(skus.stream().map(e -> ProductConvert.INSTANCE.skuConvert(e, productId)).toList());
+        attributeValueService.updateProductSpec(productId, CollUtils.convertFlatList(skus, ProductSkuDTO::getSpec, List::stream));
     }
 
     @Override
@@ -83,5 +87,6 @@ public class ProductSkuServiceImpl extends ServiceImpl<ProductSkuMapper, Product
         if (!existsSkuIds.isEmpty()) {
             this.removeBatchByIds(existsSkuIds);
         }
+        attributeValueService.updateProductSpec(productId, CollUtils.convertFlatList(skus, ProductSkuDTO::getSpec, List::stream));
     }
 }

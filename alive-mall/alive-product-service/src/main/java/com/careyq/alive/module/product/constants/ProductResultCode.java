@@ -40,6 +40,7 @@ public interface ProductResultCode {
     ResultCode PRODUCT_NOT_EXISTS = new ResultCode(3_30001, "商品不存在");
     ResultCode PRODUCT_IS_EXISTS = new ResultCode(3_30002, "该商品编码已存在");
     ResultCode PRODUCT_STATUS_ALREADY = new ResultCode(3_30003, "商品已经是[{}]状态");
+    ResultCode PRODUCT_UP_FAIL = new ResultCode(3_30004, "商品上架失败");
     /**
      * SKU
      */

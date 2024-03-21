@@ -5,6 +5,7 @@ import com.careyq.alive.core.util.CollUtils;
 import com.careyq.alive.module.product.dto.ProductAttributeValueDTO;
 import com.careyq.alive.module.product.dto.ProductParamDTO;
 import com.careyq.alive.module.product.entity.ProductAttributeValue;
+import com.careyq.alive.module.product.entity.ProductSku;
 import com.careyq.alive.module.product.mapper.ProductAttributeValueMapper;
 import com.careyq.alive.module.product.service.ProductAttributeValueService;
 import lombok.AllArgsConstructor;
@@ -81,5 +82,14 @@ public class ProductAttributeValueServiceImpl extends ServiceImpl<ProductAttribu
         if (!valueMap.values().isEmpty()) {
             this.removeBatchByIds(valueMap.values());
         }
+    }
+
+    @Override
+    public void updateProductSpec(Long productId, List<ProductSku.Spec> specs) {
+        List<Long> ids = CollUtils.convertList(specs, ProductSku.Spec::getValueId);
+        this.lambdaUpdate()
+                .set(ProductAttributeValue::getProductId, productId)
+                .in(ProductAttributeValue::getId, ids)
+                .update();
     }
 }

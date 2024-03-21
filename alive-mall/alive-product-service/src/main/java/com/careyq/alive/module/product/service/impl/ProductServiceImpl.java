@@ -11,11 +11,17 @@ import com.careyq.alive.module.product.dto.ProductDTO;
 import com.careyq.alive.module.product.dto.ProductPageDTO;
 import com.careyq.alive.module.product.dto.ProductSkuDTO;
 import com.careyq.alive.module.product.entity.Product;
+import com.careyq.alive.module.product.entity.ProductBrand;
+import com.careyq.alive.module.product.entity.ProductCategory;
 import com.careyq.alive.module.product.entity.ProductSku;
+import com.careyq.alive.module.product.enums.ProductStatusEnum;
+import com.careyq.alive.module.product.mapper.ProductAttributeValueMapper;
 import com.careyq.alive.module.product.mapper.ProductMapper;
 import com.careyq.alive.module.product.service.*;
 import com.careyq.alive.module.product.vo.ProductPageVO;
 import com.careyq.alive.module.product.vo.ProductVO;
+import com.careyq.alive.search.api.EsProductApi;
+import com.careyq.alive.search.dto.EsProductDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,9 +41,12 @@ import static com.careyq.alive.module.product.constants.ProductResultCode.*;
 public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> implements ProductService {
 
     private final ProductAttributeValueService attributeValueService;
+    private final ProductAttributeValueMapper attributeValueMapper;
     private final ProductCategoryService categoryService;
     private final ProductBrandService brandService;
     private final ProductSkuService skuService;
+
+    private final EsProductApi esProductApi;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -48,6 +57,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         this.save(product);
         skuService.createProductSku(product.getId(), dto.getSkus());
         attributeValueService.createProductParam(product.getId(), dto.getParam());
+        this.up(product);
         return product.getId();
     }
 
@@ -60,6 +70,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         this.updateById(product);
         skuService.updateProductSku(product.getId(), dto.getSkus());
         attributeValueService.updateProductParam(product.getId(), dto.getParam());
+        this.up(product);
         return product.getId();
     }
 
@@ -152,18 +163,6 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         this.removeById(id);
     }
 
-    @Override
-    public void updateStatus(Long id, Integer status) {
-        Product product = this.checkDataExists(id);
-        if (product.getStatus().equals(status)) {
-            throw new CustomException(PRODUCT_STATUS_ALREADY, status == 0 ? "下架" : "上架");
-        }
-        this.lambdaUpdate()
-                .set(Product::getStatus, status)
-                .eq(Product::getId, id)
-                .update();
-    }
-
     /**
      * 校验商品信息是否存在
      *
@@ -181,4 +180,47 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         return data;
     }
 
+    @Override
+    public void updateStatus(Long id, Integer status) {
+        Product product = this.checkDataExists(id);
+        boolean isDown = ProductStatusEnum.DOWN.getCode().equals(status);
+        if (product.getStatus().equals(status)) {
+            throw new CustomException(PRODUCT_STATUS_ALREADY, isDown ? "下架" : "上架");
+        }
+        this.lambdaUpdate()
+                .set(Product::getStatus, status)
+                .eq(Product::getId, id)
+                .update();
+        this.up(product);
+    }
+
+    private void up(Product product) {
+        List<EsProductDTO.Attrs> attrs = attributeValueMapper.selectProductAttrs(product.getId());
+        ProductBrand brand = brandService.getById(product.getBrandId());
+        ProductCategory category = categoryService.getById(product.getCategoryId());
+
+        EsProductDTO dto = new EsProductDTO();
+        dto.setProductId(product.getId())
+                .setName(product.getName())
+                .setPrice(product.getPrice())
+                .setPic(product.getPic())
+                .setSalesVolume(product.getSalesVolume())
+                .setHasStock(product.getStock() > 0)
+                .setBrandId(product.getBrandId())
+                .setBrandName(brand.getName())
+                .setBrandLogo(brand.getLogo())
+                .setCategoryId(product.getCategoryId())
+                .setCategoryName(category.getName())
+                .setAttrs(attrs);
+        // todo 接口幂等、重试机制
+        boolean res = esProductApi.upProduct(dto);
+        if (res) {
+            this.lambdaUpdate()
+                    .set(Product::getStatus, ProductStatusEnum.UP.getCode())
+                    .eq(Product::getId, product.getId())
+                    .update();
+            return;
+        }
+        throw new CustomException(PRODUCT_UP_FAIL);
+    }
 }

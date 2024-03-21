@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.careyq</groupId>
-        <artifactId>alive-mall</artifactId>
+        <artifactId>alive-search</artifactId>
         <version>${revision}</version>
     </parent>
 
-    <artifactId>alive-product-service</artifactId>
+    <artifactId>alive-search-service</artifactId>
 
     <dependencies>
         <!-- Spring Cloud 基础 -->
@@ -30,10 +30,21 @@
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
         <!-- alive 依赖服务 -->
         <dependency>
             <groupId>com.careyq</groupId>
             <artifactId>alive-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>co.elastic.clients</groupId>
+            <artifactId>elasticsearch-java</artifactId>
         </dependency>
 
         <dependency>
@@ -43,28 +54,7 @@
 
         <dependency>
             <groupId>com.careyq</groupId>
-            <artifactId>alive-mybatis</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-generator</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.careyq</groupId>
-            <artifactId>alive-redis</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.careyq</groupId>
             <artifactId>alive-rpc</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.careyq</groupId>
-            <artifactId>alive-product-api</artifactId>
-            <version>${revision}</version>
         </dependency>
 
         <dependency>
@@ -73,5 +63,4 @@
             <version>${revision}</version>
         </dependency>
     </dependencies>
-
 </project>

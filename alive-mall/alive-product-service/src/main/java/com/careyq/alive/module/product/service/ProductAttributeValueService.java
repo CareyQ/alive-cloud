@@ -3,6 +3,7 @@ package com.careyq.alive.module.product.service;
 import com.careyq.alive.module.product.dto.ProductAttributeValueDTO;
 import com.careyq.alive.module.product.dto.ProductParamDTO;
 import com.careyq.alive.module.product.entity.ProductAttributeValue;
+import com.careyq.alive.module.product.entity.ProductSku;
 import com.careyq.alive.mybatis.core.service.IServiceX;
 
 import java.util.List;
@@ -37,4 +38,12 @@ public interface ProductAttributeValueService extends IServiceX<ProductAttribute
      * @param param     商品属性参数
      */
     void updateProductParam(Long productId, List<ProductParamDTO> param);
+
+    /**
+     * 更新商品属性规格
+     *
+     * @param productId 商品编号
+     * @param specs     属性规格
+     */
+    void updateProductSpec(Long productId, List<ProductSku.Spec> specs);
 }

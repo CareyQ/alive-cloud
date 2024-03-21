@@ -7,6 +7,15 @@
         from product_attribute_value v
                  left join product_attribute a on v.attribute_id = a.id
         where v.product_id = #{productId}
+          and v.is_del = 0
+          and a.is_del = 0
           and a.type = 1
+    </select>
+
+    <select id="selectProductAttrs" resultType="com.careyq.alive.search.dto.EsProductDTO$Attrs">
+        select a.id as attrId, a.name as attrName, v.id as valueId, v.value, a.type
+        from product_attribute_value v
+                 left join product_attribute a on v.attribute_id = a.id
+        where v.product_id = #{productId} and v.is_del = 0 and a.is_del = 0
     </select>
 </mapper>
