@@ -50,6 +50,8 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 
         this.save(product);
         skuService.createProductSku(product, dto.getSkus());
+        skuService.createProductSku(product.getId(), dto.getSkus());
+        this.up(product);
         return product.getId();
     }
 
@@ -62,6 +64,8 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 
         this.updateById(product);
         skuService.updateProductSku(product.getId(), dto.getSkus());
+        attributeValueService.updateProductParam(product.getId(), dto.getParam());
+        this.up(product);
         return product.getId();
     }
 
@@ -148,18 +152,6 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         this.removeById(id);
     }
 
-    @Override
-    public void updateStatus(Long id, Integer status) {
-        Product product = this.checkDataExists(id);
-        if (product.getStatus().equals(status)) {
-            throw new CustomException(PRODUCT_STATUS_ALREADY, status == 0 ? "下架" : "上架");
-        }
-        this.lambdaUpdate()
-                .set(Product::getStatus, status)
-                .eq(Product::getId, id)
-                .update();
-    }
-
     /**
      * 校验商品信息是否存在
      *
@@ -177,4 +169,47 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         return data;
     }
 
+    @Override
+    public void updateStatus(Long id, Integer status) {
+        Product product = this.checkDataExists(id);
+        boolean isDown = ProductStatusEnum.DOWN.getCode().equals(status);
+        if (product.getStatus().equals(status)) {
+            throw new CustomException(PRODUCT_STATUS_ALREADY, isDown ? "下架" : "上架");
+        }
+        this.lambdaUpdate()
+                .set(Product::getStatus, status)
+                .eq(Product::getId, id)
+                .update();
+        this.up(product);
+    }
+
+    private void up(Product product) {
+        List<EsProductDTO.Attrs> attrs = attributeValueMapper.selectProductAttrs(product.getId());
+        ProductBrand brand = brandService.getById(product.getBrandId());
+        ProductCategory category = categoryService.getById(product.getCategoryId());
+
+        EsProductDTO dto = new EsProductDTO();
+        dto.setProductId(product.getId())
+                .setName(product.getName())
+                .setPrice(product.getPrice())
+                .setPic(product.getPic())
+                .setSalesVolume(product.getSalesVolume())
+                .setHasStock(product.getStock() > 0)
+                .setBrandId(product.getBrandId())
+                .setBrandName(brand.getName())
+                .setBrandLogo(brand.getLogo())
+                .setCategoryId(product.getCategoryId())
+                .setCategoryName(category.getName())
+                .setAttrs(attrs);
+        // todo 接口幂等、重试机制
+        boolean res = esProductApi.upProduct(dto);
+        if (res) {
+            this.lambdaUpdate()
+                    .set(Product::getStatus, ProductStatusEnum.UP.getCode())
+                    .eq(Product::getId, product.getId())
+                    .update();
+            return;
+        }
+        throw new CustomException(PRODUCT_UP_FAIL);
+    }
 }

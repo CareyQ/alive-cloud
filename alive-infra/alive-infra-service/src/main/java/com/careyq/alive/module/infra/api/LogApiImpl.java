@@ -1,6 +1,5 @@
 package com.careyq.alive.module.infra.api;
 
-
 import com.careyq.alive.module.infra.dto.ErrorLogDTO;
 import com.careyq.alive.module.infra.dto.LoginLogDTO;
 import com.careyq.alive.module.infra.dto.OperateLogDTO;

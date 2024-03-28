@@ -14,6 +14,7 @@
         <module>alive-infra</module>
         <module>alive-mall</module>
         <module>alive-gateway</module>
+        <module>alive-search</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -53,6 +54,7 @@
         <!-- 存储相关 -->
         <s3.version>1.12.648</s3.version>
         <tika.version>2.9.1</tika.version>
+        <elasticsearch.version>8.12.2</elasticsearch.version>
     </properties>
 
     <dependencyManagement>
@@ -94,6 +96,22 @@
                     <exclusion>
                         <groupId>org.yaml</groupId>
                         <artifactId>snakeyaml</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <version>${spring.boot.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>asm</artifactId>
+                        <groupId>org.ow2.asm</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.mockito</groupId>
+                        <artifactId>mockito-core</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -290,6 +308,12 @@
                 <groupId>org.apache.tika</groupId>
                 <artifactId>tika-core</artifactId>
                 <version>${tika.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>co.elastic.clients</groupId>
+                <artifactId>elasticsearch-java</artifactId>
+                <version>${elasticsearch.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

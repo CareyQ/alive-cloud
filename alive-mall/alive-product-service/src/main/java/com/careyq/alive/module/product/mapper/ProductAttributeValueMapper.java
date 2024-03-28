@@ -2,6 +2,7 @@ package com.careyq.alive.module.product.mapper;
 
 import com.careyq.alive.module.product.entity.ProductAttributeValue;
 import com.careyq.alive.mybatis.core.mapper.BaseMapperX;
+import com.careyq.alive.search.dto.EsProductDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -22,4 +23,12 @@ public interface ProductAttributeValueMapper extends BaseMapperX<ProductAttribut
      * @return 属性值
      */
     List<ProductAttributeValue> selectExistAttribute(@Param("productId") Long productId);
+
+    /**
+     * 查询商品属性值
+     *
+     * @param productId 商品编号
+     * @return 属性值
+     */
+    List<EsProductDTO.Attrs> selectProductAttrs(@Param("productId") Long productId);
 }

@@ -23,6 +23,13 @@ spring:
             - Path=/api-admin/product/**
           filters:
             - RewritePath=/api-admin/product/v3/api-docs, /v3/api-docs
+        ## search-server
+        - id: search-admin-api
+          uri: lb://search-server
+          predicates:
+            - Path=/api-admin/search/**
+          filters:
+            - RewritePath=/api-admin/search/v3/api-docs, /v3/api-docs
 
 knife4j:
   gateway:
