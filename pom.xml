@@ -29,7 +29,7 @@
         <flatten-maven-plugin.version>1.5.0</flatten-maven-plugin.version>
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
         <!-- 核心框架 -->
-        <spring.boot.version>3.2.2</spring.boot.version>
+        <spring.boot.version>3.2.4</spring.boot.version>
         <spring.cloud.version>2023.0.0</spring.cloud.version>
         <spring.cloud.alibaba.version>2022.0.0.0</spring.cloud.alibaba.version>
         <sa-token.version>1.37.0</sa-token.version>
