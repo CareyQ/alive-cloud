@@ -25,12 +25,4 @@ public interface ProductAttributeConvert {
      */
     ProductAttributePageVO convertToPageVo(ProductAttribute attribute);
 
-    /**
-     * 属性转换为 VO
-     *
-     * @param attribute 属性
-     * @return VO
-     */
-    @Mapping(target = "value", ignore = true)
-    ProductAttributeVO convertToVo(ProductAttribute attribute);
 }

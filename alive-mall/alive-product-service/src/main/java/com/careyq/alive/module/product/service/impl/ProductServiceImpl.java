@@ -37,7 +37,6 @@ import static com.careyq.alive.module.product.constants.ProductResultCode.PRODUC
 @AllArgsConstructor
 public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> implements ProductService {
 
-    private final ProductAttributeValueService attributeValueService;
     private final ProductCategoryService categoryService;
     private final ProductBrandService brandService;
     private final ProductSkuService skuService;
