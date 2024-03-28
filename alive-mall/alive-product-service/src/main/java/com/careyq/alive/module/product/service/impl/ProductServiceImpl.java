@@ -12,11 +12,20 @@ import com.careyq.alive.module.product.dto.ProductDTO;
 import com.careyq.alive.module.product.dto.ProductPageDTO;
 import com.careyq.alive.module.product.dto.ProductSkuDTO;
 import com.careyq.alive.module.product.entity.Product;
+import com.careyq.alive.module.product.entity.ProductBrand;
+import com.careyq.alive.module.product.entity.ProductCategory;
 import com.careyq.alive.module.product.entity.ProductSku;
+import com.careyq.alive.module.product.enums.ProductStatusEnum;
+import com.careyq.alive.module.product.mapper.ProductAttributeValueMapper;
 import com.careyq.alive.module.product.mapper.ProductMapper;
-import com.careyq.alive.module.product.service.*;
+import com.careyq.alive.module.product.service.ProductBrandService;
+import com.careyq.alive.module.product.service.ProductCategoryService;
+import com.careyq.alive.module.product.service.ProductService;
+import com.careyq.alive.module.product.service.ProductSkuService;
 import com.careyq.alive.module.product.vo.ProductPageVO;
 import com.careyq.alive.module.product.vo.ProductVO;
+import com.careyq.alive.search.api.EsProductApi;
+import com.careyq.alive.search.dto.EsProductDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,8 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.careyq.alive.module.product.constants.ProductResultCode.PRODUCT_NOT_EXISTS;
-import static com.careyq.alive.module.product.constants.ProductResultCode.PRODUCT_STATUS_ALREADY;
+import static com.careyq.alive.module.product.constants.ProductResultCode.*;
 
 /**
  * 商品信息 服务实现
@@ -37,9 +45,13 @@ import static com.careyq.alive.module.product.constants.ProductResultCode.PRODUC
 @AllArgsConstructor
 public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> implements ProductService {
 
+    private final EsProductApi esProductApi;
+
     private final ProductCategoryService categoryService;
     private final ProductBrandService brandService;
     private final ProductSkuService skuService;
+
+    private final ProductAttributeValueMapper attributeValueMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -50,7 +62,6 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 
         this.save(product);
         skuService.createProductSku(product, dto.getSkus());
-        skuService.createProductSku(product.getId(), dto.getSkus());
         this.up(product);
         return product.getId();
     }
@@ -64,7 +75,6 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 
         this.updateById(product);
         skuService.updateProductSku(product.getId(), dto.getSkus());
-        attributeValueService.updateProductParam(product.getId(), dto.getParam());
         this.up(product);
         return product.getId();
     }
@@ -192,7 +202,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         dto.setProductId(product.getId())
                 .setName(product.getName())
                 .setPrice(product.getPrice())
-                .setPic(product.getPic())
+                .setPic(product.getSlidePic().getFirst())
                 .setSalesVolume(product.getSalesVolume())
                 .setHasStock(product.getStock() > 0)
                 .setBrandId(product.getBrandId())
