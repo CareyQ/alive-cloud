@@ -3,6 +3,7 @@ package com.careyq.alive.module.system.convert;
 import com.careyq.alive.module.system.entity.Role;
 import com.careyq.alive.module.system.vo.RoleVO;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -21,6 +22,7 @@ public interface RoleConvert {
      * @param role Role
      * @return VO
      */
+    @Mapping(target = "defaultRole", source = "isDefault")
     RoleVO convert(Role role);
 
 }

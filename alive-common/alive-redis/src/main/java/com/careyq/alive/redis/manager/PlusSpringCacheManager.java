@@ -1,5 +1,6 @@
 package com.careyq.alive.redis.manager;
 
+import com.careyq.alive.core.constants.IntPool;
 import com.careyq.alive.redis.util.RedisUtils;
 import lombok.Setter;
 import org.redisson.api.RMapCache;
@@ -69,7 +70,7 @@ public class PlusSpringCacheManager implements CacheManager {
     public Cache getCache(@NonNull String name) {
         // 重写 cacheName 支持多参数
         String[] array = StringUtils.delimitedListToStringArray(name, "#");
-        name = array[0];
+        name = array[IntPool.ZERO];
 
         // 本地缓存有，直接返回
         Cache cache = instanceMap.get(name);
@@ -83,14 +84,14 @@ public class PlusSpringCacheManager implements CacheManager {
             configMap.put(name, config);
         }
 
-        if (array.length > 1) {
-            config.setTTL(DurationStyle.detectAndParse(array[1]).toMillis());
+        if (array.length > IntPool.ONE) {
+            config.setTTL(DurationStyle.detectAndParse(array[IntPool.ONE]).toMillis());
         }
-        if (array.length > 2) {
-            config.setMaxIdleTime(DurationStyle.detectAndParse(array[2]).toMillis());
+        if (array.length > IntPool.TWO) {
+            config.setMaxIdleTime(DurationStyle.detectAndParse(array[IntPool.TWO]).toMillis());
         }
-        if (array.length > 3) {
-            config.setMaxSize(Integer.parseInt(array[3]));
+        if (array.length > IntPool.THREE) {
+            config.setMaxSize(Integer.parseInt(array[IntPool.THREE]));
         }
 
         return createMapCache(name, config);
@@ -107,7 +108,7 @@ public class PlusSpringCacheManager implements CacheManager {
         RMapCache<Object, Object> map = RedisUtils.getClient().getMapCache(name);
 
         Cache cache;
-        if (config.getMaxIdleTime() == 0 && config.getTTL() == 0 && config.getMaxSize() == 0) {
+        if (config.getMaxIdleTime() == 0 && config.getTTL() == IntPool.ZERO && config.getMaxSize() == IntPool.ZERO) {
             cache = new RedissonCache(map, allowNullValues);
         } else {
             cache = new RedissonCache(map, config, allowNullValues);

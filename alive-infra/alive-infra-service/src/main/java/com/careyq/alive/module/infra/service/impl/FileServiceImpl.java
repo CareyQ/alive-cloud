@@ -90,7 +90,9 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements Fi
      * @return 文件类型
      */
     private static String getFileType(byte[] content, String name) {
-        return TIKA.get().detect(content, name);
+        String type = TIKA.get().detect(content, name);
+        TIKA.remove();
+        return type;
     }
 
     @Override
