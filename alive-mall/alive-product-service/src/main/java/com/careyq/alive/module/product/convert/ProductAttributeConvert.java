@@ -2,9 +2,7 @@ package com.careyq.alive.module.product.convert;
 
 import com.careyq.alive.module.product.entity.ProductAttribute;
 import com.careyq.alive.module.product.vo.ProductAttributePageVO;
-import com.careyq.alive.module.product.vo.ProductAttributeVO;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 /**
