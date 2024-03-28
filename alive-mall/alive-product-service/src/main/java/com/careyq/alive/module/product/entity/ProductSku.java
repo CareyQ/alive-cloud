@@ -3,7 +3,6 @@ package com.careyq.alive.module.product.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.handlers.AbstractJsonTypeHandler;
-import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import com.careyq.alive.core.domain.BaseEntity;
 import com.careyq.alive.core.util.JsonUtils;
 import lombok.AllArgsConstructor;
@@ -36,7 +35,7 @@ public class ProductSku extends BaseEntity {
     /**
      * SKU 编码
      */
-    private String skuCode;
+    private String snCode;
 
     /**
      * 销量
@@ -49,20 +48,14 @@ public class ProductSku extends BaseEntity {
     private BigDecimal price;
 
     /**
-     * 市场价
-     */
-    private BigDecimal marketPrice;
-
-    /**
      * 库存
      */
     private Integer stock;
 
     /**
-     * SKU 图片数组
+     * SKU 图片
      */
-    @TableField(typeHandler = JacksonTypeHandler.class)
-    private List<String> albumPics;
+    private String pic;
 
     /**
      * 商品重量，千克

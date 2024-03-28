@@ -1,6 +1,7 @@
 package com.careyq.alive.module.product.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -22,8 +23,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
-import static com.careyq.alive.module.product.constants.ProductResultCode.*;
+import static com.careyq.alive.module.product.constants.ProductResultCode.PRODUCT_NOT_EXISTS;
+import static com.careyq.alive.module.product.constants.ProductResultCode.PRODUCT_STATUS_ALREADY;
 
 /**
  * 商品信息 服务实现
@@ -45,9 +48,9 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         this.validateProduct(dto);
         Product product = BeanUtil.copyProperties(dto, Product.class);
         initSpuFormSku(product, dto.getSkus());
+
         this.save(product);
-        skuService.createProductSku(product.getId(), dto.getSkus());
-        attributeValueService.createProductParam(product.getId(), dto.getParam());
+        skuService.createProductSku(product, dto.getSkus());
         return product.getId();
     }
 
@@ -57,26 +60,10 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         this.validateProduct(dto);
         Product product = BeanUtil.copyProperties(dto, Product.class);
         initSpuFormSku(product, dto.getSkus());
+
         this.updateById(product);
         skuService.updateProductSku(product.getId(), dto.getSkus());
-        attributeValueService.updateProductParam(product.getId(), dto.getParam());
         return product.getId();
-    }
-
-    /**
-     * 检查商品编码
-     *
-     * @param id     商品编号
-     * @param snCode 商品编码
-     */
-    private void checkSnCode(Long id, String snCode) {
-        boolean exists = this.lambdaQueryX()
-                .neIfPresent(Product::getId, id)
-                .eq(Product::getSnCode, snCode)
-                .exists();
-        if (exists) {
-            throw new CustomException(PRODUCT_IS_EXISTS);
-        }
     }
 
     /**
@@ -85,7 +72,6 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
      * @param dto 商品信息
      */
     private void validateProduct(ProductDTO dto) {
-        this.checkSnCode(dto.getId(), dto.getSnCode());
         // 校验分类/品牌
         categoryService.validateCategory(dto.getCategoryId());
         brandService.validateBrand(dto.getBrandId());
@@ -103,22 +89,33 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         if (product.getPrice() == null) {
             product.setPrice(CollUtils.getMinValue(skus, ProductSkuDTO::getPrice));
         }
-        if (product.getMarketPrice() == null) {
-            product.setMarketPrice(CollUtils.getMinValue(skus, ProductSkuDTO::getMarketPrice));
-        }
         product.setStock(CollUtils.getSumValue(skus, ProductSkuDTO::getStock, Integer::sum));
     }
 
     @Override
     public IPage<ProductPageVO> getPage(ProductPageDTO dto) {
-        IPage<Product> page = this.lambdaQueryX()
-                .eqIfPresent(Product::getCategoryId, dto.getCategoryId())
-                .eqIfPresent(Product::getBrandId, dto.getBrandId())
-                .eqIfPresent(Product::getSnCode, dto.getSnCode())
-                .likeIfPresent(Product::getName, dto.getName())
-                .eqIfPresent(Product::getStatus, dto.getStatus())
-                .orderByDesc(Product::getId)
-                .page(new Page<>(dto.getCurrent(), dto.getSize()));
+        Long productId = null;
+        if (StrUtil.isNotEmpty(dto.getSnCode())) {
+            ProductSku sku = skuService.lambdaQuery()
+                    .eq(ProductSku::getSnCode, dto.getSnCode())
+                    .one();
+            productId = Optional.ofNullable(sku).orElseGet(ProductSku::new).getProductId();
+        }
+        IPage<Product> page;
+        if (productId != null) {
+            page = this.lambdaQueryX()
+                    .eq(Product::getId, productId)
+                    .page(new Page<>(dto.getCurrent(), dto.getSize()));
+        } else {
+            page = this.lambdaQueryX()
+                    .eqIfPresent(Product::getCategoryId, dto.getCategoryId())
+                    .eqIfPresent(Product::getBrandId, dto.getBrandId())
+                    .likeIfPresent(Product::getName, dto.getName())
+                    .eqIfPresent(Product::getStatus, dto.getStatus())
+                    .orderByDesc(Product::getId)
+                    .page(new Page<>(dto.getCurrent(), dto.getSize()));
+        }
+
         if (page.getRecords().isEmpty()) {
             return new Page<>();
         }

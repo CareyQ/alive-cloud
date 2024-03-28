@@ -13,12 +13,6 @@ import lombok.Data;
 @Schema(description = "管理后台 - 商品属性分页 DTO")
 public class ProductAttributePageDTO extends PageDTO {
 
-    @Schema(description = "所属分组")
-    private Long groupId;
-
-    @Schema(description = "属性类型，0规格 1参数")
-    private Integer type;
-
     @Schema(description = "属性名称")
     private String name;
 

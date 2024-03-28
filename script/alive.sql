@@ -343,38 +343,15 @@ create table if not exists product_brand
     update_time datetime      not null default current_timestamp on update current_timestamp comment '更新时间'
 ) comment '商品品牌';
 
-create table if not exists product_attribute_group
+create table if not exists product_attribute
 (
     id          bigint       not null auto_increment primary key comment '主键',
-    category_id bigint       not null comment '分类 ID',
-    name        varchar(255) not null comment '属性分组名称',
-    sort        int          not null default 0 comment '排序',
+    name        varchar(255) not null comment '属性名称',
     is_del      tinyint      not null default 0 comment '是否删除',
     creator     bigint       null     default null comment '创建者',
     create_time datetime     not null default current_timestamp comment '创建时间',
     updater     bigint       null     default null comment '更新者',
     update_time datetime     not null default current_timestamp on update current_timestamp comment '更新时间'
-) comment '商品属性分组';
-
-create table if not exists product_attribute
-(
-    id             bigint       not null auto_increment primary key comment '主键',
-    group_id       bigint       null     default null comment '所属分组，类型为参数时',
-    type           int          not null default 0 comment '属性类型，0规格 1参数',
-    name           varchar(255) not null comment '属性名称',
-    select_type    tinyint      not null default 0 comment '属性选择类型，0唯一 1单选 2多选',
-    input_type     tinyint      not null default 0 comment '属性录入方式，0手工录入 1从列表中选取',
-    input_list     varchar(255) null     default null comment '可选值列表，以逗号隔开',
-    sort           int          not null default 0 comment '排序',
-    filter_type    tinyint      not null default 0 comment '分类筛选样式，0普通 1颜色',
-    search_type    tinyint      not null default 0 comment '检索类型，0不需要进行检索 1关键字检索 2范围检索',
-    related_status tinyint      not null default 0 comment '相同属性产品是否关联，0不关联 1关联',
-    addition       tinyint      not null default 0 comment '支持新增',
-    is_del         tinyint      not null default 0 comment '是否删除',
-    creator        bigint       null     default null comment '创建者',
-    create_time    datetime     not null default current_timestamp comment '创建时间',
-    updater        bigint       null     default null comment '更新者',
-    update_time    datetime     not null default current_timestamp on update current_timestamp comment '更新时间'
 ) comment '商品属性';
 
 create table if not exists product_attribute_value
@@ -383,7 +360,6 @@ create table if not exists product_attribute_value
     attribute_id bigint       not null comment '属性编号',
     product_id   bigint       not null comment '商品编号',
     value        varchar(255) not null comment '属性值',
-    sort         int          not null default 0 comment '排序',
     is_del       tinyint      not null default 0 comment '是否删除',
     creator      bigint       null     default null comment '创建者',
     create_time  datetime     not null default current_timestamp comment '创建时间',
@@ -398,14 +374,12 @@ create table if not exists product
     id                 bigint         not null auto_increment primary key comment '编号',
     category_id        bigint         not null comment '所属分类',
     brand_id           bigint         not null comment '所属品牌',
-    sn_code            varchar(64)    not null comment '商品编号',
     name               varchar(255)   not null comment '商品名称',
-    pic                varchar(255)   not null comment '商品封面图片',
+    slide_pic          varchar(1000)  not null comment '商品轮播图片',
     status             int            not null default 1 comment '状态，0下架 1上架',
     sort               int            not null default 0 comment '排序',
     sales_volume       int            not null default 0 comment '销量',
     price              decimal(10, 2) not null default 0.00 comment '价格',
-    market_price       decimal(10, 2) not null default 0.00 comment '市场价',
     stock              int            not null default 0 comment '库存',
     unit               varchar(10)    not null default '' comment '单位',
     detail_html        text           null comment '商品详情',
@@ -415,31 +389,28 @@ create table if not exists product
     use_point_limit    int            not null default 0 comment '限制使用的积分数',
     new_status         tinyint        not null default 0 comment '是否新品',
     recommend_status   tinyint        not null default 0 comment '是否推荐',
-    service_ids        varchar(255)   null     default null comment '服务保障',
+    service            varchar(255)   null     default null comment '服务保障',
     sub_title          varchar(255)   not null default '' comment '副标题',
     keyword            varchar(255)   not null default '' comment '关键字',
-    intro              varchar(255)   not null default '' comment '简介',
     is_del             tinyint        not null default 0 comment '是否删除',
     creator            bigint         null     default null comment '创建者',
     create_time        datetime       not null default current_timestamp comment '创建时间',
     updater            bigint         null     default null comment '更新者',
     update_time        datetime       not null default current_timestamp on update current_timestamp comment '更新时间',
     index idx_categoryId (category_id) using btree,
-    index idx_brandId (brand_id) using btree,
-    index idx_snCode (sn_code) using btree
+    index idx_brandId (brand_id) using btree
 ) comment '商品信息';
 
 create table if not exists product_sku
 (
     id           bigint         not null auto_increment primary key comment '编号',
     product_id   bigint         not null comment '商品 ID',
-    spec         varchar(3000)  not null comment '规格',
-    sku_code     varchar(255)   not null comment 'SKU 编码',
+    spec         varchar(1000)  not null comment '规格',
+    sn_code      varchar(255)   not null comment 'SKU 编码',
     sales_volume int            not null default 0 comment '销量',
     price        decimal(10, 2) not null default 0.00 comment '价格',
-    market_price decimal(10, 2) not null default 0.00 comment '市场价',
     stock        int            not null default 0 comment '库存',
-    album_pics   varchar(3000)  not null comment 'SKU 图片数组',
+    pic          varchar(100)   not null comment 'SKU 图片',
     weight       decimal(10, 4) null     default null comment '商品重量，千克',
     volume       decimal(10, 4) null     default null comment '商品体积，立方米',
     is_del       tinyint        not null default 0 comment '是否删除',

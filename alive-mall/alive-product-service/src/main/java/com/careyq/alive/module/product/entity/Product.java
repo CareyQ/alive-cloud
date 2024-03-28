@@ -1,6 +1,8 @@
 package com.careyq.alive.module.product.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import com.careyq.alive.core.domain.BaseEntity;
 import lombok.Data;
 
@@ -27,19 +29,15 @@ public class Product extends BaseEntity {
     private Long brandId;
 
     /**
-     * 商品编号 
-     */
-    private String snCode;
-
-    /**
      * 商品名称 
      */
     private String name;
 
     /**
-     * 商品封面图片 
+     * 商品轮播图片
      */
-    private String pic;
+    @TableField(typeHandler = JacksonTypeHandler.class)
+    private List<String> slidePic;
 
     /**
      * 状态，0下架 1上架 
@@ -60,11 +58,6 @@ public class Product extends BaseEntity {
      * 价格 
      */
     private BigDecimal price;
-
-    /**
-     * 市场价 
-     */
-    private BigDecimal marketPrice;
 
     /**
      * 库存 
@@ -114,7 +107,7 @@ public class Product extends BaseEntity {
     /**
      * 服务保障
      */
-    private List<Integer> serviceIds;
+    private List<Integer> service;
 
     /**
      * 副标题 
@@ -125,10 +118,5 @@ public class Product extends BaseEntity {
      * 关键字 
      */
     private String keyword;
-
-    /**
-     * 简介 
-     */
-    private String intro;
 
 }

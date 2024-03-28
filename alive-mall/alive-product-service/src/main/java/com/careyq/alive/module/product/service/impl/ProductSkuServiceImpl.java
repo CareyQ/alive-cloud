@@ -5,9 +5,11 @@ import com.careyq.alive.core.exception.CustomException;
 import com.careyq.alive.core.util.CollUtils;
 import com.careyq.alive.module.product.convert.ProductConvert;
 import com.careyq.alive.module.product.dto.ProductSkuDTO;
+import com.careyq.alive.module.product.entity.Product;
 import com.careyq.alive.module.product.entity.ProductSku;
 import com.careyq.alive.module.product.mapper.ProductSkuMapper;
 import com.careyq.alive.module.product.service.ProductSkuService;
+import com.careyq.alive.module.product.util.SnUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.careyq.alive.module.product.constants.ProductResultCode.*;
 
@@ -50,8 +53,15 @@ public class ProductSkuServiceImpl extends ServiceImpl<ProductSkuMapper, Product
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void createProductSku(Long productId, List<ProductSkuDTO> skus) {
-        this.saveBatch(skus.stream().map(e -> ProductConvert.INSTANCE.skuConvert(e, productId)).toList());
+    public void createProductSku(Product product, List<ProductSkuDTO> skus) {
+        AtomicInteger index = new AtomicInteger();
+        List<ProductSku> skuList = skus.stream().map(e -> {
+            ProductSku productSku = ProductConvert.INSTANCE.skuConvert(e);
+            String snCode = SnUtils.generateSnCode(product.getBrandId(), product.getCategoryId(), product.getId(), index.getAndIncrement());
+            productSku.setSnCode(snCode);
+            return productSku;
+        }).toList();
+        this.saveBatch(skuList);
     }
 
     @Override

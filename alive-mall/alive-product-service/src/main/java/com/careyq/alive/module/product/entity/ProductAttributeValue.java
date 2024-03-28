@@ -28,9 +28,4 @@ public class ProductAttributeValue extends BaseEntity {
      */
     private String value;
 
-    /**
-     * 排序 
-     */
-    private Integer sort;
-
 }

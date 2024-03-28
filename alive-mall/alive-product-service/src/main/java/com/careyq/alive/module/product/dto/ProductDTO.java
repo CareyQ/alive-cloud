@@ -29,17 +29,13 @@ public class ProductDTO {
     @Schema(description = "所属品牌", requiredMode = Schema.RequiredMode.REQUIRED)
     private Long brandId;
 
-    @NotBlank(message = "商品编号不能为空")
-    @Schema(description = "商品编号", requiredMode = Schema.RequiredMode.REQUIRED)
-    private String snCode;
-
     @NotBlank(message = "商品名称不能为空")
     @Schema(description = "商品名称", requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
-    @NotBlank(message = "商品封面图片不能为空")
-    @Schema(description = "商品封面图片", requiredMode = Schema.RequiredMode.REQUIRED)
-    private String pic;
+    @NotBlank(message = "商品轮播图片不能为空")
+    @Schema(description = "商品轮播图片", requiredMode = Schema.RequiredMode.REQUIRED)
+    private List<String> slidePic;
 
     @NotNull(message = "上架状态不能为空")
     @Schema(description = "状态，0下架 1上架", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -51,9 +47,6 @@ public class ProductDTO {
 
     @Schema(description = "价格")
     private BigDecimal price;
-
-    @Schema(description = "市场价")
-    private BigDecimal marketPrice;
 
     @NotBlank(message = "单位不能为空")
     @Schema(description = "单位", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -81,21 +74,13 @@ public class ProductDTO {
     private Boolean recommendStatus;
 
     @Schema(description = "服务保障")
-    private List<Integer> serviceIds;
+    private List<Integer> service;
 
-    @NotBlank(message = "副标题不能为空")
     @Schema(description = "副标题", requiredMode = Schema.RequiredMode.REQUIRED)
     private String subTitle;
 
     @Schema(description = "关键字", requiredMode = Schema.RequiredMode.REQUIRED)
     private String keyword;
-
-    @Schema(description = "简介")
-    private String intro;
-
-    @Valid
-    @Schema(description = "商品参数")
-    private List<ProductParamDTO> param;
 
     @Valid
     @Schema(description = "商品 SKU 信息")
