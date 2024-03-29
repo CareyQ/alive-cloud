@@ -1,19 +1,28 @@
 package com.careyq.alive.module.product.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.map.MapUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.careyq.alive.core.exception.CustomException;
+import com.careyq.alive.core.util.CollUtils;
 import com.careyq.alive.module.product.convert.ProductAttributeConvert;
 import com.careyq.alive.module.product.dto.ProductAttributePageDTO;
+import com.careyq.alive.module.product.entity.Product;
 import com.careyq.alive.module.product.entity.ProductAttribute;
 import com.careyq.alive.module.product.mapper.ProductAttributeMapper;
+import com.careyq.alive.module.product.mapper.ProductMapper;
 import com.careyq.alive.module.product.service.ProductAttributeService;
 import com.careyq.alive.module.product.vo.ProductAttributePageVO;
 import com.careyq.alive.module.product.vo.ProductAttributeVO;
+import com.careyq.alive.mybatis.core.query.LambdaQueryWrapperX;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static com.careyq.alive.module.product.constants.ProductResultCode.ATTRIBUTE_NOT_EXISTS;
 
@@ -25,6 +34,8 @@ import static com.careyq.alive.module.product.constants.ProductResultCode.ATTRIB
 @Service
 @AllArgsConstructor
 public class ProductAttributeServiceImpl extends ServiceImpl<ProductAttributeMapper, ProductAttribute> implements ProductAttributeService {
+
+    private final ProductMapper productMapper;
 
     @Override
     public Long saveAttribute(String name) {
@@ -42,7 +53,20 @@ public class ProductAttributeServiceImpl extends ServiceImpl<ProductAttributeMap
         if (page.getRecords().isEmpty()) {
             return new Page<>();
         }
-        return page.convert(ProductAttributeConvert.INSTANCE::convertToPageVo);
+        Map<Long, String> productMap = MapUtil.newHashMap();
+        Set<Long> productIds = CollUtils.convertSet(page.getRecords(), ProductAttribute::getProductId);
+        if (CollUtils.isNotEmpty(productIds)) {
+            List<Product> products = productMapper.selectList(new LambdaQueryWrapperX<Product>()
+                    .select(Product::getId, Product::getName)
+                    .in(Product::getId, productIds));
+            productMap = CollUtils.convertMap(products, Product::getId, Product::getName);
+        }
+        Map<Long, String> finalProductMap = productMap;
+        return page.convert(e -> {
+            ProductAttributePageVO vo = ProductAttributeConvert.INSTANCE.convertToPageVo(e);
+            vo.setProductName(finalProductMap.get(e.getProductId()));
+            return vo;
+        });
     }
 
     @Override

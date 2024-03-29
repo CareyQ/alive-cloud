@@ -45,7 +45,7 @@ export const get${simpleClassName}Page = async (data: ${table.className}PageDTO)
 
 // 查询${table.classComment}详情
 export const get${simpleClassName}Detail = async (id: number) => {
-  return await request.get({ url: `${baseURL}/detail?id=` + id })
+  return await request.get({ url: `${baseURL}/detail?id=${id}` })
 }
 
 // 保存${table.classComment}
@@ -55,5 +55,5 @@ export const save${simpleClassName} = async (data: ${table.className}DTO) => {
 
 // 删除${table.classComment}
 export const del${simpleClassName} = async (id: number) => {
-  return await request.delete({ url: `${baseURL}/del?id=` + id })
+  return await request.delete({ url: `${baseURL}/del?id=${id}` })
 }

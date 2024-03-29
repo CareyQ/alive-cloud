@@ -345,29 +345,16 @@ create table if not exists product_brand
 
 create table if not exists product_attribute
 (
-    id          bigint       not null auto_increment primary key comment '主键',
-    name        varchar(255) not null comment '属性名称',
-    is_del      tinyint      not null default 0 comment '是否删除',
-    creator     bigint       null     default null comment '创建者',
-    create_time datetime     not null default current_timestamp comment '创建时间',
-    updater     bigint       null     default null comment '更新者',
-    update_time datetime     not null default current_timestamp on update current_timestamp comment '更新时间'
+    id          bigint        not null auto_increment primary key comment '主键',
+    product_id  bigint        null     default null comment '商品编号',
+    name        varchar(255)  not null comment '属性名称',
+    value       varchar(1000) null comment '属性值',
+    is_del      tinyint       not null default 0 comment '是否删除',
+    creator     bigint        null     default null comment '创建者',
+    create_time datetime      not null default current_timestamp comment '创建时间',
+    updater     bigint        null     default null comment '更新者',
+    update_time datetime      not null default current_timestamp on update current_timestamp comment '更新时间'
 ) comment '商品属性';
-
-create table if not exists product_attribute_value
-(
-    id           bigint       not null auto_increment primary key comment '主键',
-    attribute_id bigint       not null comment '属性编号',
-    product_id   bigint       not null comment '商品编号',
-    value        varchar(255) not null comment '属性值',
-    is_del       tinyint      not null default 0 comment '是否删除',
-    creator      bigint       null     default null comment '创建者',
-    create_time  datetime     not null default current_timestamp comment '创建时间',
-    updater      bigint       null     default null comment '更新者',
-    update_time  datetime     not null default current_timestamp on update current_timestamp comment '更新时间',
-    index idx_attributeId (attribute_id) using btree,
-    index idx_productId (product_id) using btree
-) comment '商品属性值';
 
 create table if not exists product
 (

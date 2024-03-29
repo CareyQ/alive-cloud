@@ -34,7 +34,7 @@ public class ProductAttributeController {
         return Result.ok(attributeService.saveAttribute(name));
     }
 
-    @GetMapping("/page")
+    @PostMapping("/page")
     @Operation(summary = "获取商品属性分页")
     public Result<IPage<ProductAttributePageVO>> getAttributePage(@Validated @RequestBody ProductAttributePageDTO dto) {
         return Result.ok(attributeService.getAttributePage(dto));
