@@ -77,6 +77,7 @@ public class ProductSku extends BaseEntity {
          * 关联 {@link ProductAttribute#getId()}
          */
         private Long attributeId;
+
         /**
          * 属性名字
          * 冗余 {@link ProductAttribute#getName()}
@@ -84,13 +85,7 @@ public class ProductSku extends BaseEntity {
         private String attributeName;
 
         /**
-         * 属性值编号
-         * 关联 {@link ProductAttributeValue#getId()}
-         */
-        private Long valueId;
-        /**
-         * 属性值名字
-         * 冗余 {@link ProductAttributeValue#getValue()} ()}
+         * 属性值
          */
         private String value;
 

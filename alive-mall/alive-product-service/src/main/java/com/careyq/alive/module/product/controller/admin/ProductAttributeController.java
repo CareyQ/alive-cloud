@@ -3,9 +3,7 @@ package com.careyq.alive.module.product.controller.admin;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.careyq.alive.core.domain.Result;
 import com.careyq.alive.module.product.dto.ProductAttributePageDTO;
-import com.careyq.alive.module.product.dto.ProductAttributeValueDTO;
 import com.careyq.alive.module.product.service.ProductAttributeService;
-import com.careyq.alive.module.product.service.ProductAttributeValueService;
 import com.careyq.alive.module.product.vo.ProductAttributePageVO;
 import com.careyq.alive.module.product.vo.ProductAttributeVO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,7 +24,6 @@ import org.springframework.web.bind.annotation.*;
 public class ProductAttributeController {
 
     private final ProductAttributeService attributeService;
-    private final ProductAttributeValueService attributeValueService;
 
     @PostMapping("/save")
     @Operation(summary = "保存商品属性")
@@ -51,17 +48,5 @@ public class ProductAttributeController {
     public Result<Boolean> delAttribute(@RequestParam Long id) {
         attributeService.delAttribute(id);
         return Result.ok(true);
-    }
-
-    @PostMapping("/value/save")
-    @Operation(summary = "保存商品属性值")
-    public Result<Long> saveAttributeValue(@Validated @RequestBody ProductAttributeValueDTO dto) {
-        return Result.ok(attributeValueService.saveAttributeValue(dto));
-    }
-
-    @DeleteMapping("/value/del")
-    @Operation(summary = "删除商品属性值")
-    public Result<Boolean> delAttributeValue(@RequestParam Long id) {
-        return Result.ok(attributeValueService.removeById(id));
     }
 }

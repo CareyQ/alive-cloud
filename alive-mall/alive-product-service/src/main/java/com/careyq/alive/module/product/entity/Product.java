@@ -15,7 +15,7 @@ import java.util.List;
  * @author CareyQ
  */
 @Data
-@TableName("product")
+@TableName(value = "product", autoResultMap = true)
 public class Product extends BaseEntity {
 
     /**
@@ -107,6 +107,7 @@ public class Product extends BaseEntity {
     /**
      * 服务保障
      */
+    @TableField(typeHandler = JacksonTypeHandler.class)
     private List<Integer> service;
 
     /**

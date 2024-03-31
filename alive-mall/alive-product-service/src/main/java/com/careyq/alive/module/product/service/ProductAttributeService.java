@@ -3,9 +3,12 @@ package com.careyq.alive.module.product.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.careyq.alive.module.product.dto.ProductAttributePageDTO;
 import com.careyq.alive.module.product.entity.ProductAttribute;
+import com.careyq.alive.module.product.entity.ProductSku;
 import com.careyq.alive.module.product.vo.ProductAttributePageVO;
 import com.careyq.alive.module.product.vo.ProductAttributeVO;
 import com.careyq.alive.mybatis.core.service.IServiceX;
+
+import java.util.List;
 
 /**
  * 商品属性 服务
@@ -45,4 +48,10 @@ public interface ProductAttributeService extends IServiceX<ProductAttribute> {
      */
     void delAttribute(Long id);
 
+    /**
+     * 更新属性值
+     *
+     * @param specs 规格属性
+     */
+    void updateAttributeValue(List<List<ProductSku.Spec>> specs);
 }

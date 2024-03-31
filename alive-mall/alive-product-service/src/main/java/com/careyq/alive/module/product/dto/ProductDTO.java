@@ -3,6 +3,7 @@ package com.careyq.alive.module.product.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -33,7 +34,7 @@ public class ProductDTO {
     @Schema(description = "商品名称", requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
-    @NotBlank(message = "商品轮播图片不能为空")
+    @NotEmpty(message = "商品轮播图片不能为空")
     @Schema(description = "商品轮播图片", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<String> slidePic;
 
@@ -47,6 +48,9 @@ public class ProductDTO {
 
     @Schema(description = "价格")
     private BigDecimal price;
+
+    @Schema(description = "库存")
+    private Integer stock;
 
     @NotBlank(message = "单位不能为空")
     @Schema(description = "单位", requiredMode = Schema.RequiredMode.REQUIRED)

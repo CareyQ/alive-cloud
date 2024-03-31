@@ -7,7 +7,7 @@ import com.careyq.alive.core.domain.BaseEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * 商品属性
@@ -33,7 +33,7 @@ public class ProductAttribute extends BaseEntity {
      * 属性值
      */
     @TableField(typeHandler = JacksonTypeHandler.class)
-    private Set<String> value;
+    private List<String> value;
 
     public ProductAttribute(String name) {
         this.name = name;

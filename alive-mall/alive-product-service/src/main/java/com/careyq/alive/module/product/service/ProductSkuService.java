@@ -32,8 +32,8 @@ public interface ProductSkuService extends IServiceX<ProductSku> {
     /**
      * 更新商品 SKU
      *
-     * @param productId 商品编号
+     * @param product 商品
      * @param skus      SKU 信息
      */
-    void updateProductSku(Long productId, List<ProductSkuDTO> skus);
+    void updateProductSku(Product product, List<ProductSkuDTO> skus);
 }

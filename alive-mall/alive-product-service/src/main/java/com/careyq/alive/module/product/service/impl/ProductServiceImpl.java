@@ -16,7 +16,6 @@ import com.careyq.alive.module.product.entity.ProductBrand;
 import com.careyq.alive.module.product.entity.ProductCategory;
 import com.careyq.alive.module.product.entity.ProductSku;
 import com.careyq.alive.module.product.enums.ProductStatusEnum;
-import com.careyq.alive.module.product.mapper.ProductAttributeValueMapper;
 import com.careyq.alive.module.product.mapper.ProductMapper;
 import com.careyq.alive.module.product.service.ProductBrandService;
 import com.careyq.alive.module.product.service.ProductCategoryService;
@@ -30,6 +29,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -50,8 +50,6 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     private final ProductCategoryService categoryService;
     private final ProductBrandService brandService;
     private final ProductSkuService skuService;
-
-    private final ProductAttributeValueMapper attributeValueMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -74,7 +72,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         initSpuFormSku(product, dto.getSkus());
 
         this.updateById(product);
-        skuService.updateProductSku(product.getId(), dto.getSkus());
+        skuService.updateProductSku(product, dto.getSkus());
         this.up(product);
         return product.getId();
     }
@@ -194,7 +192,10 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     }
 
     private void up(Product product) {
-        List<EsProductDTO.Attrs> attrs = attributeValueMapper.selectProductAttrs(product.getId());
+        if (!ProductStatusEnum.UP.getCode().equals(product.getStatus())) {
+            return;
+        }
+        List<EsProductDTO.Attrs> attrs = new ArrayList<>();
         ProductBrand brand = brandService.getById(product.getBrandId());
         ProductCategory category = categoryService.getById(product.getCategoryId());
 

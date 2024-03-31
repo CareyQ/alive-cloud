@@ -24,7 +24,7 @@ public class SnUtils {
      * @return sn
      */
     public static String generateSnCode(Long brandId, Long categoryId, Long productId, int index) {
-        String snCode = "69" + snCodePart(brandId.toString()) + snCodePart(index + categoryId.toString() + productId);
+        String snCode = "69" + snCodePart(brandId.toString()) + snCodePart(categoryId.toString() + productId + index);
         return snCode + generateCheckDigit(snCode);
     }
 
@@ -44,7 +44,7 @@ public class SnUtils {
      * @param snCode sn 码
      * @return 校验位
      */
-    public static char generateCheckDigit(String snCode) {
+    public static int generateCheckDigit(String snCode) {
         if (snCode.length() >= SN_CODE_LENGTH) {
             snCode = StrUtil.sub(snCode, 0, SN_CODE_LENGTH);
         }
@@ -60,6 +60,6 @@ public class SnUtils {
         }
 
         int total = oddSum + (evenSum * 3);
-        return (char) (10 - (total % 10));
+        return (10 - (total % 10));
     }
 }

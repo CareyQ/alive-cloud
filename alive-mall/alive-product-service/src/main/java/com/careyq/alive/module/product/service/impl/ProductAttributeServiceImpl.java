@@ -11,6 +11,7 @@ import com.careyq.alive.module.product.convert.ProductAttributeConvert;
 import com.careyq.alive.module.product.dto.ProductAttributePageDTO;
 import com.careyq.alive.module.product.entity.Product;
 import com.careyq.alive.module.product.entity.ProductAttribute;
+import com.careyq.alive.module.product.entity.ProductSku;
 import com.careyq.alive.module.product.mapper.ProductAttributeMapper;
 import com.careyq.alive.module.product.mapper.ProductMapper;
 import com.careyq.alive.module.product.service.ProductAttributeService;
@@ -19,7 +20,9 @@ import com.careyq.alive.module.product.vo.ProductAttributeVO;
 import com.careyq.alive.mybatis.core.query.LambdaQueryWrapperX;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -96,5 +99,19 @@ public class ProductAttributeServiceImpl extends ServiceImpl<ProductAttributeMap
             throw new CustomException(ATTRIBUTE_NOT_EXISTS);
         }
         return data;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateAttributeValue(List<List<ProductSku.Spec>> specs) {
+        List<ProductAttribute> attributes = new ArrayList<>();
+        for (List<ProductSku.Spec> spec : specs) {
+            List<String> value = CollUtils.convertList(spec, ProductSku.Spec::getValue);
+            ProductAttribute attribute = new ProductAttribute();
+            attribute.setId(spec.getFirst().getAttributeId());
+            attribute.setValue(value);
+            attributes.add(attribute);
+        }
+        this.updateBatchById(attributes);
     }
 }

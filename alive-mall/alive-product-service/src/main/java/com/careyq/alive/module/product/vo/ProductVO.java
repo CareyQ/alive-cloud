@@ -25,14 +25,11 @@ public class ProductVO {
     @Schema(description = "所属品牌")
     private Long brandId;
 
-    @Schema(description = "商品编号")
-    private String snCode;
-
     @Schema(description = "商品名称")
     private String name;
 
-    @Schema(description = "商品封面图片")
-    private String pic;
+    @Schema(description = "商品轮播图片")
+    private List<String> slidePic;
 
     @Schema(description = "状态，0下架 1上架")
     private Integer status;
@@ -42,9 +39,6 @@ public class ProductVO {
 
     @Schema(description = "价格")
     private BigDecimal price;
-
-    @Schema(description = "市场价")
-    private BigDecimal marketPrice;
 
     @Schema(description = "库存")
     private Integer stock;
@@ -72,9 +66,6 @@ public class ProductVO {
 
     @Schema(description = "关键字")
     private String keyword;
-
-    @Schema(description = "简介")
-    private String intro;
 
     @Schema(description = "商品 SKU 信息")
     private List<ProductSkuDTO> skus;
