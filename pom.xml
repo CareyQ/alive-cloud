@@ -52,7 +52,7 @@
         <transmittable.version>2.14.5</transmittable.version>
         <velocity.version>2.3</velocity.version>
         <!-- 存储相关 -->
-        <s3.version>1.12.648</s3.version>
+        <minio.version>8.5.9</minio.version>
         <tika.version>2.9.1</tika.version>
         <elasticsearch.version>8.12.2</elasticsearch.version>
     </properties>
@@ -188,9 +188,9 @@
             </dependency>
 
             <dependency>
-                <groupId>com.amazonaws</groupId>
-                <artifactId>aws-java-sdk-s3</artifactId>
-                <version>${s3.version}</version>
+                <groupId>io.minio</groupId>
+                <artifactId>minio</artifactId>
+                <version>${minio.version}</version>
             </dependency>
 
             <!-- 接口文档 -->

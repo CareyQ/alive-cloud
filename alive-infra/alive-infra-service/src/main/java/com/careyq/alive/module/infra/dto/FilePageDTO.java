@@ -15,9 +15,6 @@ import java.time.LocalDate;
 @Schema(description = "管理后台 - 文件分页 DTO")
 public class FilePageDTO extends PageDTO {
 
-    @Schema(description = "配置编号")
-    private Long configId;
-
     @Schema(description = "文件名")
     private String name;
 

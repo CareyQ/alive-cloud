@@ -37,7 +37,6 @@ public class OssConfigDTO {
     @Schema(description = "访问站点", requiredMode = Schema.RequiredMode.REQUIRED)
     private String endpoint;
 
-    @NotBlank(message = "域不能为空")
     @Schema(description = "域", requiredMode = Schema.RequiredMode.REQUIRED)
     private String region;
 

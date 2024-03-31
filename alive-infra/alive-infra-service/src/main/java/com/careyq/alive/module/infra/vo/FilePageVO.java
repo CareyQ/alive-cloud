@@ -16,12 +16,6 @@ public class FilePageVO {
     @Schema(description = "编号")
     private Long id;
 
-    @Schema(description = "配置编号")
-    private Long configId;
-
-    @Schema(description = "配置名称")
-    private String configName;
-
     @Schema(description = "文件名")
     private String name;
 

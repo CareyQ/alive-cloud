@@ -15,9 +15,6 @@ public class FileVO {
     @Schema(description = "编号")
     private Long id;
 
-    @Schema(description = "配置编号")
-    private Long configId;
-
     @Schema(description = "文件名")
     private String name;
 

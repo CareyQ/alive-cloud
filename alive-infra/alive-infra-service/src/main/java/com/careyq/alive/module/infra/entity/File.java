@@ -14,11 +14,6 @@ import lombok.Data;
 public class File extends BaseEntity {
 
     /**
-     * 配置编号
-     */
-    private Long configId;
-
-    /**
      * 文件名
      */
     private String name;

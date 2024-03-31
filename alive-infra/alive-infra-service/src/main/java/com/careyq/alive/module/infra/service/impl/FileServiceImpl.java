@@ -8,29 +8,20 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.careyq.alive.core.exception.CustomException;
 import com.careyq.alive.core.exception.FileUploadException;
-import com.careyq.alive.core.util.CollUtils;
 import com.careyq.alive.module.infra.convert.FileConvert;
 import com.careyq.alive.module.infra.dto.FilePageDTO;
 import com.careyq.alive.module.infra.entity.File;
-import com.careyq.alive.module.infra.entity.OssConfig;
 import com.careyq.alive.module.infra.mapper.FileMapper;
 import com.careyq.alive.module.infra.service.FileService;
-import com.careyq.alive.module.infra.service.OssConfigService;
 import com.careyq.alive.module.infra.vo.FilePageVO;
 import com.careyq.alive.module.infra.vo.FileVO;
-import com.careyq.alive.oss.core.client.OssClient;
-import com.careyq.alive.oss.core.factory.OssFactory;
-import com.careyq.alive.oss.core.util.FileUtils;
+import com.careyq.alive.oss.MinioUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tika.Tika;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.InputStream;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 文件 服务实现
@@ -42,8 +33,6 @@ import java.util.Map;
 @AllArgsConstructor
 public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements FileService {
 
-    private final OssConfigService ossConfigService;
-
     private static final ThreadLocal<Tika> TIKA = TransmittableThreadLocal.withInitial(Tika::new);
 
     @Override
@@ -51,27 +40,16 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements Fi
     public String uploadFile(MultipartFile file, String folder) {
         String url;
         try {
-            String path = folder + "/" + file.getOriginalFilename();
-            File existsFile = this.lambdaQuery()
-                    .eq(File::getPath, path)
-                    .last("LIMIT 1")
-                    .one();
-            if (existsFile != null) {
-                return FileUtils.getFileUrl(path);
-            }
-            InputStream inputStream = file.getInputStream();
-            byte[] content = IoUtil.readBytes(inputStream);
-            String type = getFileType(content, path);
-            OssClient client = OssFactory.instance();
-            path = client.upload(content, path, type);
+            String filePath = MinioUtils.upload(file, folder);
+            url = MinioUtils.getFileUrl(filePath);
 
-            url = FileUtils.getFileUrl(path);
+            byte[] content = IoUtil.readBytes(file.getInputStream());
+            String type = getFileType(content, filePath);
 
             File saveFile = new File();
-            saveFile.setConfigId(client.getConfigId())
-                    .setName(file.getOriginalFilename())
+            saveFile.setName(file.getOriginalFilename())
                     .setFolder(folder)
-                    .setPath(path)
+                    .setPath(filePath)
                     .setType(type)
                     .setSize(content.length);
             this.save(saveFile);
@@ -98,7 +76,6 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements Fi
     @Override
     public IPage<FilePageVO> getFilePage(FilePageDTO dto) {
         IPage<File> page = this.lambdaQueryX()
-                .eqIfPresent(File::getConfigId, dto.getConfigId())
                 .likeIfPresent(File::getName, dto.getName())
                 .eqIfPresent(File::getPath, dto.getPath())
                 .orderByDesc(File::getId)
@@ -106,9 +83,7 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements Fi
         if (page.getRecords().isEmpty()) {
             return new Page<>();
         }
-        List<Long> configIds = CollUtils.convertList(page.getRecords(), File::getConfigId);
-        Map<Long, String> configMap = CollUtils.convertMap(ossConfigService.listByIds(configIds), OssConfig::getId, OssConfig::getName);
-        return page.convert(e -> FileConvert.INSTANCE.fileConvert(e, configMap));
+        return page.convert(FileConvert.INSTANCE::fileConvert);
     }
 
     @Override
