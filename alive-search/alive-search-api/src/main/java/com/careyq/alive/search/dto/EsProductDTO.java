@@ -93,18 +93,9 @@ public class EsProductDTO {
         private String attrName;
 
         /**
-         * 属性值编号
-         */
-        private Long valueId;
-
-        /**
          * 属性值
          */
         private String value;
 
-        /**
-         * 类型
-         */
-        private Integer type;
     }
 }

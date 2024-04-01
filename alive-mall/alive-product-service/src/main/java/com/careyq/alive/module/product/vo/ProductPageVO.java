@@ -27,13 +27,10 @@ public class ProductPageVO {
     @Schema(description = "所属品牌")
     private String brandName;
 
-    @Schema(description = "商品编号")
-    private String snCode;
-
     @Schema(description = "商品名称")
     private String name;
 
-    @Schema(description = "商品封面图片")
+    @Schema(description = "商品图片")
     private String pic;
 
     @Schema(description = "状态，0下架 1上架")

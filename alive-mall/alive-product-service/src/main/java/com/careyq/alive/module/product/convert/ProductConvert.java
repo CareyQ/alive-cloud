@@ -44,6 +44,7 @@ public interface ProductConvert {
      * @param product 商品
      * @return VO
      */
+    @Mapping(target = "pic", ignore = true)
     @Mapping(target = "categoryName", ignore = true)
     @Mapping(target = "brandName", ignore = true)
     ProductPageVO convert(Product product);

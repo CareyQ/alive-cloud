@@ -63,7 +63,7 @@ public class ProductSkuServiceImpl extends ServiceImpl<ProductSkuMapper, Product
         }).toList();
         this.saveBatch(skuList);
 
-        attributeService.updateAttributeValue(CollUtils.convertList(skus, ProductSkuDTO::getSpec));
+        attributeService.updateAttributeValue(product.getId(), CollUtils.convertList(skus, ProductSkuDTO::getSpec));
     }
 
     @Override
@@ -98,7 +98,7 @@ public class ProductSkuServiceImpl extends ServiceImpl<ProductSkuMapper, Product
         if (!existsSkuIds.isEmpty()) {
             this.removeBatchByIds(existsSkuIds);
         }
-        attributeService.updateAttributeValue(CollUtils.convertList(skus, ProductSkuDTO::getSpec));
+        attributeService.updateAttributeValue(product.getId(), CollUtils.convertList(skus, ProductSkuDTO::getSpec));
     }
 
     private static void setSnCode(Product product, int index, ProductSku sku) {

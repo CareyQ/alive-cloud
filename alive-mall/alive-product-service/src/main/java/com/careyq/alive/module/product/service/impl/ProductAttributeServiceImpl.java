@@ -103,12 +103,13 @@ public class ProductAttributeServiceImpl extends ServiceImpl<ProductAttributeMap
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void updateAttributeValue(List<List<ProductSku.Spec>> specs) {
+    public void updateAttributeValue(Long productId, List<List<ProductSku.Spec>> specs) {
         List<ProductAttribute> attributes = new ArrayList<>();
         for (List<ProductSku.Spec> spec : specs) {
             List<String> value = CollUtils.convertList(spec, ProductSku.Spec::getValue);
             ProductAttribute attribute = new ProductAttribute();
             attribute.setId(spec.getFirst().getAttributeId());
+            attribute.setProductId(productId);
             attribute.setValue(value);
             attributes.add(attribute);
         }

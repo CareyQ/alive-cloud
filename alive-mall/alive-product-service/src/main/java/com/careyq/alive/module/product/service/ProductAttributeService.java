@@ -51,7 +51,8 @@ public interface ProductAttributeService extends IServiceX<ProductAttribute> {
     /**
      * 更新属性值
      *
-     * @param specs 规格属性
+     * @param productId 商品编号
+     * @param specs     规格属性
      */
-    void updateAttributeValue(List<List<ProductSku.Spec>> specs);
+    void updateAttributeValue(Long productId, List<List<ProductSku.Spec>> specs);
 }

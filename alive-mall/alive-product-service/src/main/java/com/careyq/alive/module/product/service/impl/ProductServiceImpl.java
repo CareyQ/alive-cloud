@@ -29,7 +29,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -60,7 +59,9 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 
         this.save(product);
         skuService.createProductSku(product, dto.getSkus());
-        this.up(product);
+        try {
+            this.up(product);
+        } catch (Exception ignored) {}
         return product.getId();
     }
 
@@ -73,7 +74,9 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 
         this.updateById(product);
         skuService.updateProductSku(product, dto.getSkus());
-        this.up(product);
+        try {
+            this.up(product);
+        } catch (Exception ignored) {}
         return product.getId();
     }
 
@@ -139,6 +142,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
             ProductPageVO vo = ProductConvert.INSTANCE.convert(e);
             vo.setCategoryName(categoryMap.get(e.getCategoryId()));
             vo.setBrandName(brandMap.get(e.getBrandId()));
+            vo.setPic(e.getSlidePic().getFirst());
             return vo;
         });
     }
@@ -195,7 +199,12 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         if (!ProductStatusEnum.UP.getCode().equals(product.getStatus())) {
             return;
         }
-        List<EsProductDTO.Attrs> attrs = new ArrayList<>();
+        List<ProductSku> skus = skuService.lambdaQuery()
+                .eq(ProductSku::getProductId, product.getId())
+                .list();
+        List<EsProductDTO.Attrs> attrs = CollUtils.convertFlatList(skus, ProductSku::getSpec, List::stream)
+                .stream().map(e -> new EsProductDTO.Attrs(e.getAttributeId(), e.getAttributeName(), e.getValue()))
+                .toList();
         ProductBrand brand = brandService.getById(product.getBrandId());
         ProductCategory category = categoryService.getById(product.getCategoryId());
 
