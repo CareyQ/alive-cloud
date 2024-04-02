@@ -16,7 +16,7 @@ import java.util.List;
  */
 @Data
 @NoArgsConstructor
-@TableName("product_attribute")
+@TableName(value = "product_attribute", autoResultMap = true)
 public class ProductAttribute extends BaseEntity {
 
     /**
