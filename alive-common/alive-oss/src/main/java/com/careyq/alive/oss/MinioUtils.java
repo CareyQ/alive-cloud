@@ -95,7 +95,8 @@ public class MinioUtils {
                     .stream(file.getInputStream(), file.getSize(), -1)
                     .contentType(file.getContentType())
                     .build();
-            client.putObject(args);
+            ObjectWriteResponse response = client.putObject(args);
+            System.out.println(response);
         } catch (Exception e) {
             log.error("文件上传出错", e);
             throw new FileUploadException(e.getMessage());

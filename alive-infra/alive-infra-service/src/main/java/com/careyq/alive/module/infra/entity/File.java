@@ -29,11 +29,6 @@ public class File extends BaseEntity {
     private String path;
 
     /**
-     * 文件 URL
-     */
-    private String url;
-
-    /**
      * 文件类型
      */
     private String type;

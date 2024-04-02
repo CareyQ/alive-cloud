@@ -284,7 +284,6 @@ create table if not exists infra_file
     name        varchar(250)  not null default '' comment '文件名',
     folder      varchar(50)   not null default '' comment '目录',
     path        varchar(512)  not null default '' comment '文件路径',
-    url         varchar(1024) not null default '' comment '文件 URL',
     type        varchar(128)  not null default '' comment '文件类型',
     size        int           not null default 0 comment '文件大小',
     is_del      tinyint       not null default 0 comment '是否删除',

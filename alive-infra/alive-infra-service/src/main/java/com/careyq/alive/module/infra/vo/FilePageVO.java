@@ -22,9 +22,6 @@ public class FilePageVO {
     @Schema(description = "文件路径")
     private String path;
 
-    @Schema(description = "文件 URL")
-    private String url;
-
     @Schema(description = "文件类型")
     private String type;
 

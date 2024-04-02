@@ -1,13 +1,15 @@
 package com.careyq.alive.module.infra.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.careyq.alive.mybatis.core.service.IServiceX;
+import com.careyq.alive.module.infra.dto.FilePageDTO;
 import com.careyq.alive.module.infra.entity.File;
-import com.careyq.alive.module.infra.dto.*;
-import com.careyq.alive.module.infra.vo.*;
+import com.careyq.alive.module.infra.vo.FilePageVO;
+import com.careyq.alive.module.infra.vo.FileVO;
+import com.careyq.alive.mybatis.core.service.IServiceX;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * 文件 服务
@@ -15,6 +17,13 @@ import java.io.IOException;
  * @author CareyQ
  */
 public interface FileService extends IServiceX<File> {
+
+    /**
+     * 获取文件目录
+     *
+     * @return 目录列表
+     */
+    List<String> getFileFolder();
 
     /**
      * 上传文件

@@ -2,7 +2,9 @@ package com.careyq.alive.module.infra.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.ttl.TransmittableThreadLocal;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -23,6 +25,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 /**
  * 文件 服务实现
  *
@@ -34,6 +38,13 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements FileService {
 
     private static final ThreadLocal<Tika> TIKA = TransmittableThreadLocal.withInitial(Tika::new);
+
+    @Override
+    public List<String> getFileFolder() {
+        QueryWrapper<File> wrapper = new QueryWrapper<File>()
+                .select("distinct folder");
+        return this.list(wrapper).stream().map(File::getFolder).filter(StrUtil::isNotEmpty).toList();
+    }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -77,19 +88,23 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements Fi
     public IPage<FilePageVO> getFilePage(FilePageDTO dto) {
         IPage<File> page = this.lambdaQueryX()
                 .likeIfPresent(File::getName, dto.getName())
-                .eqIfPresent(File::getPath, dto.getPath())
+                .eqIfPresent(File::getFolder, dto.getFolder())
                 .orderByDesc(File::getId)
                 .page(new Page<>(dto.getCurrent(), dto.getSize()));
         if (page.getRecords().isEmpty()) {
             return new Page<>();
         }
+
         return page.convert(FileConvert.INSTANCE::fileConvert);
     }
 
     @Override
     public FileVO getFileDetail(Long id) {
         File data = this.checkDataExists(id);
-        return BeanUtil.copyProperties(data, FileVO.class);
+        String fileDomain = MinioUtils.getFileDomain();
+        FileVO vo = BeanUtil.copyProperties(data, FileVO.class);
+        vo.setUrl(fileDomain + data.getPath());
+        return vo;
     }
 
     @Override

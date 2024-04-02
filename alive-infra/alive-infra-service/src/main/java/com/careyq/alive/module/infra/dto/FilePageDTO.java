@@ -18,8 +18,8 @@ public class FilePageDTO extends PageDTO {
     @Schema(description = "文件名")
     private String name;
 
-    @Schema(description = "文件路径")
-    private String path;
+    @Schema(description = "文件目录")
+    private String folder;
 
     @Schema(description = "开始日期")
     private LocalDate startDate;

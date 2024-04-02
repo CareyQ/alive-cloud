@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * 文件
@@ -28,6 +29,12 @@ import java.io.IOException;
 public class FileController {
 
     private final FileService fileService;
+
+    @GetMapping("/folder")
+    @Operation(summary = "获取文件目录")
+    public Result<List<String>> getFilePath() {
+        return Result.ok(fileService.getFileFolder());
+    }
 
     @PostMapping("/upload")
     @OperateLog(logArgs = false)
