@@ -27,6 +27,24 @@ create table if not exists system_user
     unique index idx_mobile (mobile) using btree
 ) comment '系统用户';
 
+create table if not exists system_social_user
+(
+    id             bigint        not null auto_increment primary key comment '主键',
+    type           tinyint       not null comment '社交平台类型',
+    openid         varchar(32)   not null comment '社交平台 openid',
+    raw_token_info varchar(1024) null     default null comment '原始 token 数据',
+    avatar         varchar(512)  null     default null comment '头像地址',
+    nickname       varchar(50)   not null comment '用户昵称',
+    code           varchar(255)  null     default null comment '最后一次认证 code''',
+    state          varchar(255)  null     default null comment '最后一次认证 state',
+    raw_user_info  varchar(1024) not null comment '原始用户数据',
+    is_del         tinyint       not null default 0 comment '是否删除',
+    creator        bigint        null     default null comment '创建者',
+    create_time    datetime      not null default current_timestamp comment '创建时间',
+    updater        bigint        null     default null comment '更新者',
+    update_time    datetime      not null default current_timestamp on update current_timestamp comment '更新时间'
+) comment '社交用户';
+
 create table if not exists system_dept
 (
     id          bigint       not null auto_increment primary key comment '主键',
@@ -280,17 +298,17 @@ create table if not exists infra_codegen_column
 
 create table if not exists infra_file
 (
-    id          bigint        not null auto_increment primary key comment '主键',
-    name        varchar(250)  not null default '' comment '文件名',
-    folder      varchar(50)   not null default '' comment '目录',
-    path        varchar(512)  not null default '' comment '文件路径',
-    type        varchar(128)  not null default '' comment '文件类型',
-    size        int           not null default 0 comment '文件大小',
-    is_del      tinyint       not null default 0 comment '是否删除',
-    creator     bigint        null     default null comment '创建者',
-    create_time datetime      not null default current_timestamp comment '创建时间',
-    updater     bigint        null     default null comment '更新者',
-    update_time datetime      not null default current_timestamp on update current_timestamp comment '更新时间'
+    id          bigint       not null auto_increment primary key comment '主键',
+    name        varchar(250) not null default '' comment '文件名',
+    folder      varchar(50)  not null default '' comment '目录',
+    path        varchar(512) not null default '' comment '文件路径',
+    type        varchar(128) not null default '' comment '文件类型',
+    size        int          not null default 0 comment '文件大小',
+    is_del      tinyint      not null default 0 comment '是否删除',
+    creator     bigint       null     default null comment '创建者',
+    create_time datetime     not null default current_timestamp comment '创建时间',
+    updater     bigint       null     default null comment '更新者',
+    update_time datetime     not null default current_timestamp on update current_timestamp comment '更新时间'
 ) comment '文件';
 
 # mall
@@ -388,3 +406,4 @@ create table if not exists product_sku
     update_time  datetime       not null default current_timestamp on update current_timestamp comment '更新时间',
     index idx_productId (product_id) using btree
 ) comment '商品 SKU 信息';
+
