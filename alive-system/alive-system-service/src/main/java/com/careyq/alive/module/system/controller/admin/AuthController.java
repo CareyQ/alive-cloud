@@ -47,6 +47,14 @@ public class AuthController {
         return Result.ok(authService.login(dto));
     }
 
+    @SaIgnore
+    @PostMapping("/sms-login")
+    @OperateLog(enable = false)
+    @Operation(summary = "验证码登录")
+    public Result<LoginVO> login(@RequestBody LoginDTO dto) {
+        return Result.ok(authService.login(dto));
+    }
+
     @PostMapping("/logout")
     @OperateLog(enable = false)
     @Operation(summary = "退出登录")

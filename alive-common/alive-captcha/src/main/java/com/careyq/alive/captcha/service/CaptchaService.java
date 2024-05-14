@@ -2,8 +2,6 @@ package com.careyq.alive.captcha.service;
 
 import com.careyq.alive.captcha.domain.CaptchaInfo;
 
-import java.util.Properties;
-
 /**
  * 验证码服务
  *
@@ -13,10 +11,8 @@ public interface CaptchaService {
 
     /**
      * 初始化配置
-     *
-     * @param config 属性配置
      */
-    void init(Properties config);
+    void init();
 
     /**
      * 获取验证码
@@ -25,4 +21,11 @@ public interface CaptchaService {
      * @return 验证码信息
      */
     CaptchaInfo get(String clientId);
+
+    /**
+     * 获取验证码类型
+     *
+     * @return 验证码类型
+     */
+    String captchaType();
 }

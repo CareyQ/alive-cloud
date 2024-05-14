@@ -35,15 +35,8 @@ public class CaptchaInfo {
      */
     private Integer templateImageHeight;
     /**
-     * 随机值
-     */
-    private Integer randomX;
-    /**
-     * 容错值, 可以为空 默认 0.02 容错,校验的时候用
-     */
-    private Float tolerant;
-    /**
      * 验证码类型
      */
     private String type;
+
 }

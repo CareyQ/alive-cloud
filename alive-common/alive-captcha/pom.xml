@@ -16,5 +16,10 @@
             <groupId>com.careyq</groupId>
             <artifactId>alive-core</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
     </dependencies>
 </project>
