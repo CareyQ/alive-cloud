@@ -20,6 +20,7 @@
         <module>alive-operatelog</module>
         <module>alive-oss</module>
         <module>alive-rpc</module>
+        <module>alive-captcha</module>
     </modules>
 
 </project>
