@@ -1,6 +1,7 @@
 package com.careyq.alive.core.util;
 
 import cn.hutool.core.util.StrUtil;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -63,6 +64,14 @@ public class JsonUtils {
             return null;
         }
         return objectMapper.readValue(text, clazz);
+    }
+
+    @SneakyThrows
+    public static <T> T parseObject(String text, TypeReference<T> typeReference) {
+        if (StrUtils.isEmpty(text)) {
+            return null;
+        }
+        return objectMapper.readValue(text, typeReference);
     }
 
     public static JsonNode parseObject(String text) {

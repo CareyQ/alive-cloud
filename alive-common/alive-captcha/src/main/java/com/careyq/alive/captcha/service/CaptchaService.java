@@ -1,5 +1,6 @@
 package com.careyq.alive.captcha.service;
 
+import com.careyq.alive.captcha.domain.CaptchaCheck;
 import com.careyq.alive.captcha.domain.CaptchaInfo;
 
 /**
@@ -15,12 +16,18 @@ public interface CaptchaService {
     void init();
 
     /**
-     * 获取验证码
+     * 生成验证码
      *
-     * @param clientId 客户端标识编号
      * @return 验证码信息
      */
-    CaptchaInfo get(String clientId);
+    CaptchaInfo generate();
+
+    /**
+     * 获取验证码
+     *
+     * @return 验证码
+     */
+    CaptchaInfo get();
 
     /**
      * 获取验证码类型
@@ -28,4 +35,20 @@ public interface CaptchaService {
      * @return 验证码类型
      */
     String captchaType();
+
+    /**
+     * 校验验证码
+     *
+     * @param check 校验信息
+     * @return 结果
+     */
+    String check(CaptchaCheck check);
+
+    /**
+     * 二次验证后端
+     *
+     * @param authenticate 验证码
+     * @return 结果
+     */
+    boolean verify(String authenticate);
 }

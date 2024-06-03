@@ -16,6 +16,8 @@ import org.redisson.spring.starter.RedissonAutoConfigurationCustomizer;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
 
 /**
@@ -48,6 +50,19 @@ public class RedisAutoConfiguration {
     @Bean
     public CacheManager cacheManager() {
         return new PlusSpringCacheManager();
+    }
+
+    @Bean
+    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
+        RedisTemplate<String, Object> template = new RedisTemplate<>();
+        template.setConnectionFactory(factory);
+        // 使用 String 序列化方式，序列化 KEY
+        template.setKeySerializer(RedisSerializer.string());
+        template.setHashKeySerializer(RedisSerializer.string());
+        // 使用 JSON 序列化方式（库是 Jackson ），序列化 VALUE
+        template.setValueSerializer(buildRedisSerializer());
+        template.setHashValueSerializer(buildRedisSerializer());
+        return template;
     }
 
     public static RedisSerializer<?> buildRedisSerializer() {

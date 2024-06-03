@@ -282,6 +282,12 @@
 
             <dependency>
                 <groupId>com.careyq</groupId>
+                <artifactId>alive-captcha</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.careyq</groupId>
                 <artifactId>alive-oss</artifactId>
                 <version>${revision}</version>
             </dependency>

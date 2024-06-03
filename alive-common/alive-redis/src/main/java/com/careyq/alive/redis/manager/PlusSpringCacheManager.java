@@ -105,7 +105,7 @@ public class PlusSpringCacheManager implements CacheManager {
      * @return 缓存
      */
     private Cache createMapCache(String name, CacheConfig config) {
-        RMapCache<Object, Object> map = RedisUtils.getClient().getMapCache(name);
+        RMapCache<Object, Object> map = RedisUtils.getRedissonClient().getMapCache(name);
 
         Cache cache;
         if (config.getMaxIdleTime() == 0 && config.getTTL() == IntPool.ZERO && config.getMaxSize() == IntPool.ZERO) {

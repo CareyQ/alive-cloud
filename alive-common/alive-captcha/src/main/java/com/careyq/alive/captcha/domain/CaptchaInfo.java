@@ -38,5 +38,13 @@ public class CaptchaInfo {
      * 验证码类型
      */
     private String type;
+    /**
+     * token
+     */
+    private String token;
+    /**
+     * secretKey
+     */
+    private String secretKey;
 
 }

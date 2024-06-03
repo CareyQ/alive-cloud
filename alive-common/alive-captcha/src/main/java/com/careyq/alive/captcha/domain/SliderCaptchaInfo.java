@@ -2,6 +2,7 @@ package com.careyq.alive.captcha.domain;
 
 import com.careyq.alive.captcha.constants.CaptchaTypeEnum;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 滑动验证码信息
@@ -12,13 +13,32 @@ import lombok.Data;
 public class SliderCaptchaInfo extends CaptchaInfo {
 
     /**
-     * x轴
+     * 点位
      */
-    private Integer x;
-    /**
-     * y轴
-     */
-    private Integer y;
+    private Point point;
+
+
+    @Data
+    @NoArgsConstructor
+    public static class Point {
+        /**
+         * x轴
+         */
+        private Integer x;
+        /**
+         * y轴
+         */
+        private Integer y;
+        /**
+         * secretKey
+         */
+        private String secretKey;
+
+        public Point(Integer x, Integer y) {
+            this.x = x;
+            this.y = y;
+        }
+    }
 
 
     public static SliderCaptchaInfo of(String backgroundImage,
@@ -30,8 +50,6 @@ public class SliderCaptchaInfo extends CaptchaInfo {
                                        Integer x,
                                        Integer y) {
         SliderCaptchaInfo info = new SliderCaptchaInfo();
-        info.setX(x);
-        info.setY(y);
         info.setBackgroundImage(backgroundImage);
         info.setTemplateImage(templateImage);
         info.setBackgroundImageWidth(backgroundImageWidth);
@@ -39,6 +57,7 @@ public class SliderCaptchaInfo extends CaptchaInfo {
         info.setTemplateImageWidth(templateImageWidth);
         info.setTemplateImageHeight(templateImageHeight);
         info.setType(CaptchaTypeEnum.SLIDER.getType());
+        info.setPoint(new Point(x, y));
         return info;
     }
 }

@@ -1,5 +1,10 @@
 package com.careyq.alive.captcha.util;
 
+import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.util.RandomUtil;
+import com.careyq.alive.captcha.domain.Template;
+import com.careyq.alive.core.exception.CustomException;
+import com.careyq.alive.core.util.CollUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -14,6 +19,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Map;
+
+import static com.careyq.alive.captcha.constants.CaptchaResultCode.BACKGROUND_IMAGE_EMPTY;
+import static com.careyq.alive.captcha.constants.CaptchaResultCode.TEMPLATE_EMPTY;
 
 /**
  * 图片工具类
@@ -22,6 +31,47 @@ import java.util.List;
  */
 @Slf4j
 public class ImageUtils {
+
+    /**
+     * 背景图片
+     */
+    private static final List<String> BACKGROUND_IMAGES = new ArrayList<>();
+    /**
+     * 模板资源，key：模板类型，value：模板资源
+     */
+    private static final Map<String, List<Template>> TEMPLATE_MAP = MapUtil.newHashMap();
+
+    public static void addBackgroundImage(String image) {
+        BACKGROUND_IMAGES.add(image);
+    }
+
+    public static void addTemplate(String type, Template template) {
+        TEMPLATE_MAP.computeIfAbsent(type, k -> new ArrayList<>()).add(template);
+    }
+
+    public static String randomBackgroundImage() {
+        if (BACKGROUND_IMAGES.isEmpty()) {
+            throw new CustomException(BACKGROUND_IMAGE_EMPTY);
+        }
+        if (BACKGROUND_IMAGES.size() == 1) {
+            return BACKGROUND_IMAGES.getFirst();
+        }
+        return BACKGROUND_IMAGES.get(RandomUtil.randomInt(BACKGROUND_IMAGES.size()));
+    }
+
+    public static Template randomTemplate(String type) {
+        if (TEMPLATE_MAP.isEmpty()) {
+            throw new CustomException(TEMPLATE_EMPTY);
+        }
+        List<Template> templates = TEMPLATE_MAP.get(type);
+        if (CollUtils.isEmpty(templates)) {
+            throw new CustomException(TEMPLATE_EMPTY);
+        }
+        if (templates.size() == 1) {
+            return templates.getFirst();
+        }
+        return templates.get(RandomUtil.randomInt(templates.size()));
+    }
 
     /**
      * 获取资源
@@ -38,7 +88,7 @@ public class ImageUtils {
                 byte[] bytes = FileCopyUtils.copyToByteArray(resource.getInputStream());
                 files.add(Base64.getEncoder().encodeToString(bytes));
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.error("[ImageUtils getResourcesFile] error", e);
         }
         return files;

@@ -51,7 +51,7 @@ public class AuthController {
     @PostMapping("/sms-login")
     @OperateLog(enable = false)
     @Operation(summary = "验证码登录")
-    public Result<LoginVO> login(@RequestBody LoginDTO dto) {
+    public Result<LoginVO> login1(@RequestBody LoginDTO dto) {
         return Result.ok(authService.login(dto));
     }
 
